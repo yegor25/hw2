@@ -24,7 +24,7 @@ blogRouter.get("/:id", (req: requestWithParams<{ id: string }>, res: Response) =
     }
     res.status(200).send(blog)
 })
-blogRouter.put("/:id", checkAuth, blogValidate ,(req: requestWithParamsAndBody<{ id: string }, bodyBlogType>, res: Response) => {
+blogRouter.put("/:id", checkAuth, validateBlogShema,blogValidate ,(req: requestWithParamsAndBody<{ id: string }, bodyBlogType>, res: Response) => {
     const blog = blogsRepository.changeBlog(req.params.id, req.body)
     if (!blog) {
         res.sendStatus(404)

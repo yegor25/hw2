@@ -22,7 +22,7 @@ exports.blogRouter.get("/:id", (req, res) => {
     }
     res.status(200).send(blog);
 });
-exports.blogRouter.put("/:id", auth_middleware_1.checkAuth, blog_validation_1.blogValidate, (req, res) => {
+exports.blogRouter.put("/:id", auth_middleware_1.checkAuth, blog_validation_1.validateBlogShema, blog_validation_1.blogValidate, (req, res) => {
     const blog = blog_repository_1.blogsRepository.changeBlog(req.params.id, req.body);
     if (!blog) {
         res.sendStatus(404);
