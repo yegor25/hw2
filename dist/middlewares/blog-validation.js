@@ -5,7 +5,7 @@ const express_validator_1 = require("express-validator");
 exports.validateBlogShema = [
     (0, express_validator_1.body)("name").exists().isString().notEmpty().trim().isLength({ min: 3, max: 15 }).withMessage("invalid name"),
     (0, express_validator_1.body)("description").trim().notEmpty().isString().isLength({ min: 3, max: 500 }).withMessage("invalid description"),
-    (0, express_validator_1.body)("websiteUrl").trim().isString().notEmpty().matches(/^https:\/\/([a-zA-Z0-9_-]+\.)+[a-zA-Z0-9_-]+(\/[a-zA-Z0-9_-]+)*\/?$/, "g").withMessage("invalid url")
+    (0, express_validator_1.body)("websiteUrl").trim().isString().notEmpty().isLength({ max: 100 }).matches(/^https:\/\/([a-zA-Z0-9_-]+\.)+[a-zA-Z0-9_-]+(\/[a-zA-Z0-9_-]+)*\/?$/, "g").withMessage("invalid url")
 ];
 const blogValidate = (req, res, next) => {
     const errorFormatter = ({ msg, path }) => {

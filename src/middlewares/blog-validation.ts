@@ -6,7 +6,7 @@ import {  body, validationResult } from "express-validator"
 export const validateBlogShema =  [
     body("name").exists().isString().notEmpty().trim().isLength({min: 3,max: 15}).withMessage("invalid name"),
     body("description").trim().notEmpty().isString().isLength({min: 3,max: 500}).withMessage("invalid description"),
-    body("websiteUrl").trim().isString().notEmpty().matches(/^https:\/\/([a-zA-Z0-9_-]+\.)+[a-zA-Z0-9_-]+(\/[a-zA-Z0-9_-]+)*\/?$/, "g").withMessage("invalid url")
+    body("websiteUrl").trim().isString().notEmpty().isLength({max: 100}).matches(/^https:\/\/([a-zA-Z0-9_-]+\.)+[a-zA-Z0-9_-]+(\/[a-zA-Z0-9_-]+)*\/?$/, "g").withMessage("invalid url")
     
 ]
 
