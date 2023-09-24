@@ -29,7 +29,7 @@ postRouter.get("/:id", (req: requestWithParams<{ id: string }>, res: Response) =
     }
     res.status(200).send(post)
 })
-postRouter.put("/:id", postValidator, postValidate,checkAuth ,(req: requestWithParamsAndBody<{ id: string }, postBodyType>, res: Response) => {
+postRouter.put("/:id",checkAuth, postValidator, postValidate ,(req: requestWithParamsAndBody<{ id: string }, postBodyType>, res: Response) => {
     const post = postRepository.changePost(req.params.id, req.body)
     if (!post) {
         res.sendStatus(404)

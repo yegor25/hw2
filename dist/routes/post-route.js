@@ -26,7 +26,7 @@ exports.postRouter.get("/:id", (req, res) => {
     }
     res.status(200).send(post);
 });
-exports.postRouter.put("/:id", post_validation_1.postValidator, post_validation_1.postValidate, auth_middleware_1.checkAuth, (req, res) => {
+exports.postRouter.put("/:id", auth_middleware_1.checkAuth, post_validation_1.postValidator, post_validation_1.postValidate, (req, res) => {
     const post = post_repository_1.postRepository.changePost(req.params.id, req.body);
     if (!post) {
         res.sendStatus(404);
