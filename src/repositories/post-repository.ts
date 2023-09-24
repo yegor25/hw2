@@ -43,7 +43,8 @@ export const postRepository = {
             ...posts[idx],
             title: payload.title,
             shortDescription: payload.shortDescription,
-            blogId: payload.blogId
+            blogId: payload.blogId,
+            content: payload.content
         }
 
         return (posts[idx])

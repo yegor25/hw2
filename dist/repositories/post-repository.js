@@ -34,7 +34,7 @@ exports.postRepository = {
         if (idx < 0) {
             return null;
         }
-        posts[idx] = Object.assign(Object.assign({}, posts[idx]), { title: payload.title, shortDescription: payload.shortDescription, blogId: payload.blogId });
+        posts[idx] = Object.assign(Object.assign({}, posts[idx]), { title: payload.title, shortDescription: payload.shortDescription, blogId: payload.blogId, content: payload.content });
         return (posts[idx]);
     },
     deletePost(id) {
