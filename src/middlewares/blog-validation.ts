@@ -22,7 +22,7 @@ export const blogValidate = (req:requestWithBody<bodyBlogType>, res:Response, ne
     if(errors.isEmpty()){
         return next()
     } else {
-        res.status(400).send({errors: errors.array({onlyFirstError: true})})
+        res.status(400).send({errorsMessages: errors.array({onlyFirstError: true})})
         return
     }
 }

@@ -20,7 +20,7 @@ const postValidate = (req, res, next) => {
         return next();
     }
     else {
-        res.status(400).send({ errors: errors.array({ onlyFirstError: true }) });
+        res.status(400).send({ errorsMessages: errors.array({ onlyFirstError: true }) });
         return;
     }
 };
