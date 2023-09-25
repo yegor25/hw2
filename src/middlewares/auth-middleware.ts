@@ -22,14 +22,15 @@ export const checkAuth = (req: Request, res: Response, next: NextFunction) => {
             return
         }
     } else {
-        const data =  user.split(" ").splice(1,1).join("")
-        const dataArray = data.split(":")
-        if (dataArray[0] === "admin" && dataArray[1] === "qwerty") {
-            return next()
-        } else {
-            res.sendStatus(401)
-            return
-        }
+        // const data =  user.split(" ").splice(1,1).join("")
+        // const dataArray = data.split(":")
+        // if (dataArray[0] === "admin" && dataArray[1] === "qwerty") {
+        //     return next()
+        // } else {
+        //     res.sendStatus(401)
+        //     return
+        // }
+        res.sendStatus(401)
     }
 
 
