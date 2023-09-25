@@ -9,7 +9,8 @@ const checkAuth = (req, res, next) => {
         res.sendStatus(401);
         return;
     }
-    if (isBase64) {
+    const isBasic = user.includes("Basic");
+    if (isBase64 && isBasic) {
         const encode = atob(user === null || user === void 0 ? void 0 : user.split(" ").splice(1, 1).join(" "));
         const encodeArray = encode.split(":");
         if (encodeArray.length !== 2) {

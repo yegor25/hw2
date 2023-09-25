@@ -7,8 +7,9 @@ export const checkAuth = (req: Request, res: Response, next: NextFunction) => {
     if (!user) {
         res.sendStatus(401)
         return
-    }
-    if (isBase64) {
+    } 
+    const isBasic = user.includes("Basic")
+    if (isBase64 && isBasic) {
         const encode = atob(user?.split(" ").splice(1, 1).join(" ") as string)
         const encodeArray = encode.split(":")
         if (encodeArray.length !== 2) {
