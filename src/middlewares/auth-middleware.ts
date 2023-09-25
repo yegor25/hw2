@@ -1,26 +1,43 @@
 import { NextFunction, Request, Response } from "express"
 
-export const checkAuth = (req:Request, res:Response, next: NextFunction) => {
+export const checkAuth = (req: Request, res: Response, next: NextFunction) => {
     const user = req.headers["authorization"]
-    
-    if(!user){
+
+    if (!user) {
         res.sendStatus(401)
         return
     }
-    
-    const encode =  atob(user?.split(" ").splice(1,1).join(" ") as string)
-    const encodeArray = encode.split(":")
-    if(encodeArray.length !== 2){
-        res.sendStatus(401)
-        return
-    }
-    if(encodeArray[0] === "admin" && encodeArray[1] === "qwerty"){
-       return next()
+    const base64regex = /^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$/
+    const isBase64 = base64regex.test(user)
+    if (isBase64) {
+        const encode = atob(user?.split(" ").splice(1, 1).join(" ") as string)
+        const encodeArray = encode.split(":")
+        if (encodeArray.length !== 2) {
+            res.sendStatus(401)
+            return
+        }
+        if (encodeArray[0] === "admin" && encodeArray[1] === "qwerty") {
+            return next()
+        } else {
+            res.sendStatus(401)
+            return
+        }
     } else {
-        res.sendStatus(401)
-        return
+        const data = (user?.split(" ").splice(1, 1).join(" ") as string)
+        const dataArray = data.split(":")
+        if (dataArray.length !== 2) {
+            res.sendStatus(401)
+            return
+        }
+        if (dataArray[0] === "admin" && dataArray[1] === "qwerty") {
+            return next()
+        } else {
+            res.sendStatus(401)
+            return
+        }
     }
     
+
 }
 
 /*
