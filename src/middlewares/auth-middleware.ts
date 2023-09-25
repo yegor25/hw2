@@ -23,8 +23,8 @@ export const checkAuth = (req: Request, res: Response, next: NextFunction) => {
             return
         }
     } else {
-        const data = (user?.split(" ").splice(1, 1).join(" ") as string)
-        const dataArray = data.split(":")
+        // const data = (user?.split(" ").splice(1, 1).join(" ") as string)
+        const dataArray = user.split(":")
         if (dataArray.length !== 2) {
             res.sendStatus(401)
             return

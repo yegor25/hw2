@@ -25,8 +25,8 @@ const checkAuth = (req, res, next) => {
         }
     }
     else {
-        const data = user === null || user === void 0 ? void 0 : user.split(" ").splice(1, 1).join(" ");
-        const dataArray = data.split(":");
+        // const data = (user?.split(" ").splice(1, 1).join(" ") as string)
+        const dataArray = user.split(":");
         if (dataArray.length !== 2) {
             res.sendStatus(401);
             return;
