@@ -24,6 +24,7 @@ const mapPostToView = (post: PostDbType): postType => {
         content: post.content,
         blogId: post.blogId,
         blogName: post.blogName,
+        createdAt: post.createdAt
     }
 }
 const convertArrayDTO = (posts: PostDbType[]): postType[] => {
@@ -34,7 +35,8 @@ const convertArrayDTO = (posts: PostDbType[]): postType[] => {
             shortDescription: el.shortDescription,
             content: el.content,
             blogId: el.blogId,
-            blogName: el.blogName
+            blogName: el.blogName,
+             createdAt: el.createdAt
         }
     ))
     return data
@@ -52,6 +54,7 @@ export const postRepository = {
         const newPost: PostDbType = {
             _id: new ObjectId(),
             blogName: blog.name ,
+            createdAt: new Date().toISOString(),
             ...post
         }
         

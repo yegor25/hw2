@@ -31,6 +31,7 @@ const mapPostToView = (post) => {
         content: post.content,
         blogId: post.blogId,
         blogName: post.blogName,
+        createdAt: post.createdAt
     };
 };
 const convertArrayDTO = (posts) => {
@@ -40,7 +41,8 @@ const convertArrayDTO = (posts) => {
         shortDescription: el.shortDescription,
         content: el.content,
         blogId: el.blogId,
-        blogName: el.blogName
+        blogName: el.blogName,
+        createdAt: el.createdAt
     }));
     return data;
 };
@@ -57,7 +59,7 @@ exports.postRepository = {
             if (!blog) {
                 return null;
             }
-            const newPost = Object.assign({ _id: new mongodb_1.ObjectId(), blogName: blog.name }, post);
+            const newPost = Object.assign({ _id: new mongodb_1.ObjectId(), blogName: blog.name, createdAt: new Date().toISOString() }, post);
             yield db_1.postsCollection.insertOne(newPost);
             return mapPostToView(newPost);
         });

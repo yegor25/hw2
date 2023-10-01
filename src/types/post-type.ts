@@ -7,7 +7,8 @@ export type postType = {
     shortDescription: string,
     content: string,
     blogId: string,
-    blogName: string
+    blogName: string,
+    createdAt: string
 }
 
 export type postBodyType = {
@@ -24,7 +25,8 @@ export type PostDbType = {
     shortDescription: string,
     content: string,
     blogId: string,
-    blogName: string
+    blogName: string,
+    createdAt: string
 }
 
 
