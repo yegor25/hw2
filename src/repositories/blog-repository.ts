@@ -1,5 +1,5 @@
 import { ObjectId } from "mongodb";
-import { blogCollection } from "../db";
+import { blogCollection, db } from "../db";
 import { blogDbType, blogType, bodyBlogType } from "../types/blog-type";
 
 // let blogs: blogType[] = [
@@ -75,7 +75,7 @@ export const blogsRepository = {
         return res.deletedCount === 1
     },
     async deleteAll(): Promise<boolean>{
-       const res = await blogCollection.deleteMany({})
-       return res.deletedCount > 1
+       const res = await db.dropCollection("blogs")
+       return res
     }
 }

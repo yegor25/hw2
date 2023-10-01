@@ -1,5 +1,5 @@
 import { log } from "console";
-import { postsCollection } from "../db";
+import { db, postsCollection } from "../db";
 import { PostDbType,  postBodyType, postType } from "../types/post-type";
 import { blogsRepository } from "./blog-repository";
 import { ObjectId } from "mongodb";
@@ -88,8 +88,8 @@ export const postRepository = {
        return res.deletedCount === 1
     },
     async deleteAll():Promise<boolean> {
-        const res = await postsCollection.deleteMany({})
-        return res.deletedCount > 0
+        const res = await db.dropCollection("posts")
+        return res
     }
 }
 
