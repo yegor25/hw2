@@ -12,6 +12,6 @@ const blogs = await blogsRepository.deleteAll()
     if(posts && blogs){
         res.sendStatus(204)
     } 
-    res.end()
+    res.sendStatus(204)
     
 })
