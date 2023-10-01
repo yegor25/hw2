@@ -15,7 +15,9 @@ const convertDTO = (data: blogDbType):blogType => {
         id: data._id.toString(),
         description: data.description,
         name: data.name,
-        websiteUrl: data.websiteUrl
+        websiteUrl: data.websiteUrl,
+        createdAt: data.createdAt,
+        isMembership: data.isMembership
     }
 } 
 const convertArrayDTO = (data: blogDbType[]): blogType[] => {
@@ -23,7 +25,9 @@ const convertArrayDTO = (data: blogDbType[]): blogType[] => {
         id: el._id.toString(),
         description: el.description,
         name: el.name,
-        websiteUrl: el.websiteUrl
+        websiteUrl: el.websiteUrl,
+        isMembership: el.isMembership,
+        createdAt: el.createdAt
     }))
     return res
 }
@@ -35,11 +39,13 @@ export const blogsRepository = {
         
     },
    async createBlog(blog: bodyBlogType):Promise<blogType> {
-        const newBlog = {
+        const newBlog: blogDbType = {
             name: blog.name,
             description: blog.description,
             websiteUrl: blog.description,
-            _id: new ObjectId()
+            _id: new ObjectId(),
+            isMembership: true,
+            createdAt: new Date().toISOString()
         }
         await blogCollection.insertOne(newBlog)
         return convertDTO(newBlog)

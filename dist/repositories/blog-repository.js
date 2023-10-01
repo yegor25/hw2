@@ -25,7 +25,9 @@ const convertDTO = (data) => {
         id: data._id.toString(),
         description: data.description,
         name: data.name,
-        websiteUrl: data.websiteUrl
+        websiteUrl: data.websiteUrl,
+        createdAt: data.createdAt,
+        isMembership: data.isMembership
     };
 };
 const convertArrayDTO = (data) => {
@@ -33,7 +35,9 @@ const convertArrayDTO = (data) => {
         id: el._id.toString(),
         description: el.description,
         name: el.name,
-        websiteUrl: el.websiteUrl
+        websiteUrl: el.websiteUrl,
+        isMembership: el.isMembership,
+        createdAt: el.createdAt
     }));
     return res;
 };
@@ -50,7 +54,9 @@ exports.blogsRepository = {
                 name: blog.name,
                 description: blog.description,
                 websiteUrl: blog.description,
-                _id: new mongodb_1.ObjectId()
+                _id: new mongodb_1.ObjectId(),
+                isMembership: true,
+                createdAt: new Date().toISOString()
             };
             yield db_1.blogCollection.insertOne(newBlog);
             return convertDTO(newBlog);
