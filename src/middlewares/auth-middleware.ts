@@ -23,19 +23,9 @@ export const checkAuth = (req: Request, res: Response, next: NextFunction) => {
             return
         }
     } else {
-        // const data =  user.split(" ").splice(1,1).join("")
-        // const dataArray = data.split(":")
-        // if (dataArray[0] === "admin" && dataArray[1] === "qwerty") {
-        //     return next()
-        // } else {
-        //     res.sendStatus(401)
-        //     return
-        // }
+        
         res.sendStatus(401)
     }
-
-
-
 }
 
 /*
@@ -77,3 +67,14 @@ export const checkAuth = (req: Request, res: Response, next: NextFunction) => {
 
 }
 */
+
+// export const checkAuth2 = (req: Request, res: Response, next: NextFunction) => {
+//     const auth = req.headers.authorization
+//     if(!auth) return res.sendStatus(401)
+
+//     const [authType, authValue] = auth.split(' ')
+
+//     if(authType !== 'Basic') return res.sendStatus(401)
+//     if(atob(authValue) !== 'admin:qwerty') return res.sendStatus(401)
+//     return next()
+// }

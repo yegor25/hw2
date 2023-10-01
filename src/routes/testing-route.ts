@@ -6,10 +6,10 @@ import { blogsRepository } from "../repositories/blog-repository";
 
 export const testingRouter = Router({})
 
-testingRouter.delete("/all-data", (req, res) => {
-const posts = postRepository.deleteAll()
-const blogs = blogsRepository.deleteAll()
-    if(!posts.length && !blogs.length){
+testingRouter.delete("/all-data", async (req, res) => {
+const posts = await postRepository.deleteAll()
+const blogs = await blogsRepository.deleteAll()
+    if(posts && blogs){
         res.sendStatus(204)
     } 
     res.end()

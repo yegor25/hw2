@@ -9,36 +9,36 @@ import { postValidate, postValidator } from "../middlewares/post-validation";
 export const postRouter = Router({})
 
 
-postRouter.get("/", (req: Request, res: Response) => {
-    const blogs = postRepository.findPosts()
+postRouter.get("/", async (req: Request, res: Response) => {
+    const blogs =  await postRepository.findPosts()
     res.status(200).send(blogs)
 })
-postRouter.post("/",checkAuth,postValidator, postValidate, (req: requestWithBody<postBodyType>, res: Response<postType>) => {
-    const posts = postRepository.createPost(req.body)
+postRouter.post("/",checkAuth,postValidator, postValidate, async(req: requestWithBody<postBodyType>, res: Response<postType>) => {
+    const posts = await postRepository.createPost(req.body)
     if(!posts){
         res.sendStatus(400)
         return
     }
     res.status(201).send(posts)
 })
-postRouter.get("/:id", (req: requestWithParams<{ id: string }>, res: Response) => {
-    const post = postRepository.findPostById(req.params.id)
+postRouter.get("/:id", async (req: requestWithParams<{ id: string }>, res: Response) => {
+    const post = await postRepository.findPostById(req.params.id)
     if (!post) {
         res.sendStatus(404)
         return
     }
     res.status(200).send(post)
 })
-postRouter.put("/:id",checkAuth, postValidator, postValidate ,(req: requestWithParamsAndBody<{ id: string }, postBodyType>, res: Response) => {
-    const post = postRepository.changePost(req.params.id, req.body)
+postRouter.put("/:id",checkAuth, postValidator, postValidate ,async (req: requestWithParamsAndBody<{ id: string }, postBodyType>, res: Response) => {
+    const post = await postRepository.changePost(req.params.id, req.body)
     if (!post) {
         res.sendStatus(404)
         return
     }
     res.sendStatus(204)
 })
-postRouter.delete("/:id",checkAuth, (req: requestWithParams<{ id: string }>, res: Response) => {
-    const post = postRepository.deletePost(req.params.id)
+postRouter.delete("/:id",checkAuth, async (req: requestWithParams<{ id: string }>, res: Response) => {
+    const post = await postRepository.deletePost(req.params.id)
     if (!post) {
         res.sendStatus(404)
         return

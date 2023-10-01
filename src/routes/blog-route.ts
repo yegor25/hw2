@@ -8,32 +8,32 @@ import { blogValidate, validateBlogShema} from "../middlewares/blog-validation";
 
 export const blogRouter = Router({})
 
-blogRouter.get("/", (req: Request, res: Response) => {
-    const blogs = blogsRepository.findBlogs()
+blogRouter.get("/", async (req: Request, res: Response) => {
+    const blogs = await blogsRepository.findBlogs()
     res.status(200).send(blogs)
 })
-blogRouter.post("/",checkAuth, validateBlogShema, blogValidate, (req: requestWithBody<bodyBlogType>, res: Response<blogType>) => {
-    const blogs = blogsRepository.createBlog(req.body)
+blogRouter.post("/",checkAuth, validateBlogShema, blogValidate, async (req: requestWithBody<bodyBlogType>, res: Response<blogType>) => {
+    const blogs =  await blogsRepository.createBlog(req.body)
     res.status(201).send(blogs)
 })
-blogRouter.get("/:id", (req: requestWithParams<{ id: string }>, res: Response) => {
-    const blog = blogsRepository.findBlogById(req.params.id)
+blogRouter.get("/:id", async (req: requestWithParams<{ id: string }>, res: Response) => {
+    const blog = await blogsRepository.findBlogById(req.params.id)
     if (!blog) {
         res.sendStatus(404)
         return
     }
     res.status(200).send(blog)
 })
-blogRouter.put("/:id", checkAuth, validateBlogShema,blogValidate ,(req: requestWithParamsAndBody<{ id: string }, bodyBlogType>, res: Response) => {
-    const blog = blogsRepository.changeBlog(req.params.id, req.body)
+blogRouter.put("/:id", checkAuth, validateBlogShema,blogValidate ,async (req: requestWithParamsAndBody<{ id: string }, bodyBlogType>, res: Response) => {
+    const blog = await blogsRepository.changeBlog(req.params.id, req.body)
     if (!blog) {
         res.sendStatus(404)
         return
     }
     res.sendStatus(204)
 })
-blogRouter.delete("/:id",checkAuth, (req: requestWithParams<{ id: string }>, res: Response) => {
-    const blog = blogsRepository.deleteBlog(req.params.id)
+blogRouter.delete("/:id",checkAuth, async (req: requestWithParams<{ id: string }>, res: Response) => {
+    const blog = await blogsRepository.deleteBlog(req.params.id)
     if (!blog) {
         res.sendStatus(404)
         return
