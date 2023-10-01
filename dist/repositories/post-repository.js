@@ -95,8 +95,8 @@ exports.postRepository = {
     },
     deleteAll() {
         return __awaiter(this, void 0, void 0, function* () {
-            const res = yield db_1.db.dropCollection("posts");
-            return res;
+            const res = yield db_1.postsCollection.deleteMany({});
+            return res.deletedCount > 0;
         });
     }
 };

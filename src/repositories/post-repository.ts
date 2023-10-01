@@ -88,8 +88,8 @@ export const postRepository = {
        return res.deletedCount === 1
     },
     async deleteAll():Promise<boolean> {
-        const res = await db.dropCollection("posts")
-        return res
+        const res = await postsCollection.deleteMany({})
+        return res.deletedCount > 0
     }
 }
 
