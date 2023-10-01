@@ -75,7 +75,7 @@ export const blogsRepository = {
         return res.deletedCount === 1
     },
     async deleteAll(): Promise<boolean>{
-       const res = await db.dropCollection("blogs")
-       return res
+       const res = await blogCollection.deleteMany({})
+       return res.deletedCount > 0
     }
 }
