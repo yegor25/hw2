@@ -12,7 +12,12 @@ export const postValidator =  [
     body("shortDescription").trim().notEmpty().isString().isLength({min: 3,max: 100}).withMessage("invalid short description"),
     body("content").trim().notEmpty().isString().isLength({min: 3,max: 1000}).withMessage("invalid content"),
     // body("blogId").exists().trim().isString().notEmpty().custom( async (val) => await blogsRepository.findBlogById(val)).custom(val => ObjectId.isValid(val)).withMessage("required valid blogId"),
-    body("blogId").exists().isString().custom(async(val) => await blogsRepository.findBlogById(val)).withMessage("required valid blogId"),
+    body("blogId").exists().isString().custom(async(val) => {
+        await blogsRepository.findBlogById(val)
+        .then((res) => {
+            if(!res) throw new Error("blogid")
+        })
+    } ).withMessage("required valid blogId"),
     
 ]
 
@@ -25,7 +30,6 @@ export const postValidate = (req:requestWithBody<postBodyType>, res:Response, ne
         }
     }
     const errors = validationResult(req).formatWith(errorFormatter)
-    console.log(errors.array())
     if(errors.isEmpty()){
         return next()
     } else {
