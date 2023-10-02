@@ -12,12 +12,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.postValidate = exports.postValidator = void 0;
 const express_validator_1 = require("express-validator");
 const blog_repository_1 = require("../repositories/blog-repository");
-const mongodb_1 = require("mongodb");
 exports.postValidator = [
     (0, express_validator_1.body)("title").exists().isString().notEmpty().trim().isLength({ min: 3, max: 30 }).withMessage("invalid title"),
     (0, express_validator_1.body)("shortDescription").trim().notEmpty().isString().isLength({ min: 3, max: 100 }).withMessage("invalid short description"),
     (0, express_validator_1.body)("content").trim().notEmpty().isString().isLength({ min: 3, max: 1000 }).withMessage("invalid content"),
-    (0, express_validator_1.body)("blogId").exists().trim().isString().notEmpty().custom((val) => __awaiter(void 0, void 0, void 0, function* () { return yield blog_repository_1.blogsRepository.findBlogById(val); })).custom(val => mongodb_1.ObjectId.isValid(val)).withMessage("required valid blogId"),
+    // body("blogId").exists().trim().isString().notEmpty().custom( async (val) => await blogsRepository.findBlogById(val)).custom(val => ObjectId.isValid(val)).withMessage("required valid blogId"),
+    (0, express_validator_1.body)("blogId").exists().isString().custom((val) => __awaiter(void 0, void 0, void 0, function* () { return yield blog_repository_1.blogsRepository.findBlogById(val); })).withMessage("required valid blogId"),
 ];
 const postValidate = (req, res, next) => {
     const errorFormatter = ({ msg, path }) => {
@@ -27,6 +27,7 @@ const postValidate = (req, res, next) => {
         };
     };
     const errors = (0, express_validator_1.validationResult)(req).formatWith(errorFormatter);
+    console.log(errors.array());
     if (errors.isEmpty()) {
         return next();
     }

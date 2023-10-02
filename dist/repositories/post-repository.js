@@ -66,8 +66,6 @@ exports.postRepository = {
     },
     findPostById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            // const post = posts.find(el => el.id === id)
-            // return post
             if (!mongodb_1.ObjectId.isValid(id))
                 return null;
             const post = yield db_1.postsCollection.findOne({ _id: new mongodb_1.ObjectId(id) });

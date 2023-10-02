@@ -62,8 +62,6 @@ export const postRepository = {
         return mapPostToView(newPost)
     },
     async findPostById(id: string): Promise<postType | null>  {
-        // const post = posts.find(el => el.id === id)
-        // return post
         if(!ObjectId.isValid(id)) return null
         const post = await postsCollection.findOne({_id: new ObjectId(id)})
         if(!post) return null
