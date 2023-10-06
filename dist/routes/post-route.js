@@ -11,16 +11,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.postRouter = void 0;
 const express_1 = require("express");
-const post_repository_1 = require("../repositories/post-repository");
 const auth_middleware_1 = require("../middlewares/auth-middleware");
 const post_validation_1 = require("../middlewares/post-validation");
+const post_service_1 = require("../domain/post-service");
 exports.postRouter = (0, express_1.Router)({});
 exports.postRouter.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const blogs = yield post_repository_1.postRepository.findPosts();
+    const blogs = yield post_service_1.postService.findPosts();
     res.status(200).send(blogs);
 }));
 exports.postRouter.post("/", auth_middleware_1.checkAuth, post_validation_1.postValidator, post_validation_1.postValidate, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const posts = yield post_repository_1.postRepository.createPost(req.body);
+    const posts = yield post_service_1.postService.createPost(req.body);
     if (!posts) {
         res.sendStatus(400);
         return;
@@ -28,7 +28,7 @@ exports.postRouter.post("/", auth_middleware_1.checkAuth, post_validation_1.post
     res.status(201).send(posts);
 }));
 exports.postRouter.get("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const post = yield post_repository_1.postRepository.findPostById(req.params.id);
+    const post = yield post_service_1.postService.findPostById(req.params.id);
     if (!post) {
         res.sendStatus(404);
         return;
@@ -36,7 +36,7 @@ exports.postRouter.get("/:id", (req, res) => __awaiter(void 0, void 0, void 0, f
     res.status(200).send(post);
 }));
 exports.postRouter.put("/:id", auth_middleware_1.checkAuth, post_validation_1.postValidator, post_validation_1.postValidate, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const post = yield post_repository_1.postRepository.changePost(req.params.id, req.body);
+    const post = yield post_service_1.postService.changePost(req.params.id, req.body);
     if (!post) {
         res.sendStatus(404);
         return;
@@ -44,7 +44,7 @@ exports.postRouter.put("/:id", auth_middleware_1.checkAuth, post_validation_1.po
     res.sendStatus(204);
 }));
 exports.postRouter.delete("/:id", auth_middleware_1.checkAuth, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const post = yield post_repository_1.postRepository.deletePost(req.params.id);
+    const post = yield post_service_1.postService.deletePost(req.params.id);
     if (!post) {
         res.sendStatus(404);
         return;

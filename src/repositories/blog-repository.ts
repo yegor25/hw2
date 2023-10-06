@@ -10,16 +10,7 @@ import { blogDbType, blogType, bodyBlogType } from "../types/blog-type";
 //         websiteUrl: "string"
 //     }
 // ]
-const convertDTO = (data: blogDbType):blogType => {
-    return {
-        id: data._id.toString(),
-        description: data.description,
-        name: data.name,
-        websiteUrl: data.websiteUrl,
-        createdAt: data.createdAt,
-        isMembership: data.isMembership
-    }
-} 
+
 const convertArrayDTO = (data: blogDbType[]): blogType[] => {
     const res:blogType[] =  data.map((el: blogDbType) => ({
         id: el._id.toString(),
@@ -31,6 +22,16 @@ const convertArrayDTO = (data: blogDbType[]): blogType[] => {
     }))
     return res
 }
+const convertDTO = (data: blogDbType):blogType => {
+    return {
+        id: data._id.toString(),
+        description: data.description,
+        name: data.name,
+        websiteUrl: data.websiteUrl,
+        createdAt: data.createdAt,
+        isMembership: data.isMembership
+    }
+} 
 
 export const blogsRepository = {
     async findBlogs():Promise<blogType[]> {
@@ -38,20 +39,12 @@ export const blogsRepository = {
         return convertArrayDTO(blogs)
         
     },
-   async createBlog(blog: bodyBlogType):Promise<blogType> {
-        const newBlog: blogDbType = {
-            name: blog.name,
-            description: blog.description,
-            websiteUrl: blog.description,
-            _id: new ObjectId(),
-            isMembership: false,
-            createdAt: new Date().toISOString()
-        }
-        await blogCollection.insertOne(newBlog)
-        return convertDTO(newBlog)
+   async createBlog(blog: blogDbType):Promise<blogType> {
+        const res = await blogCollection.insertOne(blog)
+        return convertDTO(blog)
     },
-    async findBlogById(id: string):Promise<blogType | null> {
-       const blog: blogDbType | null = await blogCollection.findOne({_id: new ObjectId(id)})
+    async findBlogById(id: ObjectId):Promise<blogType | null> {
+       const blog: blogDbType | null = await blogCollection.findOne({_id: id})
        if (!blog){
         return null
        }
@@ -59,9 +52,9 @@ export const blogsRepository = {
         
 
     },
-    async changeBlog(id: string, payload: bodyBlogType):Promise<boolean> {
+    async changeBlog(id: ObjectId, payload: bodyBlogType):Promise<boolean> {
         const blog = await blogCollection.updateOne(
-            {_id: new ObjectId(id)},
+            {_id: id},
             {$set: {
                 name: payload.name,
                 websiteUrl: payload.websiteUrl,
@@ -70,7 +63,7 @@ export const blogsRepository = {
         )
         return blog.matchedCount === 1
     },
-   async deleteBlog(id: string):Promise<boolean> {
+   async deleteBlog(id: ObjectId):Promise<boolean> {
         const res = await blogCollection.deleteOne({_id: new ObjectId(id)})
         return res.deletedCount === 1
     },

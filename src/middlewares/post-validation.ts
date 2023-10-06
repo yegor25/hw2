@@ -6,6 +6,7 @@ import {  body, validationResult } from "express-validator"
 import { postBodyType } from "../types/post-type"
 import { blogsRepository } from "../repositories/blog-repository"
 import { ObjectId } from "mongodb"
+import { blogService } from "../domain/blog-service"
 
 export const postValidator =  [
     body("title").exists().isString().notEmpty().trim().isLength({min: 3,max: 30}).withMessage("invalid title"),
@@ -13,7 +14,7 @@ export const postValidator =  [
     body("content").trim().notEmpty().isString().isLength({min: 3,max: 1000}).withMessage("invalid content"),
     // body("blogId").exists().trim().isString().notEmpty().custom( async (val) => await blogsRepository.findBlogById(val)).custom(val => ObjectId.isValid(val)).withMessage("required valid blogId"),
     body("blogId").exists().isString().custom(async(val) => {
-        await blogsRepository.findBlogById(val)
+        await blogService.findBlogById(val)
         .then((res) => {
             if(!res) throw new Error("blogid")
         })

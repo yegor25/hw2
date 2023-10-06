@@ -11,7 +11,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.postRepository = void 0;
 const db_1 = require("../db");
-const blog_repository_1 = require("./blog-repository");
 const mongodb_1 = require("mongodb");
 // let posts: postType[] = [
 //     {
@@ -55,20 +54,13 @@ exports.postRepository = {
     },
     createPost(post) {
         return __awaiter(this, void 0, void 0, function* () {
-            const blog = yield blog_repository_1.blogsRepository.findBlogById(post.blogId);
-            if (!blog) {
-                return null;
-            }
-            const newPost = Object.assign({ _id: new mongodb_1.ObjectId(), blogName: blog.name, createdAt: new Date().toISOString() }, post);
-            yield db_1.postsCollection.insertOne(newPost);
-            return mapPostToView(newPost);
+            yield db_1.postsCollection.insertOne(post);
+            return mapPostToView(post);
         });
     },
     findPostById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (!mongodb_1.ObjectId.isValid(id))
-                return null;
-            const post = yield db_1.postsCollection.findOne({ _id: new mongodb_1.ObjectId(id) });
+            const post = yield db_1.postsCollection.findOne({ _id: id });
             if (!post)
                 return null;
             return mapPostToView(post);
@@ -76,7 +68,7 @@ exports.postRepository = {
     },
     changePost(id, payload) {
         return __awaiter(this, void 0, void 0, function* () {
-            const post = yield db_1.postsCollection.updateOne({ _id: new mongodb_1.ObjectId(id) }, { $set: {
+            const post = yield db_1.postsCollection.updateOne({ _id: id }, { $set: {
                     title: payload.title,
                     shortDescription: payload.shortDescription,
                     blogId: payload.blogId,

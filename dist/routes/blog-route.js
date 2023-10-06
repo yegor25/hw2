@@ -11,20 +11,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.blogRouter = void 0;
 const express_1 = require("express");
-const blog_repository_1 = require("../repositories/blog-repository");
 const auth_middleware_1 = require("../middlewares/auth-middleware");
 const blog_validation_1 = require("../middlewares/blog-validation");
+const blog_service_1 = require("../domain/blog-service");
 exports.blogRouter = (0, express_1.Router)({});
 exports.blogRouter.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const blogs = yield blog_repository_1.blogsRepository.findBlogs();
+    const blogs = yield blog_service_1.blogService.getAllBlogs();
     res.status(200).send(blogs);
 }));
 exports.blogRouter.post("/", auth_middleware_1.checkAuth, blog_validation_1.validateBlogShema, blog_validation_1.blogValidate, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const blogs = yield blog_repository_1.blogsRepository.createBlog(req.body);
+    const blogs = yield blog_service_1.blogService.createBlog(req.body);
     res.status(201).send(blogs);
 }));
 exports.blogRouter.get("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const blog = yield blog_repository_1.blogsRepository.findBlogById(req.params.id);
+    const blog = yield blog_service_1.blogService.findBlogById(req.params.id);
     if (!blog) {
         res.sendStatus(404);
         return;
@@ -32,7 +32,7 @@ exports.blogRouter.get("/:id", (req, res) => __awaiter(void 0, void 0, void 0, f
     res.status(200).send(blog);
 }));
 exports.blogRouter.put("/:id", auth_middleware_1.checkAuth, blog_validation_1.validateBlogShema, blog_validation_1.blogValidate, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const blog = yield blog_repository_1.blogsRepository.changeBlog(req.params.id, req.body);
+    const blog = yield blog_service_1.blogService.changeBlog(req.params.id, req.body);
     if (!blog) {
         res.sendStatus(404);
         return;
@@ -40,7 +40,7 @@ exports.blogRouter.put("/:id", auth_middleware_1.checkAuth, blog_validation_1.va
     res.sendStatus(204);
 }));
 exports.blogRouter.delete("/:id", auth_middleware_1.checkAuth, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const blog = yield blog_repository_1.blogsRepository.deleteBlog(req.params.id);
+    const blog = yield blog_service_1.blogService.deleteBlog(req.params.id);
     if (!blog) {
         res.sendStatus(404);
         return;

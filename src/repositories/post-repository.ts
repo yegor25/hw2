@@ -1,8 +1,7 @@
-import { log } from "console";
-import { db, postsCollection } from "../db";
+import {  postsCollection } from "../db";
 import { PostDbType,  postBodyType, postType } from "../types/post-type";
-import { blogsRepository } from "./blog-repository";
 import { ObjectId } from "mongodb";
+import { blogService } from "../domain/blog-service";
 
 // let posts: postType[] = [
 //     {
@@ -46,31 +45,19 @@ export const postRepository = {
        const res = await postsCollection.find({}).toArray()
        return convertArrayDTO(res)
     },
-    async createPost(post: postBodyType): Promise<postType | null> {
-        const blog = await blogsRepository.findBlogById(post.blogId)
-        if(!blog){
-            return null
-        }
-        const newPost: PostDbType = {
-            _id: new ObjectId(),
-            blogName: blog.name ,
-            createdAt: new Date().toISOString(),
-            ...post
-        }
-        
-        await postsCollection.insertOne(newPost)
-        return mapPostToView(newPost)
+    async createPost(post: PostDbType): Promise<postType> {
+        await postsCollection.insertOne(post)
+        return mapPostToView(post)
     },
-    async findPostById(id: string): Promise<postType | null>  {
-        if(!ObjectId.isValid(id)) return null
-        const post = await postsCollection.findOne({_id: new ObjectId(id)})
+    async findPostById(id: ObjectId): Promise<postType | null>  {
+        const post = await postsCollection.findOne({_id: id})
         if(!post) return null
         return mapPostToView(post)
     },
 
-    async changePost(id: string, payload: postBodyType):Promise<boolean> {
+    async changePost(id: ObjectId, payload: postBodyType):Promise<boolean> {
         const post = await postsCollection.updateOne(
-            {_id: new ObjectId(id)},
+            {_id: id},
             {$set: {
                 title: payload.title,
                 shortDescription: payload.shortDescription,
@@ -81,7 +68,7 @@ export const postRepository = {
             return post.matchedCount === 1
         
     },
-    async deletePost(id: string):Promise<boolean> {
+    async deletePost(id: ObjectId):Promise<boolean> {
        const res = await postsCollection.deleteOne({_id: new ObjectId(id)})
        return res.deletedCount === 1
     },

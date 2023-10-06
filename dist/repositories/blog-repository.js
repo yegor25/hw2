@@ -20,16 +20,6 @@ const db_1 = require("../db");
 //         websiteUrl: "string"
 //     }
 // ]
-const convertDTO = (data) => {
-    return {
-        id: data._id.toString(),
-        description: data.description,
-        name: data.name,
-        websiteUrl: data.websiteUrl,
-        createdAt: data.createdAt,
-        isMembership: data.isMembership
-    };
-};
 const convertArrayDTO = (data) => {
     const res = data.map((el) => ({
         id: el._id.toString(),
@@ -41,6 +31,16 @@ const convertArrayDTO = (data) => {
     }));
     return res;
 };
+const convertDTO = (data) => {
+    return {
+        id: data._id.toString(),
+        description: data.description,
+        name: data.name,
+        websiteUrl: data.websiteUrl,
+        createdAt: data.createdAt,
+        isMembership: data.isMembership
+    };
+};
 exports.blogsRepository = {
     findBlogs() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -50,21 +50,13 @@ exports.blogsRepository = {
     },
     createBlog(blog) {
         return __awaiter(this, void 0, void 0, function* () {
-            const newBlog = {
-                name: blog.name,
-                description: blog.description,
-                websiteUrl: blog.description,
-                _id: new mongodb_1.ObjectId(),
-                isMembership: false,
-                createdAt: new Date().toISOString()
-            };
-            yield db_1.blogCollection.insertOne(newBlog);
-            return convertDTO(newBlog);
+            const res = yield db_1.blogCollection.insertOne(blog);
+            return convertDTO(blog);
         });
     },
     findBlogById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const blog = yield db_1.blogCollection.findOne({ _id: new mongodb_1.ObjectId(id) });
+            const blog = yield db_1.blogCollection.findOne({ _id: id });
             if (!blog) {
                 return null;
             }
@@ -73,7 +65,7 @@ exports.blogsRepository = {
     },
     changeBlog(id, payload) {
         return __awaiter(this, void 0, void 0, function* () {
-            const blog = yield db_1.blogCollection.updateOne({ _id: new mongodb_1.ObjectId(id) }, { $set: {
+            const blog = yield db_1.blogCollection.updateOne({ _id: id }, { $set: {
                     name: payload.name,
                     websiteUrl: payload.websiteUrl,
                     description: payload.description
