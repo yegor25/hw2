@@ -11,8 +11,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.postService = void 0;
 const mongodb_1 = require("mongodb");
-const post_repository_1 = require("../repositories/post-repository");
-const blog_service_1 = require("./blog-service");
+const post_repository_1 = require("../repositories/mutation/post-repository");
+const query_BlogsRepository_1 = require("../repositories/query/query-BlogsRepository");
 const convertID = (id) => new mongodb_1.ObjectId(id);
 exports.postService = {
     findPosts() {
@@ -22,7 +22,7 @@ exports.postService = {
     },
     createPost(post) {
         return __awaiter(this, void 0, void 0, function* () {
-            const blog = yield blog_service_1.blogService.findBlogById(post.blogId);
+            const blog = yield query_BlogsRepository_1.QueryBlogRepositiry.findBlogById(post.blogId);
             if (!blog)
                 return null;
             const newPost = Object.assign({ _id: new mongodb_1.ObjectId(), blogName: blog.name, createdAt: new Date().toISOString() }, post);

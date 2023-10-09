@@ -11,62 +11,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.blogsRepository = void 0;
 const mongodb_1 = require("mongodb");
-const db_1 = require("../db");
-// let blogs: blogType[] = [
-//     {
-//         id: "1",
-//         name: "string",
-//         description: "string",
-//         websiteUrl: "string"
-//     }
-// ]
-const convertArrayDTO = (data) => {
-    const res = data.map((el) => ({
-        id: el._id.toString(),
-        description: el.description,
-        name: el.name,
-        websiteUrl: el.websiteUrl,
-        isMembership: el.isMembership,
-        createdAt: el.createdAt
-    }));
-    return res;
-};
-const convertDTO = (data) => {
-    return {
-        id: data._id.toString(),
-        description: data.description,
-        name: data.name,
-        websiteUrl: data.websiteUrl,
-        createdAt: data.createdAt,
-        isMembership: data.isMembership
-    };
-};
+const db_1 = require("../../db");
+const blog_helper_1 = require("../helpers/blog-helper");
 exports.blogsRepository = {
-    findBlogs() {
-        return __awaiter(this, void 0, void 0, function* () {
-            const blogs = yield db_1.blogCollection.find({}).toArray();
-            return {
-                pagesCount: 10,
-                page: 1,
-                pageSize: 10,
-                totalCount: 20,
-                items: convertArrayDTO(blogs)
-            };
-        });
-    },
     createBlog(blog) {
         return __awaiter(this, void 0, void 0, function* () {
             const res = yield db_1.blogCollection.insertOne(blog);
-            return convertDTO(blog);
-        });
-    },
-    findBlogById(id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const blog = yield db_1.blogCollection.findOne({ _id: id });
-            if (!blog) {
-                return null;
-            }
-            return convertDTO(blog);
+            return blog_helper_1.blogHelper.convertDTO(blog);
         });
     },
     changeBlog(id, payload) {

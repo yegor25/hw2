@@ -1,16 +1,17 @@
 import { Router, Request, Response } from "express";
-import { blogsRepository } from "../repositories/blog-repository";
-import { requestWithBody, requestWithParams, requestWithParamsAndBody } from "../types/root-type";
+import { requestWithBody, requestWithParams, requestWithParamsAndBody, requestWithQuery } from "../types/root-type";
 import { blogType, bodyBlogType } from "../types/blog-type";
 import { checkAuth } from "../middlewares/auth-middleware";
 import { blogValidate, validateBlogShema} from "../middlewares/blog-validation";
 import { blogService } from "../domain/blog-service";
+import { QueryBlogRepositiry } from "../repositories/query/query-BlogsRepository";
+import { paramsPaginatorType } from "../types/paginator-type";
 
 
 export const blogRouter = Router({})
 
-blogRouter.get("/", async (req: Request, res: Response) => {
-    const blogs = await blogService.getAllBlogs()
+blogRouter.get("/", async (req: requestWithQuery<paramsPaginatorType>, res: Response) => {
+    const blogs = await QueryBlogRepositiry.findBlogs(req.query)
     res.status(200).send(blogs)
 })
 blogRouter.post("/",checkAuth, validateBlogShema, blogValidate, async (req: requestWithBody<bodyBlogType>, res: Response<blogType>) => {
@@ -18,7 +19,7 @@ blogRouter.post("/",checkAuth, validateBlogShema, blogValidate, async (req: requ
     res.status(201).send(blogs)
 })
 blogRouter.get("/:id", async (req: requestWithParams<{ id: string }>, res: Response) => {
-    const blog = await blogService.findBlogById(req.params.id)
+    const blog = await QueryBlogRepositiry.findBlogById(req.params.id)
     if (!blog) {
         res.sendStatus(404)
         return

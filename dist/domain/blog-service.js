@@ -11,13 +11,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.blogService = void 0;
 const mongodb_1 = require("mongodb");
-const blog_repository_1 = require("../repositories/blog-repository");
+const blog_repository_1 = require("../repositories/mutation/blog-repository");
 exports.blogService = {
-    getAllBlogs() {
-        return __awaiter(this, void 0, void 0, function* () {
-            return yield blog_repository_1.blogsRepository.findBlogs();
-        });
-    },
     createBlog(blog) {
         return __awaiter(this, void 0, void 0, function* () {
             const newBlog = {
@@ -29,12 +24,6 @@ exports.blogService = {
                 createdAt: new Date().toISOString()
             };
             return yield blog_repository_1.blogsRepository.createBlog(newBlog);
-        });
-    },
-    findBlogById(id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const dbId = new mongodb_1.ObjectId(id);
-            return yield blog_repository_1.blogsRepository.findBlogById(dbId);
         });
     },
     changeBlog(id, payload) {

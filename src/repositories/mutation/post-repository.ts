@@ -1,7 +1,7 @@
-import {  postsCollection } from "../db";
-import { PostDbType,  postBodyType, postType } from "../types/post-type";
+import {  postsCollection } from "../../db";
+import { PostDbType,  postBodyType, postType } from "../../types/post-type";
 import { ObjectId } from "mongodb";
-import { blogService } from "../domain/blog-service";
+import { blogService } from "../../domain/blog-service";
 
 // let posts: postType[] = [
 //     {

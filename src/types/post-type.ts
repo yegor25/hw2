@@ -1,4 +1,5 @@
 import { ObjectId } from "mongodb"
+import { paginatorType } from "./paginator-type"
 
 
 export type postType = {
@@ -10,6 +11,7 @@ export type postType = {
     blogName: string,
     createdAt: string
 }
+
 
 export type postBodyType = {
     title: string,
@@ -28,5 +30,3 @@ export type PostDbType = {
     blogName: string,
     createdAt: string
 }
-
-

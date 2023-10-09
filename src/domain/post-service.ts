@@ -1,7 +1,7 @@
 import { ObjectId } from "mongodb"
-import { postRepository } from "../repositories/post-repository"
+import { postRepository } from "../repositories/mutation/post-repository"
 import { PostDbType, postBodyType } from "../types/post-type"
-import { blogService } from "./blog-service"
+import { QueryBlogRepositiry } from "../repositories/query/query-BlogsRepository"
 
 
 const convertID = (id: string) => new ObjectId(id)
@@ -11,7 +11,7 @@ export const postService = {
         return await postRepository.findPosts()
     },
     async createPost(post:postBodyType){
-        const blog = await blogService.findBlogById(post.blogId)
+        const blog = await QueryBlogRepositiry.findBlogById(post.blogId)
         if(!blog) return null
         const newPost:PostDbType = {
             _id: new ObjectId(),

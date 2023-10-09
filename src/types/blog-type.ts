@@ -1,4 +1,5 @@
 import { ObjectId } from "mongodb"
+import { paginatorType } from "./paginator-type"
 
 
 export type blogType = {
@@ -21,5 +22,8 @@ export type bodyBlogType = {
     name: string,
     description: string,
     websiteUrl: string
+}
+export type viewAllBlogsType = paginatorType & {
+    items: blogType[]
 }
 
