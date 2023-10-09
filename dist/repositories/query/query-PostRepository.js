@@ -26,7 +26,14 @@ exports.QueryPostRepository = {
                 .skip(skipcount)
                 .limit(parametres.pageSize)
                 .toArray();
-            return post_helper_1.postHelper.convertArrayDTO(res);
+            const totalCount = yield db_1.postsCollection.countDocuments({});
+            return {
+                pagesCount: Math.ceil(totalCount / +parametres.pageSize),
+                page: parametres.pageNumber,
+                pageSize: parametres.pageSize,
+                totalCount,
+                items: post_helper_1.postHelper.convertArrayDTO(res)
+            };
         });
     },
     findPostsByBlogId(id, params) {
