@@ -11,7 +11,7 @@ const convertID = (id: string) => new ObjectId(id)
 export const QueryBlogRepositiry = {
     async findBlogs(params: paramsPaginatorType):Promise<viewAllBlogsType> {
         const parametres = paginatorHelper.blogsParamsMapper(params)
-        const skipCount = (parametres.pageNumber-1)*parametres.pageSize
+        const skipCount = (parametres.pageNumber -1 ) * parametres.pageSize
         const blogs = await blogCollection.find({
             name: {$regex: parametres.searchNameTerm, $options: "i"}
         })

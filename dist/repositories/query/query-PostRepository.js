@@ -13,11 +13,35 @@ exports.QueryPostRepository = void 0;
 const mongodb_1 = require("mongodb");
 const db_1 = require("../../db");
 const post_helper_1 = require("../helpers/post-helper");
+const paginator_helper_1 = require("../helpers/paginator-helper");
+const query_BlogsRepository_1 = require("./query-BlogsRepository");
 const convertId = (id) => new mongodb_1.ObjectId(id);
 exports.QueryPostRepository = {
-    findPosts() {
+    findPosts(params) {
         return __awaiter(this, void 0, void 0, function* () {
-            const res = yield db_1.postsCollection.find({}).toArray();
+            const parametres = paginator_helper_1.paginatorHelper.postParamsMapper(params);
+            const skipcount = (parametres.pageNumber - 1) * parametres.pageSize;
+            const res = yield db_1.postsCollection.find({})
+                .sort({ [parametres.sortBy]: parametres.sortDirection })
+                .skip(skipcount)
+                .limit(parametres.pageSize)
+                .toArray();
+            return post_helper_1.postHelper.convertArrayDTO(res);
+        });
+    },
+    findPostsByBlogId(id, params) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const blog = yield query_BlogsRepository_1.QueryBlogRepositiry.findBlogById(id);
+            if (!blog) {
+                return null;
+            }
+            const parametres = paginator_helper_1.paginatorHelper.postParamsMapper(params);
+            const skipcount = (parametres.pageNumber - 1) * parametres.pageSize;
+            const res = yield db_1.postsCollection.find({ blogId: id })
+                .sort({ [parametres.sortBy]: parametres.sortDirection })
+                .skip(skipcount)
+                .limit(parametres.pageSize)
+                .toArray();
             return post_helper_1.postHelper.convertArrayDTO(res);
         });
     },

@@ -1,17 +1,18 @@
 import { Router, Request, Response } from "express";
 import { checkAuth } from "../middlewares/auth-middleware";
-import { requestWithBody, requestWithParams, requestWithParamsAndBody } from "../types/root-type";
+import { requestWithBody, requestWithParams, requestWithParamsAndBody, requestWithQuery } from "../types/root-type";
 import { postBodyType, postType } from "../types/post-type";
 import { postValidate, postValidator } from "../middlewares/post-validation";
 import { postService } from "../domain/post-service";
 import { QueryPostRepository } from "../repositories/query/query-PostRepository";
+import { paramsPostPaginatorType } from "../types/paginator-type";
 
 
 export const postRouter = Router({})
 
 
-postRouter.get("/", async (req: Request, res: Response) => {
-    const blogs =  await QueryPostRepository.findPosts()
+postRouter.get("/", async (req: requestWithQuery<paramsPostPaginatorType>, res: Response) => {
+    const blogs =  await QueryPostRepository.findPosts(req.query)
     res.status(200).send(blogs)
 })
 postRouter.post("/",checkAuth,postValidator, postValidate, async(req: requestWithBody<postBodyType>, res: Response<postType>) => {

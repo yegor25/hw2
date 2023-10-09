@@ -12,5 +12,14 @@ exports.paginatorHelper = {
             sortBy: params.sortBy ? params.sortBy : "createdAt"
         };
         return res;
+    },
+    postParamsMapper(params) {
+        const res = {
+            sortDirection: params.sortDirection === paginator_type_1.SortDirection.asc ? 1 : -1,
+            pageNumber: params.pageNumber ? params.pageNumber : 1,
+            pageSize: params.pageSize ? +params.pageSize : 10,
+            sortBy: params.sortBy ? params.sortBy : "createdAt"
+        };
+        return res;
     }
 };

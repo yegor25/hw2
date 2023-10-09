@@ -17,7 +17,7 @@ const post_service_1 = require("../domain/post-service");
 const query_PostRepository_1 = require("../repositories/query/query-PostRepository");
 exports.postRouter = (0, express_1.Router)({});
 exports.postRouter.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const blogs = yield query_PostRepository_1.QueryPostRepository.findPosts();
+    const blogs = yield query_PostRepository_1.QueryPostRepository.findPosts(req.query);
     res.status(200).send(blogs);
 }));
 exports.postRouter.post("/", auth_middleware_1.checkAuth, post_validation_1.postValidator, post_validation_1.postValidate, (req, res) => __awaiter(void 0, void 0, void 0, function* () {

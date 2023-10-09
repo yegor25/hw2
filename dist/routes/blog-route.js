@@ -15,6 +15,7 @@ const auth_middleware_1 = require("../middlewares/auth-middleware");
 const blog_validation_1 = require("../middlewares/blog-validation");
 const blog_service_1 = require("../domain/blog-service");
 const query_BlogsRepository_1 = require("../repositories/query/query-BlogsRepository");
+const query_PostRepository_1 = require("../repositories/query/query-PostRepository");
 const post_service_1 = require("../domain/post-service");
 const post_validation_1 = require("../middlewares/post-validation");
 exports.blogRouter = (0, express_1.Router)({});
@@ -42,6 +43,14 @@ exports.blogRouter.post("/:blogId/posts", auth_middleware_1.checkAuth, post_vali
         return;
     }
     res.status(201).send(blog);
+}));
+exports.blogRouter.get("/:blogId/posts", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const blogs = yield query_PostRepository_1.QueryPostRepository.findPostsByBlogId(req.params.blogId, req.query);
+    if (!blogs) {
+        res.sendStatus(404);
+        return;
+    }
+    res.status(200).send(blogs);
 }));
 exports.blogRouter.put("/:id", auth_middleware_1.checkAuth, blog_validation_1.validateBlogShema, blog_validation_1.blogValidate, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const blog = yield blog_service_1.blogService.changeBlog(req.params.id, req.body);

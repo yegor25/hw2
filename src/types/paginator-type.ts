@@ -23,6 +23,18 @@ export type dbPaginatorType = {
     pageNumber: number,
     pageSize: number
 }
+export type dbPostsPaginatorType = {
+    sortBy: keyof postType,
+    sortDirection: 1 | -1,
+    pageNumber: number,
+    pageSize: number
+}
+export type paramsPostPaginatorType = {
+    sortBy: keyof postType,
+    sortDirection: 1 | -1,
+    pageNumber: number,
+    pageSize: number
+}
 export type sortByType = keyof blogType
 export enum SortDirection  {
     asc = "asc",
