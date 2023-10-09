@@ -1,5 +1,6 @@
 import { blogType } from "./blog-type"
 import { postType } from "./post-type"
+import { userViewType } from "./user-type"
 
 
 export type paginatorType = {
@@ -31,7 +32,13 @@ export type dbPostsPaginatorType = {
 }
 export type paramsPostPaginatorType = {
     sortBy: keyof postType,
-    sortDirection: 1 | -1,
+    sortDirection: SortDirection,
+    pageNumber: number,
+    pageSize: number
+}
+export type paramsUserPaginatorType = {
+    sortBy: keyof userViewType,
+    sortDirection: SortDirection,
     pageNumber: number,
     pageSize: number
 }

@@ -2,6 +2,7 @@ import { MongoClient } from "mongodb"
 import { PostDbType } from "./types/post-type"
 import dotenv from "dotenv"
 import { blogDbType } from "./types/blog-type"
+import { userDbType } from "./types/user-type"
 dotenv.config()
 
 const url = process.env.MONGO_URL || "mongodb://0.0.0.0:27017"
@@ -13,7 +14,7 @@ export const db = client.db('my-db')
 
 export const postsCollection = db.collection<PostDbType>('posts')
 export const blogCollection = db.collection<blogDbType>('blogs')
-
+export const userCollection = db.collection<userDbType>('users')
 
 export const runDb = async () => {
     try {
