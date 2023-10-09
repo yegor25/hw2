@@ -21,13 +21,12 @@ export const QueryBlogRepositiry = {
         .toArray()
         
 
-        // const blogs = await blogCollection.find({}).toArray()
-        console.log("dsd",Math.ceil(blogs.length/parametres.pageSize))
+       const totalCount = await blogCollection.countDocuments({name: {$regex: parametres.searchNameTerm, $options: "i"}})
         return {
-            pagesCount: Math.ceil(blogs.length/parametres.pageSize),
-            page: parametres.pageNumber,
-            pageSize: parametres.pageSize,
-            totalCount: blogs.length,
+            pagesCount: Math.ceil(totalCount/+parametres.pageSize),
+            page: +parametres.pageNumber,
+            pageSize: +parametres.pageSize,
+            totalCount,
             items: blogHelper.convertArrayDTO(blogs)
         }
        

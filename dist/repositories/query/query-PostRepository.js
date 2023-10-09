@@ -16,6 +16,7 @@ const post_helper_1 = require("../helpers/post-helper");
 const paginator_helper_1 = require("../helpers/paginator-helper");
 const query_BlogsRepository_1 = require("./query-BlogsRepository");
 const convertId = (id) => new mongodb_1.ObjectId(id);
+// const fun = <T>(params:T): T[] => {}
 exports.QueryPostRepository = {
     findPosts(params) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -29,8 +30,8 @@ exports.QueryPostRepository = {
             const totalCount = yield db_1.postsCollection.countDocuments({});
             return {
                 pagesCount: Math.ceil(totalCount / +parametres.pageSize),
-                page: parametres.pageNumber,
-                pageSize: parametres.pageSize,
+                page: +parametres.pageNumber,
+                pageSize: +parametres.pageSize,
                 totalCount,
                 items: post_helper_1.postHelper.convertArrayDTO(res)
             };
@@ -49,7 +50,14 @@ exports.QueryPostRepository = {
                 .skip(skipcount)
                 .limit(parametres.pageSize)
                 .toArray();
-            return post_helper_1.postHelper.convertArrayDTO(res);
+            const totalCount = yield db_1.postsCollection.countDocuments({ blogId: id });
+            return {
+                pagesCount: Math.ceil(totalCount / +parametres.pageSize),
+                page: +parametres.pageNumber,
+                pageSize: +parametres.pageSize,
+                totalCount,
+                items: post_helper_1.postHelper.convertArrayDTO(res)
+            };
         });
     },
     findPostById(id) {

@@ -35,3 +35,6 @@ export type PostDbType = {
     blogName: string,
     createdAt: string
 }
+export type viewAllPostsType = paginatorType & {
+    items: postType[]
+}
