@@ -9,6 +9,7 @@ import { paramsPaginatorType } from "../types/paginator-type";
 import { postBodyTypeForBlog } from "../types/post-type";
 import { QueryPostRepository } from "../repositories/query/query-PostRepository";
 import { postService } from "../domain/post-service";
+import { postValidate } from "../middlewares/post-validation";
 
 
 export const blogRouter = Router({})
@@ -30,7 +31,7 @@ blogRouter.get("/:id", async (req: requestWithParams<{ id: string }>, res: Respo
     }
     res.status(200).send(blog)
 })
-blogRouter.post("/:blogId/posts", async (req: requestWithParamsAndBody<{ blogId: string}, postBodyTypeForBlog >, res: Response) => {
+blogRouter.post("/:blogId/posts", checkAuth, postValidate,postValidate,async (req: requestWithParamsAndBody<{ blogId: string}, postBodyTypeForBlog >, res: Response) => {
     const blog = await postService.createPostForBlog(req.body,req.params.blogId)
     if (!blog) {
         res.sendStatus(404)
