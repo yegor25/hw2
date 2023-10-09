@@ -37,7 +37,7 @@ blogRouter.post("/:blogId/posts", checkAuth, postValidate,postValidate,async (re
         res.sendStatus(404)
         return
     }
-    res.status(200).send(blog)
+    res.status(201).send(blog)
 })
 blogRouter.put("/:id", checkAuth, validateBlogShema,blogValidate ,async (req: requestWithParamsAndBody<{ id: string }, bodyBlogType>, res: Response) => {
     const blog = await blogService.changeBlog(req.params.id, req.body)

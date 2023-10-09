@@ -41,7 +41,7 @@ exports.blogRouter.post("/:blogId/posts", auth_middleware_1.checkAuth, post_vali
         res.sendStatus(404);
         return;
     }
-    res.status(200).send(blog);
+    res.status(201).send(blog);
 }));
 exports.blogRouter.put("/:id", auth_middleware_1.checkAuth, blog_validation_1.validateBlogShema, blog_validation_1.blogValidate, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const blog = yield blog_service_1.blogService.changeBlog(req.params.id, req.body);
