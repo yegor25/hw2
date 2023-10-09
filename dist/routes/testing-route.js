@@ -17,8 +17,5 @@ exports.testingRouter = (0, express_1.Router)({});
 exports.testingRouter.delete("/all-data", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const posts = yield post_service_1.postService.deleteAllPosts();
     const blogs = yield blog_service_1.blogService.deleteAllBlogs();
-    if (posts && blogs) {
-        res.sendStatus(204);
-    }
     return res.sendStatus(204);
 }));

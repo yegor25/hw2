@@ -9,9 +9,7 @@ export const testingRouter = Router({})
 testingRouter.delete("/all-data", async (req, res) => {
 const posts = await postService.deleteAllPosts()
 const blogs = await blogService.deleteAllBlogs()
-    if(posts && blogs){
-        res.sendStatus(204)
-    } 
+   
    return res.sendStatus(204)
     
 })
