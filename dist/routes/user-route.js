@@ -23,3 +23,11 @@ exports.userRouter.post("/", auth_middleware_1.checkAuth, user_validation_1.user
     }
     res.status(201).send(user);
 }));
+exports.userRouter.delete("/:id", auth_middleware_1.checkAuth, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const deleteUser = yield user_service_1.userService.deleteUser(req.params.id);
+    if (!deleteUser) {
+        res.sendStatus(404);
+        return;
+    }
+    res.sendStatus(204);
+}));

@@ -9,6 +9,10 @@ export const userRepository = {
     const newUser = await userCollection.insertOne(payload)
         return userHelper.convertUserDTO(payload)
    },
+   async deleteUser(id: ObjectId):Promise<boolean> {
+    const res = await userCollection.deleteOne({_id: id})
+    return res.deletedCount === 1
+   },
    async deleteAllUsers():Promise<boolean>{
     const res = await userCollection.deleteMany({})
     return res.deletedCount > 0

@@ -17,6 +17,7 @@ const mongodb_1 = require("mongodb");
 const db_1 = require("../db");
 const user_repository_1 = require("../repositories/mutation/user-repository");
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const convertId = (id) => new mongodb_1.ObjectId(id);
 exports.userService = {
     createUser(user) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -36,6 +37,11 @@ exports.userService = {
                 passwordSalt: salt
             };
             return user_repository_1.userRepository.createUser(newUser);
+        });
+    },
+    deleteUser(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield user_repository_1.userRepository.deleteUser(convertId(id));
         });
     },
     deleteAllUsers() {

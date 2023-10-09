@@ -5,7 +5,7 @@ import { userDbType, userInputType, userViewType } from "../types/user-type";
 import bcrypt from "bcrypt"
 
 
-
+const convertId = (id: string) => new ObjectId(id)
 export const userService = {
     async createUser(user: userInputType):Promise<userViewType | null>{
         const {password, login, email} = user
@@ -24,6 +24,9 @@ export const userService = {
             passwordSalt: salt
         }
         return userRepository.createUser(newUser)
+    },
+    async deleteUser (id: string):Promise<boolean> {
+        return await userRepository.deleteUser(convertId(id))
     },
    async deleteAllUsers ():Promise<boolean> {
     return userRepository.deleteAllUsers()

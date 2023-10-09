@@ -19,6 +19,12 @@ exports.userRepository = {
             return user_helper_1.userHelper.convertUserDTO(payload);
         });
     },
+    deleteUser(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const res = yield db_1.userCollection.deleteOne({ _id: id });
+            return res.deletedCount === 1;
+        });
+    },
     deleteAllUsers() {
         return __awaiter(this, void 0, void 0, function* () {
             const res = yield db_1.userCollection.deleteMany({});
