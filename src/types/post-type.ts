@@ -19,6 +19,11 @@ export type postBodyType = {
     content: string,
     blogId: string
 }
+export type postBodyTypeForBlog = {
+    title: string,
+    shortDescription: string,
+    content: string,
+}
 
 
 export type PostDbType = {

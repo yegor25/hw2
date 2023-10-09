@@ -58,6 +58,12 @@ exports.postRepository = {
             return mapPostToView(post);
         });
     },
+    createPostForBlog(post) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield db_1.postsCollection.insertOne(post);
+            return mapPostToView(post);
+        });
+    },
     findPostById(id) {
         return __awaiter(this, void 0, void 0, function* () {
             const post = yield db_1.postsCollection.findOne({ _id: id });

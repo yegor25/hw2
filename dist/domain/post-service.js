@@ -15,11 +15,6 @@ const post_repository_1 = require("../repositories/mutation/post-repository");
 const query_BlogsRepository_1 = require("../repositories/query/query-BlogsRepository");
 const convertID = (id) => new mongodb_1.ObjectId(id);
 exports.postService = {
-    findPosts() {
-        return __awaiter(this, void 0, void 0, function* () {
-            return yield post_repository_1.postRepository.findPosts();
-        });
-    },
     createPost(post) {
         return __awaiter(this, void 0, void 0, function* () {
             const blog = yield query_BlogsRepository_1.QueryBlogRepositiry.findBlogById(post.blogId);
@@ -29,16 +24,18 @@ exports.postService = {
             return yield post_repository_1.postRepository.createPost(newPost);
         });
     },
+    createPostForBlog(post, id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const blog = yield query_BlogsRepository_1.QueryBlogRepositiry.findBlogById(id);
+            if (!blog)
+                return null;
+            const newPost = Object.assign({ _id: new mongodb_1.ObjectId(), blogName: blog.name, blogId: id, createdAt: new Date().toISOString() }, post);
+            return yield post_repository_1.postRepository.createPost(newPost);
+        });
+    },
     changePost(id, payload) {
         return __awaiter(this, void 0, void 0, function* () {
             return post_repository_1.postRepository.changePost(convertID(id), payload);
-        });
-    },
-    findPostById(id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            if (!mongodb_1.ObjectId.isValid(convertID(id)))
-                return null;
-            return post_repository_1.postRepository.findPostById(convertID(id));
         });
     },
     deletePost(id) {

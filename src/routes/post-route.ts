@@ -4,13 +4,14 @@ import { requestWithBody, requestWithParams, requestWithParamsAndBody } from "..
 import { postBodyType, postType } from "../types/post-type";
 import { postValidate, postValidator } from "../middlewares/post-validation";
 import { postService } from "../domain/post-service";
+import { QueryPostRepository } from "../repositories/query/query-PostRepository";
 
 
 export const postRouter = Router({})
 
 
 postRouter.get("/", async (req: Request, res: Response) => {
-    const blogs =  await postService.findPosts()
+    const blogs =  await QueryPostRepository.findPosts()
     res.status(200).send(blogs)
 })
 postRouter.post("/",checkAuth,postValidator, postValidate, async(req: requestWithBody<postBodyType>, res: Response<postType>) => {
@@ -22,7 +23,7 @@ postRouter.post("/",checkAuth,postValidator, postValidate, async(req: requestWit
     res.status(201).send(posts)
 })
 postRouter.get("/:id", async (req: requestWithParams<{ id: string }>, res: Response) => {
-    const post = await postService.findPostById(req.params.id)
+    const post = await QueryPostRepository.findPostById(req.params.id)
     if (!post) {
         res.sendStatus(404)
         return

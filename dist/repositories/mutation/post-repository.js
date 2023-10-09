@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.postRepository = void 0;
 const db_1 = require("../../db");
 const mongodb_1 = require("mongodb");
+const post_helper_1 = require("../helpers/post-helper");
 // let posts: postType[] = [
 //     {
 //         id: "string",
@@ -22,48 +23,17 @@ const mongodb_1 = require("mongodb");
 //         blogName: "string"
 //     }
 // ]
-const mapPostToView = (post) => {
-    return {
-        id: post._id.toString(),
-        title: post.title,
-        shortDescription: post.shortDescription,
-        content: post.content,
-        blogId: post.blogId,
-        blogName: post.blogName,
-        createdAt: post.createdAt
-    };
-};
-const convertArrayDTO = (posts) => {
-    const data = posts.map(el => ({
-        id: el._id.toString(),
-        title: el.title,
-        shortDescription: el.shortDescription,
-        content: el.content,
-        blogId: el.blogId,
-        blogName: el.blogName,
-        createdAt: el.createdAt
-    }));
-    return data;
-};
 exports.postRepository = {
-    findPosts() {
-        return __awaiter(this, void 0, void 0, function* () {
-            const res = yield db_1.postsCollection.find({}).toArray();
-            return convertArrayDTO(res);
-        });
-    },
     createPost(post) {
         return __awaiter(this, void 0, void 0, function* () {
             yield db_1.postsCollection.insertOne(post);
-            return mapPostToView(post);
+            return post_helper_1.postHelper.mapPostToView(post);
         });
     },
-    findPostById(id) {
+    createPostForBlog(post) {
         return __awaiter(this, void 0, void 0, function* () {
-            const post = yield db_1.postsCollection.findOne({ _id: id });
-            if (!post)
-                return null;
-            return mapPostToView(post);
+            yield db_1.postsCollection.insertOne(post);
+            return post_helper_1.postHelper.mapPostToView(post);
         });
     },
     changePost(id, payload) {

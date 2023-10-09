@@ -2,6 +2,7 @@ import {  postsCollection } from "../../db";
 import { PostDbType,  postBodyType, postType } from "../../types/post-type";
 import { ObjectId } from "mongodb";
 import { blogService } from "../../domain/blog-service";
+import { postHelper } from "../helpers/post-helper";
 
 // let posts: postType[] = [
 //     {
@@ -15,45 +16,19 @@ import { blogService } from "../../domain/blog-service";
 
 // ]
 
-const mapPostToView = (post: PostDbType): postType => {
-    return {
-        id: post._id.toString(),
-        title: post.title,
-        shortDescription: post.shortDescription,
-        content: post.content,
-        blogId: post.blogId,
-        blogName: post.blogName,
-        createdAt: post.createdAt
-    }
-}
-const convertArrayDTO = (posts: PostDbType[]): postType[] => {
-    const data:postType[] = posts.map(el =>  (
-        {
-            id: el._id.toString(),
-            title: el.title,
-            shortDescription: el.shortDescription,
-            content: el.content,
-            blogId: el.blogId,
-            blogName: el.blogName,
-             createdAt: el.createdAt
-        }
-    ))
-    return data
-}
+
+
 export const postRepository = {
-    async findPosts():Promise<postType[]> {
-       const res = await postsCollection.find({}).toArray()
-       return convertArrayDTO(res)
-    },
+    
     async createPost(post: PostDbType): Promise<postType> {
         await postsCollection.insertOne(post)
-        return mapPostToView(post)
+        return postHelper.mapPostToView(post)
     },
-    async findPostById(id: ObjectId): Promise<postType | null>  {
-        const post = await postsCollection.findOne({_id: id})
-        if(!post) return null
-        return mapPostToView(post)
+    async createPostForBlog(post: PostDbType): Promise<postType> {
+        await postsCollection.insertOne(post)
+        return postHelper.mapPostToView(post)
     },
+    
 
     async changePost(id: ObjectId, payload: postBodyType):Promise<boolean> {
         const post = await postsCollection.updateOne(
