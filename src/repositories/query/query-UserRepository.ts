@@ -12,8 +12,8 @@ export const QueryUserRepository = {
         if (!user) {
             return false
         }
-        const passwordUser = bcrypt.compareSync(user.hashPassword, data.password)
-        if (!passwordUser) {
+        const hashedPassword = await bcrypt.hash(data.password, user.passwordSalt)
+        if (hashedPassword !== user.hashPassword) {
             return false
         }
         return true

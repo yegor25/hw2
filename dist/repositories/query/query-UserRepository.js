@@ -24,8 +24,8 @@ exports.QueryUserRepository = {
             if (!user) {
                 return false;
             }
-            const passwordUser = bcrypt_1.default.compareSync(user.hashPassword, data.password);
-            if (!passwordUser) {
+            const hashedPassword = yield bcrypt_1.default.hash(data.password, user.passwordSalt);
+            if (hashedPassword !== user.hashPassword) {
                 return false;
             }
             return true;
