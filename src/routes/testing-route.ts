@@ -12,6 +12,6 @@ const blogs = await blogService.deleteAllBlogs()
     if(posts && blogs){
         res.sendStatus(204)
     } 
-    res.sendStatus(204)
+   return res.sendStatus(204)
     
 })

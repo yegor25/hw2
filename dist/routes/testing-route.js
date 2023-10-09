@@ -20,5 +20,5 @@ exports.testingRouter.delete("/all-data", (req, res) => __awaiter(void 0, void 0
     if (posts && blogs) {
         res.sendStatus(204);
     }
-    res.sendStatus(204);
+    return res.sendStatus(204);
 }));
