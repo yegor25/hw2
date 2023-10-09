@@ -2,7 +2,7 @@
 
 import {  Response, NextFunction } from "express"
 import { requestWithBody } from "../types/root-type"
-import {  body, validationResult } from "express-validator"
+import {  body, param, validationResult } from "express-validator"
 import { postBodyType } from "../types/post-type"
 import { blogsRepository } from "../repositories/mutation/blog-repository"
 import { ObjectId } from "mongodb"
@@ -21,6 +21,17 @@ export const postValidator =  [
         })
     } ).withMessage("required valid blogId"),
     
+]
+export const postValidatorForBlog = [
+    body("title").exists().isString().notEmpty().trim().isLength({min: 3,max: 30}).withMessage("invalid title"),
+    body("shortDescription").trim().notEmpty().isString().isLength({min: 3,max: 100}).withMessage("invalid short description"),
+    body("content").trim().notEmpty().isString().isLength({min: 3,max: 1000}).withMessage("invalid content"),
+    param("blogId").exists().isString().custom(async(val) => {
+        await QueryBlogRepositiry.findBlogById(val)
+        .then((res) => {
+            if(!res) throw new Error("blogid")
+        })
+    } ).withMessage("required valid blogId"),
 ]
 
 export const postValidate = (req:requestWithBody<postBodyType>, res:Response, next:NextFunction) => {

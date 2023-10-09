@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.postValidate = exports.postValidator = void 0;
+exports.postValidate = exports.postValidatorForBlog = exports.postValidator = void 0;
 const express_validator_1 = require("express-validator");
 const query_BlogsRepository_1 = require("../repositories/query/query-BlogsRepository");
 exports.postValidator = [
@@ -18,6 +18,18 @@ exports.postValidator = [
     (0, express_validator_1.body)("content").trim().notEmpty().isString().isLength({ min: 3, max: 1000 }).withMessage("invalid content"),
     // body("blogId").exists().trim().isString().notEmpty().custom( async (val) => await blogsRepository.findBlogById(val)).custom(val => ObjectId.isValid(val)).withMessage("required valid blogId"),
     (0, express_validator_1.body)("blogId").exists().isString().custom((val) => __awaiter(void 0, void 0, void 0, function* () {
+        yield query_BlogsRepository_1.QueryBlogRepositiry.findBlogById(val)
+            .then((res) => {
+            if (!res)
+                throw new Error("blogid");
+        });
+    })).withMessage("required valid blogId"),
+];
+exports.postValidatorForBlog = [
+    (0, express_validator_1.body)("title").exists().isString().notEmpty().trim().isLength({ min: 3, max: 30 }).withMessage("invalid title"),
+    (0, express_validator_1.body)("shortDescription").trim().notEmpty().isString().isLength({ min: 3, max: 100 }).withMessage("invalid short description"),
+    (0, express_validator_1.body)("content").trim().notEmpty().isString().isLength({ min: 3, max: 1000 }).withMessage("invalid content"),
+    (0, express_validator_1.param)("blogId").exists().isString().custom((val) => __awaiter(void 0, void 0, void 0, function* () {
         yield query_BlogsRepository_1.QueryBlogRepositiry.findBlogById(val)
             .then((res) => {
             if (!res)
