@@ -15,6 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.QueryUserRepository = void 0;
 const db_1 = require("../../db");
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const paginator_helper_1 = require("../helpers/paginator-helper");
+const user_helper_1 = require("../helpers/user-helper");
 exports.QueryUserRepository = {
     checkUser(data) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -27,6 +29,35 @@ exports.QueryUserRepository = {
                 return false;
             }
             return true;
+        });
+    },
+    findUsers(params) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const parametres = paginator_helper_1.paginatorHelper.usersParamsMapper(params);
+            const skipCount = (parametres.pageNumber - 1) * parametres.pageSize;
+            const users = yield db_1.userCollection.find({
+                $or: [
+                    { email: { $regex: parametres.searchEmailTerm, $options: "i" } },
+                    { login: { $regex: parametres.searchLoginTerm, $options: "i" } }
+                ]
+            })
+                .sort({ [parametres.sortBy]: parametres.sortDirection })
+                .skip(skipCount)
+                .limit(parametres.pageSize)
+                .toArray();
+            const totalCount = yield db_1.userCollection.countDocuments({
+                $or: [
+                    { email: { $regex: parametres.searchEmailTerm, $options: "i" } },
+                    { login: { $regex: parametres.searchLoginTerm, $options: "i" } }
+                ]
+            });
+            return {
+                pagesCount: Math.ceil(totalCount / +parametres.pageSize),
+                page: +parametres.pageNumber,
+                pageSize: +parametres.pageSize,
+                totalCount,
+                items: user_helper_1.userHelper.convertArrayUser(users)
+            };
         });
     }
 };

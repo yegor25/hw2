@@ -1,4 +1,5 @@
 import { ObjectId } from "mongodb"
+import { paginatorType } from "./paginator-type"
 
 
 export type userInputType = {
@@ -21,4 +22,7 @@ export type userDbType = {
     createdAt: string,
     hashPassword: string,
     passwordSalt: string
+}
+export type usersResponseType = paginatorType & {
+    items: userViewType[]
 }

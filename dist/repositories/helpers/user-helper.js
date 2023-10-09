@@ -10,5 +10,14 @@ exports.userHelper = {
             createdAt: user.createdAt
         };
         return res;
+    },
+    convertArrayUser(users) {
+        const res = users.map(el => ({
+            id: el._id.toString(),
+            login: el.login,
+            email: el.email,
+            createdAt: el.createdAt
+        }));
+        return res;
     }
 };

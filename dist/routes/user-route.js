@@ -14,6 +14,7 @@ const express_1 = require("express");
 const user_service_1 = require("../domain/user-service");
 const auth_middleware_1 = require("../middlewares/auth-middleware");
 const user_validation_1 = require("../middlewares/user-validation");
+const query_UserRepository_1 = require("../repositories/query/query-UserRepository");
 exports.userRouter = (0, express_1.Router)({});
 exports.userRouter.post("/", auth_middleware_1.checkAuth, user_validation_1.userValidator, user_validation_1.userValidate, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user = yield user_service_1.userService.createUser(req.body);
@@ -22,6 +23,15 @@ exports.userRouter.post("/", auth_middleware_1.checkAuth, user_validation_1.user
         return;
     }
     res.status(201).send(user);
+}));
+// userRouter.get("/", checkAuth, async (req: requestWithQuery<paramsUserPaginatorType>, res:Response<usersResponseType>) => {
+//     const users = await QueryUserRepository.findUsers(req.query)
+//     res.status(200).send(users)
+// })
+//@ts-ignore
+exports.userRouter.get("/", auth_middleware_1.checkAuth, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const users = yield query_UserRepository_1.QueryUserRepository.findUsers(req.query);
+    res.status(200).send(users);
 }));
 exports.userRouter.delete("/:id", auth_middleware_1.checkAuth, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const deleteUser = yield user_service_1.userService.deleteUser(req.params.id);

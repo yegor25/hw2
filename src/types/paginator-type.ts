@@ -17,6 +17,7 @@ export type paramsPaginatorType = {
     pageSize: number
 }
 
+
 export type dbPaginatorType = {
     searchNameTerm: string,
     sortBy: keyof blogType,
@@ -30,6 +31,14 @@ export type dbPostsPaginatorType = {
     pageNumber: number,
     pageSize: number
 }
+export type dbUsersPaginatorType = {
+    searchLoginTerm: string,
+    searchEmailTerm: string,
+    sortBy: keyof userViewType,
+    sortDirection: 1 | -1,
+    pageNumber: number,
+    pageSize: number
+}
 export type paramsPostPaginatorType = {
     sortBy: keyof postType,
     sortDirection: SortDirection,
@@ -37,6 +46,8 @@ export type paramsPostPaginatorType = {
     pageSize: number
 }
 export type paramsUserPaginatorType = {
+    searchLoginTerm: string,
+    searchEmailTerm: string,
     sortBy: keyof userViewType,
     sortDirection: SortDirection,
     pageNumber: number,
