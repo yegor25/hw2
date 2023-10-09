@@ -9,15 +9,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.testingRouter = void 0;
+exports.authRouter = void 0;
 const express_1 = require("express");
-const post_service_1 = require("../domain/post-service");
-const blog_service_1 = require("../domain/blog-service");
-const user_service_1 = require("../domain/user-service");
-exports.testingRouter = (0, express_1.Router)({});
-exports.testingRouter.delete("/all-data", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const posts = yield post_service_1.postService.deleteAllPosts();
-    const blogs = yield blog_service_1.blogService.deleteAllBlogs();
-    const users = yield user_service_1.userService.deleteAllUsers();
-    return res.sendStatus(204);
+const query_UserRepository_1 = require("../repositories/query/query-UserRepository");
+const auth_validator_1 = require("../middlewares/auth-validator");
+exports.authRouter = (0, express_1.Router)({});
+exports.authRouter.post("/login", auth_validator_1.authValidator, auth_validator_1.authValidate, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield query_UserRepository_1.QueryUserRepository.checkUser(req.body);
+    if (!user) {
+        res.sendStatus(401);
+        return;
+    }
+    res.sendStatus(204);
 }));

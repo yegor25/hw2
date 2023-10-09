@@ -12,25 +12,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.runDb = exports.userCollection = exports.blogCollection = exports.postsCollection = exports.db = void 0;
-const mongodb_1 = require("mongodb");
-const dotenv_1 = __importDefault(require("dotenv"));
-dotenv_1.default.config();
-const url = process.env.MONGO_URL || "mongodb://0.0.0.0:27017";
-const client = new mongodb_1.MongoClient(url);
-exports.db = client.db('my-db');
-exports.postsCollection = exports.db.collection('posts');
-exports.blogCollection = exports.db.collection('blogs');
-exports.userCollection = exports.db.collection('users');
-const runDb = () => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        yield client.connect();
-        console.log("db is connected");
+exports.QueryUserRepository = void 0;
+const db_1 = require("../../db");
+const bcrypt_1 = __importDefault(require("bcrypt"));
+exports.QueryUserRepository = {
+    checkUser(data) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = yield db_1.userCollection.findOne({ $or: [{ email: data.loginOrEmail }, { login: data.loginOrEmail }] });
+            if (!user) {
+                return false;
+            }
+            const passwordUser = bcrypt_1.default.compareSync(user.hashPassword, user.passwordSalt);
+            if (!passwordUser) {
+                return false;
+            }
+            return true;
+        });
     }
-    catch (error) {
-        console.log("err", error);
-        console.log("database is disconnect");
-        yield client.close();
-    }
-});
-exports.runDb = runDb;
+};

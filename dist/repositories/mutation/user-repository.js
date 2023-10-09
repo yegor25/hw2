@@ -9,15 +9,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.testingRouter = void 0;
-const express_1 = require("express");
-const post_service_1 = require("../domain/post-service");
-const blog_service_1 = require("../domain/blog-service");
-const user_service_1 = require("../domain/user-service");
-exports.testingRouter = (0, express_1.Router)({});
-exports.testingRouter.delete("/all-data", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const posts = yield post_service_1.postService.deleteAllPosts();
-    const blogs = yield blog_service_1.blogService.deleteAllBlogs();
-    const users = yield user_service_1.userService.deleteAllUsers();
-    return res.sendStatus(204);
-}));
+exports.userRepository = void 0;
+const db_1 = require("../../db");
+const user_helper_1 = require("../helpers/user-helper");
+exports.userRepository = {
+    createUser(payload) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const newUser = yield db_1.userCollection.insertOne(payload);
+            return user_helper_1.userHelper.convertUserDTO(payload);
+        });
+    },
+    deleteAllUsers() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const res = yield db_1.userCollection.deleteMany({});
+            return res.deletedCount > 0;
+        });
+    }
+};
