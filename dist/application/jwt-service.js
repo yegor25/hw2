@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.jwtService = void 0;
+const mongodb_1 = require("mongodb");
 const configuration_1 = require("../configuration");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 exports.jwtService = {
@@ -20,6 +21,18 @@ exports.jwtService = {
         return __awaiter(this, void 0, void 0, function* () {
             const token = jsonwebtoken_1.default.sign({ userId: user._id }, configuration_1.configuration.ACCESS_SECRET, { expiresIn: '1h' });
             return token;
+        });
+    },
+    getUserIdByToken(token) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const result = jsonwebtoken_1.default.verify(token, configuration_1.configuration.ACCESS_SECRET);
+                console.log("result", result);
+                return new mongodb_1.ObjectId(result.userId);
+            }
+            catch (error) {
+                return null;
+            }
         });
     }
 };

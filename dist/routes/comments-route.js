@@ -13,8 +13,8 @@ exports.commentRouter = void 0;
 const express_1 = require("express");
 const query_commentsRepository_1 = require("../repositories/query/query-commentsRepository");
 exports.commentRouter = (0, express_1.Router)({});
-exports.commentRouter.get("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const data = yield query_commentsRepository_1.QueryCommentsRepository.getCommentsById(req.params.id);
+exports.commentRouter.get("/:commentId", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const data = yield query_commentsRepository_1.QueryCommentsRepository.getCommentsById(req.params.commentId);
     if (!data) {
         res.sendStatus(404);
         return;

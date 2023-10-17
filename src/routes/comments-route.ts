@@ -7,8 +7,8 @@ import { CommentViewModelType } from "../types/comment-type";
 export const commentRouter = Router({})
 
 
-commentRouter.get("/:id", async(req:requestWithParams<{id: string}>, res:Response) => {
-    const data = await QueryCommentsRepository.getCommentsById(req.params.id)
+commentRouter.get("/:commentId", async(req:requestWithParams<{commentId: string}>, res:Response) => {
+    const data = await QueryCommentsRepository.getCommentsById(req.params.commentId)
     if(!data) {
         res.sendStatus(404)
         return
