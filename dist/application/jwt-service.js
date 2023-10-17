@@ -8,19 +8,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.authRouter = void 0;
-const express_1 = require("express");
-const query_UserRepository_1 = require("../repositories/query/query-UserRepository");
-const auth_validator_1 = require("../middlewares/auth-validator");
-const jwt_service_1 = require("../application/jwt-service");
-exports.authRouter = (0, express_1.Router)({});
-exports.authRouter.post("/login", auth_validator_1.authValidator, auth_validator_1.authValidate, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield query_UserRepository_1.QueryUserRepository.checkUser(req.body);
-    if (!user) {
-        res.sendStatus(401);
-        return;
+exports.jwtService = void 0;
+const configuration_1 = require("../configuration");
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+exports.jwtService = {
+    createAccesToken(user) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const token = jsonwebtoken_1.default.sign({ userId: user._id }, configuration_1.configuration.ACCESS_SECRET, { expiresIn: '1h' });
+            return token;
+        });
     }
-    const token = yield jwt_service_1.jwtService.createAccesToken(user);
-    res.status(200).send(token);
-}));
+};

@@ -22,13 +22,13 @@ exports.QueryUserRepository = {
         return __awaiter(this, void 0, void 0, function* () {
             const user = yield db_1.userCollection.findOne({ $or: [{ email: data.loginOrEmail }, { login: data.loginOrEmail }] });
             if (!user) {
-                return false;
+                return null;
             }
             const hashedPassword = yield bcrypt_1.default.hash(data.password, user.passwordSalt);
             if (hashedPassword !== user.hashPassword) {
-                return false;
+                return null;
             }
-            return true;
+            return user;
         });
     },
     findUsers(params) {

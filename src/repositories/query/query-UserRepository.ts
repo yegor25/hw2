@@ -2,21 +2,21 @@ import { userCollection } from "../../db";
 import { loginType } from "../../types/auth-type";
 import bcrypt from "bcrypt"
 import { paramsUserPaginatorType } from "../../types/paginator-type";
-import { usersResponseType } from "../../types/user-type";
+import { userDbType, usersResponseType } from "../../types/user-type";
 import { paginatorHelper } from "../helpers/paginator-helper";
 import { userHelper } from "../helpers/user-helper";
 
 export const QueryUserRepository = {
-    async checkUser(data: loginType): Promise<boolean> {
+    async checkUser(data: loginType): Promise<userDbType | null> {
         const user = await userCollection.findOne({ $or: [{ email: data.loginOrEmail }, { login: data.loginOrEmail }] })
         if (!user) {
-            return false
+            return null
         }
         const hashedPassword = await bcrypt.hash(data.password, user.passwordSalt)
         if (hashedPassword !== user.hashPassword) {
-            return false
+            return null
         }
-        return true
+        return user
     },
     async findUsers(params: paramsUserPaginatorType): Promise<usersResponseType> {
         const parametres = paginatorHelper.usersParamsMapper(params)
