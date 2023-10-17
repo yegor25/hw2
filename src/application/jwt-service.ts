@@ -6,7 +6,7 @@ import jwt from "jsonwebtoken"
 
 export const jwtService = {
     async createAccesToken(user: userDbType) {
-        const token = jwt.sign({ userId: user._id }, configuration.ACCESS_SECRET, { expiresIn: '1h' })
+        const token = jwt.sign({ userId: user._id.toString() }, configuration.ACCESS_SECRET, { expiresIn: '1h' })
         return token
     },
     async getUserIdByToken(token: string) {
