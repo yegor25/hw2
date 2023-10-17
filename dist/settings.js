@@ -10,12 +10,14 @@ const post_route_1 = require("./routes/post-route");
 const testing_route_1 = require("./routes/testing-route");
 const user_route_1 = require("./routes/user-route");
 const auth_route_1 = require("./routes/auth-route");
+const comments_route_1 = require("./routes/comments-route");
 exports.app = (0, express_1.default)();
 exports.app.use(express_1.default.json());
 exports.app.use("/blogs", blog_route_1.blogRouter);
 exports.app.use("/posts", post_route_1.postRouter);
 exports.app.use("/users", user_route_1.userRouter);
 exports.app.use("/auth", auth_route_1.authRouter);
+exports.app.use("/comments", comments_route_1.commentRouter);
 exports.app.use("/testing", testing_route_1.testingRouter);
 exports.app.get("/", (req, res) => {
     res.send("this is second homework");

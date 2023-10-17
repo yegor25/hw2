@@ -4,6 +4,7 @@ import { postRouter } from "./routes/post-route";
 import { testingRouter } from "./routes/testing-route";
 import { userRouter } from "./routes/user-route";
 import { authRouter } from "./routes/auth-route";
+import { commentRouter } from "./routes/comments-route";
 
 
 export const app = express()
@@ -14,6 +15,7 @@ app.use("/blogs", blogRouter)
 app.use("/posts", postRouter)
 app.use("/users",userRouter)
 app.use("/auth", authRouter)
+app.use("/comments", commentRouter)
 app.use("/testing", testingRouter)
 app.get("/",(req:Request, res:Response) => {
     res.send("this is second homework")
