@@ -1,6 +1,6 @@
 import { Router, Request, Response } from "express";
 import { authMiddleware, checkAuth } from "../middlewares/auth-middleware";
-import { requestWithBody, requestWithParams, requestWithParamsAndBody, requestWithQuery } from "../types/root-type";
+import { requestWithBody, requestWithParams, requestWithParamsAndBody, requestWithQuery, requestWithQueryAndParams } from "../types/root-type";
 import { postBodyType, postType } from "../types/post-type";
 import { postValidate, postValidator } from "../middlewares/post-validation";
 import { postService } from "../domain/post-service";
@@ -49,14 +49,14 @@ postRouter.post("/:postId/comments", authMiddleware,commentValidator,commentVali
     }
     res.status(201).send(comment)
 })
-postRouter.get("/:postId/comments",async(req:requestWithParams<{postId:string, params: paramsCommentsPaginatorType}>,res:Response) => {
+postRouter.get("/:postId/comments",async(req:requestWithQueryAndParams<{postId:string}, {params: paramsCommentsPaginatorType}>,res:Response) => {
     const postId = req.params.postId
     const post = await QueryPostRepository.findPostById(postId)
     if(!post){
         res.sendStatus(404)
         return
     }
-    const comments = await QueryCommentsRepository.getComments(req.params.params)
+    const comments = await QueryCommentsRepository.getComments(req.query.params)
     res.status(201).send(comments)
 })
 postRouter.put("/:id",checkAuth, postValidator, postValidate ,async (req: requestWithParamsAndBody<{ id: string }, postBodyType>, res: Response) => {
