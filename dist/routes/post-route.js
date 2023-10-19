@@ -17,6 +17,7 @@ const post_service_1 = require("../domain/post-service");
 const query_PostRepository_1 = require("../repositories/query/query-PostRepository");
 const comment_service_1 = require("../domain/comment-service");
 const comment_validator_1 = require("../middlewares/comment-validator");
+const query_commentsRepository_1 = require("../repositories/query/query-commentsRepository");
 exports.postRouter = (0, express_1.Router)({});
 exports.postRouter.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const blogs = yield query_PostRepository_1.QueryPostRepository.findPosts(req.query);
@@ -52,6 +53,16 @@ exports.postRouter.post("/:postId/comments", auth_middleware_1.authMiddleware, c
         return;
     }
     res.status(201).send(comment);
+}));
+exports.postRouter.get("/:postId/comments", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const postId = req.params.postId;
+    const post = yield query_PostRepository_1.QueryPostRepository.findPostById(postId);
+    if (!post) {
+        res.sendStatus(404);
+        return;
+    }
+    const comments = yield query_commentsRepository_1.QueryCommentsRepository.getComments(req.params.params);
+    res.status(201).send(comments);
 }));
 exports.postRouter.put("/:id", auth_middleware_1.checkAuth, post_validation_1.postValidator, post_validation_1.postValidate, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const post = yield post_service_1.postService.changePost(req.params.id, req.body);

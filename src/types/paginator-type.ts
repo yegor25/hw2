@@ -1,4 +1,5 @@
 import { blogType } from "./blog-type"
+import { CommentDbModelType } from "./comment-type"
 import { postType } from "./post-type"
 import { userViewType } from "./user-type"
 
@@ -31,6 +32,12 @@ export type dbPostsPaginatorType = {
     pageNumber: number,
     pageSize: number
 }
+export type dbCommentsPaginatorType = {
+    sortBy: keyof CommentDbModelType,
+    sortDirection: 1 | -1,
+    pageNumber: number,
+    pageSize: number
+}
 export type dbUsersPaginatorType = {
     searchLoginTerm: string,
     searchEmailTerm: string,
@@ -49,6 +56,12 @@ export type paramsUserPaginatorType = {
     searchLoginTerm: string,
     searchEmailTerm: string,
     sortBy: keyof userViewType,
+    sortDirection: SortDirection,
+    pageNumber: number,
+    pageSize: number
+}
+export type paramsCommentsPaginatorType = {
+    sortBy: keyof CommentDbModelType,
     sortDirection: SortDirection,
     pageNumber: number,
     pageSize: number

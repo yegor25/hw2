@@ -1,4 +1,5 @@
 import { ObjectId } from "mongodb"
+import { paginatorType } from "./paginator-type"
 
 
 
@@ -23,4 +24,7 @@ export type CommentDbModelType = {
     content: string,
     commentatorInfo: commentatorInfoType,
     createdAt: string
+}
+export type viewAllCommentsType = paginatorType & {
+    items: CommentViewModelType[]
 }

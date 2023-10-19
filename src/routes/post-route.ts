@@ -5,9 +5,10 @@ import { postBodyType, postType } from "../types/post-type";
 import { postValidate, postValidator } from "../middlewares/post-validation";
 import { postService } from "../domain/post-service";
 import { QueryPostRepository } from "../repositories/query/query-PostRepository";
-import { paramsPostPaginatorType } from "../types/paginator-type";
+import { paramsCommentsPaginatorType, paramsPostPaginatorType } from "../types/paginator-type";
 import { commentService } from "../domain/comment-service";
 import { commentValidate, commentValidator } from "../middlewares/comment-validator";
+import { QueryCommentsRepository } from "../repositories/query/query-commentsRepository";
 
 
 export const postRouter = Router({})
@@ -47,6 +48,16 @@ postRouter.post("/:postId/comments", authMiddleware,commentValidator,commentVali
         return
     }
     res.status(201).send(comment)
+})
+postRouter.get("/:postId/comments",async(req:requestWithParams<{postId:string, params: paramsCommentsPaginatorType}>,res:Response) => {
+    const postId = req.params.postId
+    const post = await QueryPostRepository.findPostById(postId)
+    if(!post){
+        res.sendStatus(404)
+        return
+    }
+    const comments = await QueryCommentsRepository.getComments(req.params.params)
+    res.status(201).send(comments)
 })
 postRouter.put("/:id",checkAuth, postValidator, postValidate ,async (req: requestWithParamsAndBody<{ id: string }, postBodyType>, res: Response) => {
     const post = await postService.changePost(req.params.id, req.body)
