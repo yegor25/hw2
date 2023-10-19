@@ -13,6 +13,8 @@ exports.commentService = void 0;
 const mongodb_1 = require("mongodb");
 const query_PostRepository_1 = require("../repositories/query/query-PostRepository");
 const comments_helper_1 = require("../repositories/helpers/comments-helper");
+const comments_repository_1 = require("../repositories/mutation/comments-repository");
+const convertId = (id) => new mongodb_1.ObjectId(id);
 exports.commentService = {
     createComment(postId, content, user) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -30,6 +32,11 @@ exports.commentService = {
                 createdAt: new Date().toISOString()
             };
             return comments_helper_1.commentHelper.commentsMapper(newComment);
+        });
+    },
+    deleteComment(id, userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return comments_repository_1.comentsRepository.deleteComments(convertId(id), userId);
         });
     }
 };

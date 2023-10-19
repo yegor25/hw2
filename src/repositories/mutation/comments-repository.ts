@@ -7,9 +7,15 @@ import { commentHelper } from "../helpers/comments-helper";
 
 export const comentsRepository = {
     async createComment(comment: CommentDbModelType):Promise<CommentViewModelType> {
-        
-       
         const res = await commentsCollection.insertOne(comment)
         return commentHelper.commentsMapper(comment)
-    }
+    },
+    async deleteComments(id: ObjectId, userId: string):Promise<boolean>{
+        const comment = await commentsCollection.findOne({_id: id})
+        if(comment?.commentatorInfo.userId !== userId){
+            return false
+        }
+        const res = await commentsCollection.deleteOne({_id: id})
+        return res.deletedCount === 1
+    }   
 }

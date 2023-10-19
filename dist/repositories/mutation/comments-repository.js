@@ -18,5 +18,15 @@ exports.comentsRepository = {
             const res = yield db_1.commentsCollection.insertOne(comment);
             return comments_helper_1.commentHelper.commentsMapper(comment);
         });
+    },
+    deleteComments(id, userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const comment = yield db_1.commentsCollection.findOne({ _id: id });
+            if ((comment === null || comment === void 0 ? void 0 : comment.commentatorInfo.userId) !== userId) {
+                return false;
+            }
+            const res = yield db_1.commentsCollection.deleteOne({ _id: id });
+            return res.deletedCount === 1;
+        });
     }
 };

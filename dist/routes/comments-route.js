@@ -12,6 +12,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.commentRouter = void 0;
 const express_1 = require("express");
 const query_commentsRepository_1 = require("../repositories/query/query-commentsRepository");
+const auth_middleware_1 = require("../middlewares/auth-middleware");
+const comment_service_1 = require("../domain/comment-service");
 exports.commentRouter = (0, express_1.Router)({});
 exports.commentRouter.get("/:commentId", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const data = yield query_commentsRepository_1.QueryCommentsRepository.getCommentsById(req.params.commentId);
@@ -20,4 +22,19 @@ exports.commentRouter.get("/:commentId", (req, res) => __awaiter(void 0, void 0,
         return;
     }
     res.status(200).send(data);
+}));
+exports.commentRouter.delete("/:commentId", auth_middleware_1.authMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const data = yield query_commentsRepository_1.QueryCommentsRepository.getCommentsById(req.params.commentId);
+    if (!data) {
+        res.sendStatus(404);
+        return;
+    }
+    const commentId = req.params.commentId;
+    const user = req.user;
+    const result = yield comment_service_1.commentService.deleteComment(commentId, user === null || user === void 0 ? void 0 : user._id.toString());
+    if (!result) {
+        res.sendStatus(403);
+        return;
+    }
+    res.sendStatus(204);
 }));
