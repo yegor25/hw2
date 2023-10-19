@@ -38,5 +38,10 @@ exports.commentService = {
         return __awaiter(this, void 0, void 0, function* () {
             return comments_repository_1.comentsRepository.deleteComments(convertId(id), userId);
         });
-    }
+    },
+    updateComment(id, userId, content) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return comments_repository_1.comentsRepository.updateComment(convertId(id), userId, content);
+        });
+    },
 };

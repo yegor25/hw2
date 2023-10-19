@@ -28,5 +28,15 @@ exports.comentsRepository = {
             const res = yield db_1.commentsCollection.deleteOne({ _id: id });
             return res.deletedCount === 1;
         });
+    },
+    updateComment(id, userId, content) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const comment = yield db_1.commentsCollection.findOne({ _id: id });
+            if ((comment === null || comment === void 0 ? void 0 : comment.commentatorInfo.userId) !== userId) {
+                return false;
+            }
+            const res = yield db_1.commentsCollection.updateOne({ _id: id }, { $set: { content: content } });
+            return res.matchedCount === 1;
+        });
     }
 };

@@ -38,3 +38,19 @@ exports.commentRouter.delete("/:commentId", auth_middleware_1.authMiddleware, (r
     }
     res.sendStatus(204);
 }));
+exports.commentRouter.put("/:commentId", auth_middleware_1.authMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const content = req.body.content;
+    const data = yield query_commentsRepository_1.QueryCommentsRepository.getCommentsById(req.params.commentId);
+    if (!data) {
+        res.sendStatus(404);
+        return;
+    }
+    const commentId = req.params.commentId;
+    const user = req.user;
+    const result = yield comment_service_1.commentService.updateComment(commentId, user === null || user === void 0 ? void 0 : user._id.toString(), content);
+    if (!result) {
+        res.sendStatus(403);
+        return;
+    }
+    res.sendStatus(204);
+}));

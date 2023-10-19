@@ -17,5 +17,13 @@ export const comentsRepository = {
         }
         const res = await commentsCollection.deleteOne({_id: id})
         return res.deletedCount === 1
+    },   
+    async updateComment(id: ObjectId, userId: string,content: string):Promise<boolean>{
+        const comment = await commentsCollection.findOne({_id: id})
+        if(comment?.commentatorInfo.userId !== userId){
+            return false
+        }
+        const res = await commentsCollection.updateOne({_id: id}, {$set: {content:content}})
+        return res.matchedCount === 1
     }   
 }

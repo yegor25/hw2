@@ -26,5 +26,8 @@ export const commentService = {
     },
     async deleteComment (id: string,userId: string):Promise<boolean>{
         return comentsRepository.deleteComments(convertId(id), userId)
-    }
+    },
+    async updateComment (id: string,userId: string, content: string):Promise<boolean>{
+        return comentsRepository.updateComment(convertId(id), userId,content)
+    },
 }
