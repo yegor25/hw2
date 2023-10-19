@@ -17,6 +17,7 @@ export const QueryCommentsRepository = {
     },
     async getComments(params: paramsCommentsPaginatorType):Promise<viewAllCommentsType>{
         const parametres = paginatorHelper.commentsParamsMapper(params)
+        console.log("params", parametres)
         const skipCount = (parametres.pageNumber - 1) * parametres.pageSize
         const data = await commentsCollection.find({})
             .sort({[parametres.sortBy]: parametres.sortDirection})

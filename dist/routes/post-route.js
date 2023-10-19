@@ -61,7 +61,7 @@ exports.postRouter.get("/:postId/comments", (req, res) => __awaiter(void 0, void
         res.sendStatus(404);
         return;
     }
-    const comments = yield query_commentsRepository_1.QueryCommentsRepository.getComments(req.query.params);
+    const comments = yield query_commentsRepository_1.QueryCommentsRepository.getComments(req.query);
     res.status(201).send(comments);
 }));
 exports.postRouter.put("/:id", auth_middleware_1.checkAuth, post_validation_1.postValidator, post_validation_1.postValidate, (req, res) => __awaiter(void 0, void 0, void 0, function* () {

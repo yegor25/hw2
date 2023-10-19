@@ -27,6 +27,7 @@ exports.QueryCommentsRepository = {
     getComments(params) {
         return __awaiter(this, void 0, void 0, function* () {
             const parametres = paginator_helper_1.paginatorHelper.commentsParamsMapper(params);
+            console.log("params", parametres);
             const skipCount = (parametres.pageNumber - 1) * parametres.pageSize;
             const data = yield db_1.commentsCollection.find({})
                 .sort({ [parametres.sortBy]: parametres.sortDirection })
