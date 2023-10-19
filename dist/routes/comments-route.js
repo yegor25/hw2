@@ -15,8 +15,8 @@ const query_commentsRepository_1 = require("../repositories/query/query-comments
 const auth_middleware_1 = require("../middlewares/auth-middleware");
 const comment_service_1 = require("../domain/comment-service");
 exports.commentRouter = (0, express_1.Router)({});
-exports.commentRouter.get("/:commentId", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const data = yield query_commentsRepository_1.QueryCommentsRepository.getCommentsById(req.params.commentId);
+exports.commentRouter.get("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const data = yield query_commentsRepository_1.QueryCommentsRepository.getCommentsById(req.params.id);
     if (!data) {
         res.sendStatus(404);
         return;

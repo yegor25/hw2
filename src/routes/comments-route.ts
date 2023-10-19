@@ -9,8 +9,8 @@ import { commentService } from "../domain/comment-service";
 export const commentRouter = Router({})
 
 
-commentRouter.get("/:commentId", async(req:requestWithParams<{commentId: string}>, res:Response) => {
-    const data = await QueryCommentsRepository.getCommentsById(req.params.commentId)
+commentRouter.get("/:id", async(req:requestWithParams<{id: string}>, res:Response) => {
+    const data = await QueryCommentsRepository.getCommentsById(req.params.id)
     if(!data) {
         res.sendStatus(404)
         return
