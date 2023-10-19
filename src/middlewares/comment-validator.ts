@@ -15,6 +15,7 @@ export const commentValidate = async(req:Request,res:Response, next:NextFunction
     const errors= validationResult(req).formatWith(errorFormatter)
     if(!errors.isEmpty()){ 
         res.status(400).send({errorsMessages: errors.array({onlyFirstError: true})})
+        return
     }
-    next()
+    return next()
 }

@@ -20,7 +20,8 @@ const commentValidate = (req, res, next) => __awaiter(void 0, void 0, void 0, fu
     const errors = (0, express_validator_1.validationResult)(req).formatWith(errorFormatter);
     if (!errors.isEmpty()) {
         res.status(400).send({ errorsMessages: errors.array({ onlyFirstError: true }) });
+        return;
     }
-    next();
+    return next();
 });
 exports.commentValidate = commentValidate;
