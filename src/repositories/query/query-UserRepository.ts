@@ -5,6 +5,7 @@ import { paramsUserPaginatorType } from "../../types/paginator-type";
 import { userDbType, usersResponseType } from "../../types/user-type";
 import { paginatorHelper } from "../helpers/paginator-helper";
 import { userHelper } from "../helpers/user-helper";
+import { ObjectId } from "mongodb";
 
 export const QueryUserRepository = {
     async checkUser(data: loginType): Promise<userDbType | null> {
@@ -46,6 +47,12 @@ export const QueryUserRepository = {
             totalCount,
             items: userHelper.convertArrayUser(users)
         }
+    },
+    async findUserById(id: ObjectId){
+        const user = await userCollection.findOne({_id: id})
+        return user
     }
+
+
     
 }

@@ -15,5 +15,5 @@ authRouter.post("/login",authValidator, authValidate ,async (req:requestWithBody
         return
     }
     const token = await jwtService.createAccesToken(user)
-    res.status(200).send("saxcsa")
+    res.status(200).send({accessToken: token})
 })

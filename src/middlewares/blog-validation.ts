@@ -1,7 +1,7 @@
 import {  Response, NextFunction } from "express"
 import { requestWithBody } from "../types/root-type"
 import { bodyBlogType } from "../types/blog-type"
-import {  body, validationResult } from "express-validator"
+import {  ValidationError, body, validationResult } from "express-validator"
 
 export const validateBlogShema =  [
     body("name").exists().isString().notEmpty().trim().isLength({min: 3,max: 15}).withMessage("invalid name"),
@@ -12,10 +12,18 @@ export const validateBlogShema =  [
 
 export const blogValidate = (req:requestWithBody<bodyBlogType>, res:Response, next:NextFunction) => {
    
-    const errorFormatter = ({msg,path}: any): {message: string, field: string} => {
-        return {
-            message: msg,
-            field: path
+    const errorFormatter = (error: ValidationError ): {message: string, field: string} => {
+        switch (error.type){
+            case 'field':
+                return {
+                    message: error.msg,
+                    field: error.path
+                }
+            default:
+                return {
+                    message: error.msg,
+                    field: 'None'
+                }
         }
     }
     const errors = validationResult(req).formatWith(errorFormatter)

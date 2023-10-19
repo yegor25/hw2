@@ -22,5 +22,5 @@ exports.authRouter.post("/login", auth_validator_1.authValidator, auth_validator
         return;
     }
     const token = yield jwt_service_1.jwtService.createAccesToken(user);
-    res.status(200).send("saxcsa");
+    res.status(200).send({ accessToken: token });
 }));

@@ -1,4 +1,6 @@
 import { NextFunction, Request, Response } from "express"
+import { jwtService } from "../application/jwt-service"
+import { QueryUserRepository } from "../repositories/query/query-UserRepository"
 
 export const checkAuth = (req: Request, res: Response, next: NextFunction) => {
     const user = req.headers["authorization"]
@@ -28,6 +30,21 @@ export const checkAuth = (req: Request, res: Response, next: NextFunction) => {
     }
 }
 
+
+export const authMiddleware = async(req:Request,res:Response, next: NextFunction) => {
+    if(!req.headers.authorization){
+        res.send(401)
+        return
+    }
+    const token = req.headers.authorization.split(" ")[1]
+    const userId = await jwtService.getUserIdByToken(token)
+    if(!userId){
+        res.sendStatus(401)
+        return
+    }
+    req.user = await QueryUserRepository.findUserById(userId)
+    next()
+}
 /*
 
 import { NextFunction, Request, Response } from "express"

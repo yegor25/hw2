@@ -8,30 +8,28 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.jwtService = void 0;
+exports.commentService = void 0;
 const mongodb_1 = require("mongodb");
-const configuration_1 = require("../configuration");
-const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-exports.jwtService = {
-    createAccesToken(user) {
+const query_PostRepository_1 = require("../repositories/query/query-PostRepository");
+const comments_helper_1 = require("../repositories/helpers/comments-helper");
+exports.commentService = {
+    createComment(postId, content, user) {
         return __awaiter(this, void 0, void 0, function* () {
-            const token = jsonwebtoken_1.default.sign({ userId: user._id }, configuration_1.configuration.ACCESS_SECRET, { expiresIn: '1h' });
-            return token;
-        });
-    },
-    getUserIdByToken(token) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const result = jsonwebtoken_1.default.verify(token, configuration_1.configuration.ACCESS_SECRET);
-                return new mongodb_1.ObjectId(result.userId);
-            }
-            catch (error) {
+            const post = yield query_PostRepository_1.QueryPostRepository.findPostById(postId);
+            if (!post) {
                 return null;
             }
+            const newComment = {
+                _id: new mongodb_1.ObjectId(),
+                content,
+                commentatorInfo: {
+                    userId: user._id.toString(),
+                    userLogin: user.login
+                },
+                createdAt: new Date().toISOString()
+            };
+            return comments_helper_1.commentHelper.commentsMapper(newComment);
         });
     }
 };

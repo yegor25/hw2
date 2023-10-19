@@ -8,11 +8,19 @@ exports.validateBlogShema = [
     (0, express_validator_1.body)("websiteUrl").trim().isString().notEmpty().isLength({ max: 100 }).matches(/^https:\/\/([a-zA-Z0-9_-]+\.)+[a-zA-Z0-9_-]+(\/[a-zA-Z0-9_-]+)*\/?$/, "g").withMessage("invalid url")
 ];
 const blogValidate = (req, res, next) => {
-    const errorFormatter = ({ msg, path }) => {
-        return {
-            message: msg,
-            field: path
-        };
+    const errorFormatter = (error) => {
+        switch (error.type) {
+            case 'field':
+                return {
+                    message: error.msg,
+                    field: error.path
+                };
+            default:
+                return {
+                    message: error.msg,
+                    field: 'None'
+                };
+        }
     };
     const errors = (0, express_validator_1.validationResult)(req).formatWith(errorFormatter);
     if (errors.isEmpty()) {

@@ -59,5 +59,11 @@ exports.QueryUserRepository = {
                 items: user_helper_1.userHelper.convertArrayUser(users)
             };
         });
+    },
+    findUserById(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = yield db_1.userCollection.findOne({ _id: id });
+            return user;
+        });
     }
 };
