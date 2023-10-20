@@ -38,7 +38,7 @@ exports.QueryCommentsRepository = {
                 .toArray();
             const totalCount = yield db_1.commentsCollection.countDocuments({});
             return {
-                pagesCount: Math.ceil(totalCount / +parametres.pageSize),
+                pagesCount: Math.floor(totalCount / +parametres.pageSize),
                 page: +parametres.pageNumber,
                 pageSize: +parametres.pageSize,
                 totalCount: totalCount - 1,
