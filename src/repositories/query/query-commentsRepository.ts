@@ -11,7 +11,9 @@ const convertId = (id: string) => new ObjectId(id)
 
 export const QueryCommentsRepository = {
     async getCommentsById(id: string):Promise<CommentViewModelType | null>{
+        console.log("id", convertId(id))
         const res = await commentsCollection.findOne({_id: convertId(id)})
+        console.log("res", res)
         if(!res) return null
         return commentHelper.commentsMapper(res)
     },

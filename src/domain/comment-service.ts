@@ -7,13 +7,13 @@ import { comentsRepository } from "../repositories/mutation/comments-repository"
 
 const convertId = (id: string) => new ObjectId(id)
 export const commentService = {
-    async createComment(postId: string,content:string,user:userDbType):Promise<CommentViewModelType | null>{
+    async createComment(postId: string, content: string, user: userDbType): Promise<CommentViewModelType | null> {
         const post = await QueryPostRepository.findPostById(postId)
-        if(!post){
+        if (!post) {
             return null
         }
-        
-        const newComment:CommentDbModelType = {
+
+        const newComment: CommentDbModelType = {
             _id: new ObjectId(),
             content,
             commentatorInfo: {
@@ -22,12 +22,12 @@ export const commentService = {
             },
             createdAt: new Date().toISOString()
         }
-        return commentHelper.commentsMapper(newComment)
+        return  comentsRepository.createComment(newComment)
     },
-    async deleteComment (id: string,userId: string):Promise<boolean>{
+    async deleteComment(id: string, userId: string): Promise<boolean> {
         return comentsRepository.deleteComments(convertId(id), userId)
     },
-    async updateComment (id: string,userId: string, content: string):Promise<boolean>{
-        return comentsRepository.updateComment(convertId(id), userId,content)
+    async updateComment(id: string, userId: string, content: string): Promise<boolean> {
+        return comentsRepository.updateComment(convertId(id), userId, content)
     },
 }

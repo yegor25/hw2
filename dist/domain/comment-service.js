@@ -12,7 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.commentService = void 0;
 const mongodb_1 = require("mongodb");
 const query_PostRepository_1 = require("../repositories/query/query-PostRepository");
-const comments_helper_1 = require("../repositories/helpers/comments-helper");
 const comments_repository_1 = require("../repositories/mutation/comments-repository");
 const convertId = (id) => new mongodb_1.ObjectId(id);
 exports.commentService = {
@@ -31,7 +30,7 @@ exports.commentService = {
                 },
                 createdAt: new Date().toISOString()
             };
-            return comments_helper_1.commentHelper.commentsMapper(newComment);
+            return comments_repository_1.comentsRepository.createComment(newComment);
         });
     },
     deleteComment(id, userId) {
