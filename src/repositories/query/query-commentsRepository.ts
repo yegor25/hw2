@@ -29,7 +29,7 @@ export const QueryCommentsRepository = {
             .toArray()
             const totalCount = await commentsCollection.countDocuments({})
             return {
-                pagesCount:Math.ceil(totalCount/+parametres.pageSize) - 1,
+                pagesCount:Math.ceil(totalCount/+parametres.pageSize),
                 page: +parametres.pageNumber,
                 pageSize: +parametres.pageSize,
                 totalCount: totalCount - 1,
