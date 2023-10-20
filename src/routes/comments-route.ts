@@ -4,6 +4,7 @@ import { QueryCommentsRepository } from "../repositories/query/query-commentsRep
 import { CommentViewModelType } from "../types/comment-type";
 import { authMiddleware } from "../middlewares/auth-middleware";
 import { commentService } from "../domain/comment-service";
+import { commentValidate, commentValidator } from "../middlewares/comment-validator";
 
 
 export const commentRouter = Router({})
@@ -32,7 +33,7 @@ commentRouter.delete("/:commentId", authMiddleware,async(req:requestWithParams<{
     }
     res.sendStatus(204)
 })
-commentRouter.put("/:commentId", authMiddleware,async(req:requestWithParamsAndBody<{commentId: string},{content: string}>, res:Response) => {
+commentRouter.put("/:commentId", authMiddleware,commentValidator,commentValidate,async(req:requestWithParamsAndBody<{commentId: string},{content: string}>, res:Response) => {
     const content = req.body.content
     const data = await QueryCommentsRepository.getCommentsById(req.params.commentId)
     if(!data) {
