@@ -16,6 +16,7 @@ export const commentService = {
         const newComment: CommentDbModelType = {
             _id: new ObjectId(),
             content,
+            postId,
             commentatorInfo: {
                 userId: user._id.toString(),
                 userLogin: user.login

@@ -23,7 +23,8 @@ export type CommentDbModelType = {
     _id: ObjectId,
     content: string,
     commentatorInfo: commentatorInfoType,
-    createdAt: string
+    createdAt: string,
+    postId: string
 }
 export type viewAllCommentsType = paginatorType & {
     items: CommentViewModelType[]

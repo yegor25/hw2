@@ -18,30 +18,29 @@ const convertId = (id) => new mongodb_1.ObjectId(id);
 exports.QueryCommentsRepository = {
     getCommentsById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log("id", convertId(id));
             const res = yield db_1.commentsCollection.findOne({ _id: convertId(id) });
-            console.log("res", res);
             if (!res)
                 return null;
             return comments_helper_1.commentHelper.commentsMapper(res);
         });
     },
-    getComments(params) {
+    getComments(params, postId) {
         return __awaiter(this, void 0, void 0, function* () {
             const parametres = paginator_helper_1.paginatorHelper.commentsParamsMapper(params);
             console.log("params", parametres);
+            const filter = { postId };
             const skipCount = (parametres.pageNumber - 1) * parametres.pageSize;
-            const data = yield db_1.commentsCollection.find({})
+            const data = yield db_1.commentsCollection.find(filter)
                 .sort({ [parametres.sortBy]: parametres.sortDirection })
                 .skip(skipCount)
                 .limit(parametres.pageSize)
                 .toArray();
-            const totalCount = yield db_1.commentsCollection.countDocuments({});
+            const totalCount = yield db_1.commentsCollection.countDocuments(filter);
             return {
                 pagesCount: Math.ceil(totalCount / +parametres.pageSize),
                 page: +parametres.pageNumber,
                 pageSize: +parametres.pageSize,
-                totalCount: totalCount,
+                totalCount,
                 items: comments_helper_1.commentHelper.commentsArrayMapper(data)
             };
         });

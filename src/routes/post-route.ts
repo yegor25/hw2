@@ -56,7 +56,7 @@ postRouter.get("/:postId/comments",async(req:requestWithQueryAndParams<{postId:s
         res.sendStatus(404)
         return
     }
-    const comments = await QueryCommentsRepository.getComments(req.query)
+    const comments = await QueryCommentsRepository.getComments(req.query, postId)
     res.status(200).send(comments)
 })
 postRouter.put("/:id",checkAuth, postValidator, postValidate ,async (req: requestWithParamsAndBody<{ id: string }, postBodyType>, res: Response) => {

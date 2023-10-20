@@ -24,6 +24,7 @@ exports.commentService = {
             const newComment = {
                 _id: new mongodb_1.ObjectId(),
                 content,
+                postId,
                 commentatorInfo: {
                     userId: user._id.toString(),
                     userLogin: user.login
