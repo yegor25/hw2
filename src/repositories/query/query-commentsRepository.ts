@@ -32,7 +32,7 @@ export const QueryCommentsRepository = {
                 pagesCount:Math.ceil(totalCount/+parametres.pageSize),
                 page: +parametres.pageNumber,
                 pageSize: +parametres.pageSize,
-                totalCount,
+                totalCount: totalCount - 1,
                 items: commentHelper.commentsArrayMapper(data)
             }
     }
