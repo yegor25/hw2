@@ -25,7 +25,7 @@ export const QueryCommentsRepository = {
         const data = await commentsCollection.find({})
             .sort({[parametres.sortBy]: parametres.sortDirection})
             .skip(skipCount)
-            .limit(parametres.pageSize)
+            .limit(parametres.pageSize - 1)
             .toArray()
             const totalCount = await commentsCollection.countDocuments({})
             return {

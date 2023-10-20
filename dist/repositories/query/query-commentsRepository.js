@@ -34,7 +34,7 @@ exports.QueryCommentsRepository = {
             const data = yield db_1.commentsCollection.find({})
                 .sort({ [parametres.sortBy]: parametres.sortDirection })
                 .skip(skipCount)
-                .limit(parametres.pageSize)
+                .limit(parametres.pageSize - 1)
                 .toArray();
             const totalCount = yield db_1.commentsCollection.countDocuments({});
             return {
