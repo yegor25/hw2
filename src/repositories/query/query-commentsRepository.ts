@@ -17,6 +17,7 @@ export const QueryCommentsRepository = {
         if(!res) return null
         return commentHelper.commentsMapper(res)
     },
+    
     async getComments(params: paramsCommentsPaginatorType):Promise<viewAllCommentsType>{
         const parametres = paginatorHelper.commentsParamsMapper(params)
         console.log("params", parametres)

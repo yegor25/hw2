@@ -43,4 +43,9 @@ exports.commentService = {
             return comments_repository_1.comentsRepository.updateComment(convertId(id), userId, content);
         });
     },
+    deleteAllComments() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return comments_repository_1.comentsRepository.deleteAll();
+        });
+    }
 };

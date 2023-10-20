@@ -25,5 +25,10 @@ export const comentsRepository = {
         }
         const res = await commentsCollection.updateOne({_id: id}, {$set: {content:content}})
         return res.matchedCount === 1
+    },
+    async deleteAll():Promise<boolean> {
+        
+        const res = await commentsCollection.deleteMany({})
+        return res.deletedCount > 0
     }   
 }

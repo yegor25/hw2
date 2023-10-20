@@ -30,4 +30,7 @@ export const commentService = {
     async updateComment(id: string, userId: string, content: string): Promise<boolean> {
         return comentsRepository.updateComment(convertId(id), userId, content)
     },
+    async deleteAllComments():Promise<boolean>{
+        return comentsRepository.deleteAll()
+    }
 }
