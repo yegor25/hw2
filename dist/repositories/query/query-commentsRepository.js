@@ -34,14 +34,14 @@ exports.QueryCommentsRepository = {
             const data = yield db_1.commentsCollection.find({})
                 .sort({ [parametres.sortBy]: parametres.sortDirection })
                 .skip(skipCount)
-                .limit(parametres.pageSize - 1)
+                .limit(parametres.pageSize)
                 .toArray();
             const totalCount = yield db_1.commentsCollection.countDocuments({});
             return {
-                pagesCount: Math.ceil((totalCount - 1) / +parametres.pageSize),
+                pagesCount: Math.ceil(totalCount / +parametres.pageSize),
                 page: +parametres.pageNumber,
                 pageSize: +parametres.pageSize,
-                totalCount: totalCount - 1,
+                totalCount: totalCount,
                 items: comments_helper_1.commentHelper.commentsArrayMapper(data)
             };
         });
