@@ -38,5 +38,5 @@ authRouter.post("/registration-confirmation",async (req:requestWithBody<{code: s
         res.sendStatus(400)
         return
     }
-    res.status(200).send({code: code})
+    res.status(204).send({code: code})
 })

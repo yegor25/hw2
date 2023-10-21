@@ -42,5 +42,5 @@ exports.authRouter.post("/registration-confirmation", (req, res) => __awaiter(vo
         res.sendStatus(400);
         return;
     }
-    res.status(200).send({ code: code });
+    res.status(204).send({ code: code });
 }));
