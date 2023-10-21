@@ -51,6 +51,16 @@ export const QueryUserRepository = {
     async findUserById(id: ObjectId){
         const user = await userCollection.findOne({_id: id})
         return user
+    },
+    async findUserByLoginOrEmail(val: string):Promise<userDbType | null>{
+        const user = await userCollection.findOne({
+            $or: [
+                {login: val},
+                {email: val}
+            ]
+        })
+        if( user) return user
+        return null
     }
 
 

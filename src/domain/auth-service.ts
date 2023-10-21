@@ -10,12 +10,14 @@ import { helper } from "./helper"
 export const authService = {
     async registerUser(data: userInputType):Promise<boolean>{
         const {email, login} = data
-        const existUser = await userCollection.findOne({$or: [{email: email}, {login: login} ]})
-        if(existUser) {
-            return false
-        }
+        // const existUser = await userCollection.findOne({$or: [{email: email}, {login: login} ]})
+        // if(existUser) {
+        //     return false
+        // }
         const newUser = await helper.userDbViewMapper(data)
+        console.log("new", newUser)
         const res = await userRepository.createUser(newUser)
+        console.log("res", res)
         const message = await mailManager.registerConfirmation(email)
         return true
     }

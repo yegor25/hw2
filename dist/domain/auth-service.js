@@ -10,7 +10,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.authService = void 0;
-const db_1 = require("../db");
 const mail_manager_1 = require("../managers/mail-manager");
 const user_repository_1 = require("../repositories/mutation/user-repository");
 const helper_1 = require("./helper");
@@ -18,12 +17,14 @@ exports.authService = {
     registerUser(data) {
         return __awaiter(this, void 0, void 0, function* () {
             const { email, login } = data;
-            const existUser = yield db_1.userCollection.findOne({ $or: [{ email: email }, { login: login }] });
-            if (existUser) {
-                return false;
-            }
+            // const existUser = await userCollection.findOne({$or: [{email: email}, {login: login} ]})
+            // if(existUser) {
+            //     return false
+            // }
             const newUser = yield helper_1.helper.userDbViewMapper(data);
+            console.log("new", newUser);
             const res = yield user_repository_1.userRepository.createUser(newUser);
+            console.log("res", res);
             const message = yield mail_manager_1.mailManager.registerConfirmation(email);
             return true;
         });

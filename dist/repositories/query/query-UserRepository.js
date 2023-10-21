@@ -65,5 +65,18 @@ exports.QueryUserRepository = {
             const user = yield db_1.userCollection.findOne({ _id: id });
             return user;
         });
+    },
+    findUserByLoginOrEmail(val) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = yield db_1.userCollection.findOne({
+                $or: [
+                    { login: val },
+                    { email: val }
+                ]
+            });
+            if (user)
+                return user;
+            return null;
+        });
     }
 };
