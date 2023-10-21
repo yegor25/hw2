@@ -1,4 +1,4 @@
-import { blogType } from "./blog-type"
+import { blogDbType, blogType } from "./blog-type"
 import { CommentDbModelType } from "./comment-type"
 import { postType } from "./post-type"
 import { userViewType } from "./user-type"
@@ -18,6 +18,18 @@ export type paramsPaginatorType = {
     pageSize: number
 }
 
+
+
+export type DefaultPaginatorType<T> = {
+    sortBy: keyof T,
+    sortDirection: 1 | -1,
+    pageNumber: number,
+    pageSize: number
+}
+
+export type BlogsPaginatorType = DefaultPaginatorType<blogDbType> & {
+    searchNameTerm: string,
+}
 
 export type dbPaginatorType = {
     searchNameTerm: string,

@@ -1,4 +1,5 @@
-import { SortDirection, dbCommentsPaginatorType, dbPaginatorType, dbPostsPaginatorType, dbUsersPaginatorType, paramsCommentsPaginatorType, paramsPaginatorType, paramsPostPaginatorType, paramsUserPaginatorType, sortByType } from "../../types/paginator-type";
+import { DefaultPaginatorType, SortDirection, dbCommentsPaginatorType, dbPaginatorType, dbPostsPaginatorType, dbUsersPaginatorType, paramsCommentsPaginatorType, paramsPaginatorType, paramsPostPaginatorType, paramsUserPaginatorType, sortByType } from "../../types/paginator-type";
+import { PostDbType } from "../../types/post-type";
 
 
 
@@ -19,7 +20,7 @@ export const paginatorHelper = {
             sortDirection: params.sortDirection === SortDirection.asc ? 1 : -1,
             pageNumber: params.pageNumber ? params.pageNumber : 1,
             pageSize: params.pageSize ? +params.pageSize : 10,
-            sortBy: params.sortBy ? params.sortBy : "createdAt"
+            sortBy: params.sortBy ? params.sortBy : 'createdAt'
         }
         return res
     },

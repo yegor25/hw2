@@ -1,3 +1,4 @@
+import { log } from "console"
 import { runDb } from "./db"
 import { app } from "./settings"
 

@@ -3,6 +3,7 @@ import { userCollection } from "../db";
 import { userRepository } from "../repositories/mutation/user-repository";
 import { userDbType, userInputType, userViewType } from "../types/user-type";
 import bcrypt from "bcrypt"
+import { mailManager } from "../managers/mail-manager";
 
 
 const convertId = (id: string) => new ObjectId(id)
@@ -23,6 +24,8 @@ export const userService = {
             hashPassword,
             passwordSalt: salt
         }
+        const message = await mailManager.registerConfirmation(email)
+        console.log("mes", message)
         return userRepository.createUser(newUser)
     },
     async deleteUser (id: string):Promise<boolean> {
