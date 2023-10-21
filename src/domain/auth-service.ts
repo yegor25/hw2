@@ -15,10 +15,8 @@ export const authService = {
         //     return false
         // }
         const newUser = await helper.userDbViewMapper(data)
-        console.log("new", newUser)
         const res = await userRepository.createUser(newUser)
-        console.log("res", res)
-        const message = await mailManager.registerConfirmation(email)
+        const message = await mailManager.registerConfirmation(email, newUser.emailConfirmation.code)
         return true
     }
 }

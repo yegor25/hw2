@@ -22,10 +22,8 @@ exports.authService = {
             //     return false
             // }
             const newUser = yield helper_1.helper.userDbViewMapper(data);
-            console.log("new", newUser);
             const res = yield user_repository_1.userRepository.createUser(newUser);
-            console.log("res", res);
-            const message = yield mail_manager_1.mailManager.registerConfirmation(email);
+            const message = yield mail_manager_1.mailManager.registerConfirmation(email, newUser.emailConfirmation.code);
             return true;
         });
     }
