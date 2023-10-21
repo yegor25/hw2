@@ -14,11 +14,15 @@ const express_validator_1 = require("express-validator");
 const query_UserRepository_1 = require("../repositories/query/query-UserRepository");
 const helper_validator_1 = require("./helper/helper-validator");
 exports.registerValidator = [
-    (0, express_validator_1.body)("login").isString().trim().notEmpty().withMessage("invalid login"),
+    (0, express_validator_1.body)("login").isString().trim().notEmpty()
+        .custom((val) => __awaiter(void 0, void 0, void 0, function* () {
+        const user = yield query_UserRepository_1.QueryUserRepository.checkUser(val)
+            .then(res => { throw new Error(); });
+    }))
+        .withMessage("invalid login"),
     (0, express_validator_1.body)("email").isString().trim().notEmpty().isEmail().custom((val) => __awaiter(void 0, void 0, void 0, function* () {
-        const user = yield query_UserRepository_1.QueryUserRepository.checkUser(val);
-        if (user)
-            throw new Error("user already exist");
+        const user = yield query_UserRepository_1.QueryUserRepository.checkUser(val)
+            .then(res => { throw new Error(); });
     })).withMessage("invalid login"),
     (0, express_validator_1.body)("password").isString().trim().notEmpty().isLength({ min: 6, max: 20 }).withMessage("invalid password")
 ];

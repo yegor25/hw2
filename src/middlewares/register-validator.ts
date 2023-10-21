@@ -5,10 +5,15 @@ import { helperValidator } from "./helper/helper-validator";
 
 
 export const registerValidator = [
-    body("login").isString().trim().notEmpty().withMessage("invalid login"),
+    body("login").isString().trim().notEmpty()
+    .custom(async(val) => {
+        const user = await QueryUserRepository.checkUser(val)
+        .then(res => {throw new Error()})
+    })
+    .withMessage("invalid login"),
     body("email").isString().trim().notEmpty().isEmail().custom( async(val) => {
         const user = await QueryUserRepository.checkUser(val)
-        if(user) throw new Error("user already exist")
+        .then(res => { throw new Error()})
     }).withMessage("invalid login"),
     body("password").isString().trim().notEmpty().isLength({min: 6, max: 20}).withMessage("invalid password")
 ]
