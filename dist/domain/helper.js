@@ -8,14 +8,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.helper = void 0;
 const mongodb_1 = require("mongodb");
 const crypto_service_1 = require("../application/crypto-service");
-const uuid_1 = __importDefault(require("uuid"));
+const uuid_1 = require("uuid");
 const date_fns_1 = require("date-fns");
 exports.helper = {
     userDbViewMapper(user) {
@@ -27,7 +24,7 @@ exports.helper = {
                 login: user.login,
                 createdAt: new Date().toISOString(),
                 emailConfirmation: {
-                    code: uuid_1.default.v4(),
+                    code: (0, uuid_1.v4)(),
                     expirationDate: (0, date_fns_1.addDays)(new Date, 1).toISOString(),
                     isConfirmed: false
                 },

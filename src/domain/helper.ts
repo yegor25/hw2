@@ -1,7 +1,7 @@
 import { ObjectId } from "mongodb"
 import { userDbType, userInputType } from "../types/user-type"
 import { cryptoService } from "../application/crypto-service"
-import uuid from "uuid"
+import uuid, { v4 } from "uuid"
 import { addDays } from "date-fns"
 
 export const helper = {
@@ -13,7 +13,7 @@ export const helper = {
             login: user.login,
             createdAt: new Date().toISOString(),
             emailConfirmation: {
-                code: uuid.v4(),
+                code: v4(),
                 expirationDate: addDays(new Date,1).toISOString(),
                 isConfirmed: false
             },
