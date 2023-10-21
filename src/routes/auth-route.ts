@@ -31,5 +31,10 @@ authRouter.post("/registration-confirmation", codeConfiramtionValidator, validat
         res.sendStatus(400)
         return
     }
+    const confirmedUser = await authService.confirmUser(code)
+    if(!confirmedUser){
+        res.sendStatus(400)
+        return
+    }
     res.sendStatus(204)
 })

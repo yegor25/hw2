@@ -37,5 +37,10 @@ exports.authRouter.post("/registration-confirmation", codeConfirmation_validator
         res.sendStatus(400);
         return;
     }
+    const confirmedUser = yield auth_service_1.authService.confirmUser(code);
+    if (!confirmedUser) {
+        res.sendStatus(400);
+        return;
+    }
     res.sendStatus(204);
 }));
