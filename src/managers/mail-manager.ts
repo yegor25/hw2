@@ -7,7 +7,7 @@ export const mailManager = {
         const subject = "Активация вашего аккаунта в системе"
         const message = `<h1>Thank for your registration</h1>
                         <p>To finish registration please follow the link below:
-                        <b>${code}</b>
+                    <a href='https://somesite.com/confirm-email?code=${code}'>complete registration</a>
                     </p>`
         return mailAdapter.send(email,subject,message)
     }
