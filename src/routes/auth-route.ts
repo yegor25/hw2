@@ -4,6 +4,7 @@ import { loginType } from "../types/auth-type";
 import { QueryUserRepository } from "../repositories/query/query-UserRepository";
 import { authValidate, authValidator } from "../middlewares/auth-validator";
 import { jwtService } from "../application/jwt-service";
+import { userInputType } from "../types/user-type";
 
 
 export const authRouter = Router({})
@@ -16,4 +17,7 @@ authRouter.post("/login",authValidator, authValidate ,async (req:requestWithBody
     }
     const token = await jwtService.createAccesToken(user)
     res.status(200).send({accessToken: token})
+})
+authRouter.post("/registration", async (req:requestWithBody<userInputType>, res) => {
+
 })

@@ -17,7 +17,6 @@ const mongodb_1 = require("mongodb");
 const db_1 = require("../db");
 const user_repository_1 = require("../repositories/mutation/user-repository");
 const bcrypt_1 = __importDefault(require("bcrypt"));
-const mail_manager_1 = require("../managers/mail-manager");
 const convertId = (id) => new mongodb_1.ObjectId(id);
 exports.userService = {
     createUser(user) {
@@ -35,10 +34,13 @@ exports.userService = {
                 email,
                 createdAt: new Date().toISOString(),
                 hashPassword,
-                passwordSalt: salt
+                passwordSalt: salt,
+                emailConfirmation: {
+                    code: "none",
+                    isConfirmed: true,
+                    expirationDate: new Date().toISOString()
+                }
             };
-            const message = yield mail_manager_1.mailManager.registerConfirmation(email);
-            console.log("mes", message);
             return user_repository_1.userRepository.createUser(newUser);
         });
     },

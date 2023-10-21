@@ -21,8 +21,14 @@ export type userDbType = {
     email: string,
     createdAt: string,
     hashPassword: string,
-    passwordSalt: string
+    passwordSalt: string,
+    emailConfirmation: userConfirmationType
 }
 export type usersResponseType = paginatorType & {
     items: userViewType[]
+}
+export type userConfirmationType = {
+    code: string,
+    isConfirmed: boolean,
+    expirationDate: string
 }

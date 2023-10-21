@@ -24,3 +24,5 @@ exports.authRouter.post("/login", auth_validator_1.authValidator, auth_validator
     const token = yield jwt_service_1.jwtService.createAccesToken(user);
     res.status(200).send({ accessToken: token });
 }));
+exports.authRouter.post("/registration", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+}));

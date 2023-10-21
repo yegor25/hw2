@@ -22,10 +22,14 @@ export const userService = {
             email,
             createdAt: new Date().toISOString(),
             hashPassword,
-            passwordSalt: salt
+            passwordSalt: salt,
+            emailConfirmation: {
+                code: "none",
+                isConfirmed: true,
+                expirationDate: new Date().toISOString()
+            }
         }
-        const message = await mailManager.registerConfirmation(email)
-        console.log("mes", message)
+        
         return userRepository.createUser(newUser)
     },
     async deleteUser (id: string):Promise<boolean> {
