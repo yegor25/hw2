@@ -28,15 +28,15 @@ authRouter.post("/registration",registerValidator, registerValidate ,async (req:
 authRouter.post("/registration-confirmation", codeConfiramtionValidator, validateCodeConfirmation,async (req:requestWithBody<{code: string}>,res:Response) => {
     
     const code = req.body.code
-    console.log("code", code)
-    if(!code){
-        res.sendStatus(400)
-        return
-    }
+    // console.log("code", code)
+    // if(!code){
+    //     res.sendStatus(400)
+    //     return
+    // }
     const confirmedUser = await authService.confirmUser(code)
-    if(!confirmedUser){
-        res.sendStatus(400)
-        return
-    }
+    // if(!confirmedUser){
+    //     res.sendStatus(400)
+    //     return
+    // }
     res.status(204)
 })
