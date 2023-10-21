@@ -30,5 +30,5 @@ export type usersResponseType = paginatorType & {
 export type userConfirmationType = {
     code: string,
     isConfirmed: boolean,
-    expirationDate: string
+    expirationDate: Date
 }

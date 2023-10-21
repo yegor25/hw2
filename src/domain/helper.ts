@@ -14,7 +14,7 @@ export const helper = {
             createdAt: new Date().toISOString(),
             emailConfirmation: {
                 code: v4(),
-                expirationDate: addDays(new Date,1).toISOString(),
+                expirationDate: addDays(new Date,3),
                 isConfirmed: false
             },
             hashPassword: passwordData.hash,

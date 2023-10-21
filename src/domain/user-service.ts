@@ -26,7 +26,7 @@ export const userService = {
             emailConfirmation: {
                 code: "none",
                 isConfirmed: true,
-                expirationDate: new Date().toISOString()
+                expirationDate: new Date()
             }
         }
         

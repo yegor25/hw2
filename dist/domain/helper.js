@@ -25,7 +25,7 @@ exports.helper = {
                 createdAt: new Date().toISOString(),
                 emailConfirmation: {
                     code: (0, uuid_1.v4)(),
-                    expirationDate: (0, date_fns_1.addDays)(new Date, 1).toISOString(),
+                    expirationDate: (0, date_fns_1.addDays)(new Date, 3),
                     isConfirmed: false
                 },
                 hashPassword: passwordData.hash,

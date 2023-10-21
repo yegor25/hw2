@@ -38,7 +38,7 @@ exports.userService = {
                 emailConfirmation: {
                     code: "none",
                     isConfirmed: true,
-                    expirationDate: new Date().toISOString()
+                    expirationDate: new Date()
                 }
             };
             return user_repository_1.userRepository.createUser(newUser);
