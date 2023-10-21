@@ -22,9 +22,6 @@ authRouter.post("/login",authValidator, authValidate ,async (req:requestWithBody
 })
 authRouter.post("/registration",registerValidator, registerValidate ,async (req:requestWithBody<userInputType>, res: Response) => {
     const user = await authService.registerUser(req.body)
-    if(!user){
-        res.sendStatus(400)
-        return
-    }
+    
     res.sendStatus(204)
 })
