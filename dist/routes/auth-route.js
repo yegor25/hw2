@@ -43,5 +43,5 @@ exports.authRouter.post("/registration-confirmation", codeConfirmation_validator
     //     res.sendStatus(400)
     //     return
     // }
-    res.status(204);
+    res.sendStatus(204);
 }));

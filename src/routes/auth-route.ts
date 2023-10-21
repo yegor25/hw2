@@ -38,5 +38,5 @@ authRouter.post("/registration-confirmation", codeConfiramtionValidator, validat
     //     res.sendStatus(400)
     //     return
     // }
-    res.status(204)
+    res.sendStatus(204)
 })
