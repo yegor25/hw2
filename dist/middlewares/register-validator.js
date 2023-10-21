@@ -31,7 +31,7 @@ exports.registerValidator = [
 const registerValidate = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const error = (0, express_validator_1.validationResult)(req).formatWith(helper_validator_1.helperValidator.errorFomatter);
     if (!error.isEmpty()) {
-        res.status(400).send({ errorsMessages: error.array() });
+        res.status(400).send({ errorsMessages: error.array({ onlyFirstError: true }) });
         return;
     }
     next();

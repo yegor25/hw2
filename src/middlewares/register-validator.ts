@@ -22,7 +22,7 @@ export const registerValidator = [
 export const registerValidate = async (req: Request, res: Response, next: NextFunction) => {
     const error = validationResult(req).formatWith(helperValidator.errorFomatter)
     if (!error.isEmpty()) {
-        res.status(400).send({ errorsMessages: error.array() })
+        res.status(400).send({ errorsMessages: error.array({onlyFirstError: true}) })
         return
     }
     next()
