@@ -26,7 +26,9 @@ authRouter.post("/registration",registerValidator, registerValidate ,async (req:
     res.sendStatus(204)
 })
 authRouter.post("/registration-confirmation", codeConfiramtionValidator, validateCodeConfirmation,async (req:requestWithBody<{code: string}>,res:Response) => {
+    
     const code = req.body.code
+    console.log("code", code)
     if(!code){
         res.sendStatus(400)
         return

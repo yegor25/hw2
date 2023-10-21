@@ -33,6 +33,7 @@ exports.authRouter.post("/registration", register_validator_1.registerValidator,
 }));
 exports.authRouter.post("/registration-confirmation", codeConfirmation_validator_1.codeConfiramtionValidator, codeConfirmation_validator_1.validateCodeConfirmation, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const code = req.body.code;
+    console.log("code", code);
     if (!code) {
         res.sendStatus(400);
         return;
