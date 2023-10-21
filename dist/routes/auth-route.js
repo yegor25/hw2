@@ -32,7 +32,7 @@ exports.authRouter.post("/registration", register_validator_1.registerValidator,
     res.sendStatus(204);
 }));
 exports.authRouter.post("/registration-confirmation", codeConfirmation_validator_1.codeConfiramtionValidator, codeConfirmation_validator_1.validateCodeConfirmation, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const code = req.query.code;
+    const code = req.body.code;
     if (!code) {
         res.sendStatus(400);
         return;

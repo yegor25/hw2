@@ -25,8 +25,8 @@ authRouter.post("/registration",registerValidator, registerValidate ,async (req:
     const user = await authService.registerUser(req.body) 
     res.sendStatus(204)
 })
-authRouter.post("/registration-confirmation", codeConfiramtionValidator, validateCodeConfirmation,async (req:requestWithQuery<{code: string}>,res:Response) => {
-    const code = req.query.code
+authRouter.post("/registration-confirmation", codeConfiramtionValidator, validateCodeConfirmation,async (req:requestWithBody<{code: string}>,res:Response) => {
+    const code = req.body.code
     if(!code){
         res.sendStatus(400)
         return
