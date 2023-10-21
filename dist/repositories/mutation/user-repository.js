@@ -38,8 +38,7 @@ exports.userRepository = {
                 return false;
             if (user.emailConfirmation.isConfirmed)
                 return false;
-            if (user.emailConfirmation.expirationDate < new Date())
-                return false;
+            // if(user.emailConfirmation.expirationDate < new Date() ) return false
             const confirmedUser = yield db_1.userCollection.updateOne({ "emailConfirmation.code": code }, { $set: { "emailConfirmation.code": true } });
             return confirmedUser.modifiedCount === 1;
         });
