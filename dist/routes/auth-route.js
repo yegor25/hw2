@@ -30,3 +30,11 @@ exports.authRouter.post("/registration", register_validator_1.registerValidator,
     const user = yield auth_service_1.authService.registerUser(req.body);
     res.sendStatus(204);
 }));
+exports.authRouter.post("/registration-confirmation", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const code = req.query.code;
+    if (!code) {
+        res.sendStatus(400);
+        return;
+    }
+    res.sendStatus(204);
+}));

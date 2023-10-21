@@ -6,6 +6,7 @@ import { userDbType, usersResponseType } from "../../types/user-type";
 import { paginatorHelper } from "../helpers/paginator-helper";
 import { userHelper } from "../helpers/user-helper";
 import { ObjectId } from "mongodb";
+import { isAfter } from "date-fns";
 
 export const QueryUserRepository = {
     async checkUser(data: loginType): Promise<userDbType | null> {
@@ -61,7 +62,8 @@ export const QueryUserRepository = {
         })
         if( user) return user
         return null
-    }
+    },
+    
 
 
     

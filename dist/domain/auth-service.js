@@ -17,14 +17,16 @@ exports.authService = {
     registerUser(data) {
         return __awaiter(this, void 0, void 0, function* () {
             const { email, login } = data;
-            // const existUser = await userCollection.findOne({$or: [{email: email}, {login: login} ]})
-            // if(existUser) {
-            //     return false
-            // }
             const newUser = yield helper_1.helper.userDbViewMapper(data);
             const res = yield user_repository_1.userRepository.createUser(newUser);
             const message = yield mail_manager_1.mailManager.registerConfirmation(email, newUser.emailConfirmation.code);
             return true;
+        });
+    },
+    confirmUser(code) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const res = yield user_repository_1.userRepository.checkCodeConfirmation(code);
+            return res;
         });
     }
 };

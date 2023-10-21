@@ -1,5 +1,5 @@
 import { Router, Request, Response } from "express";
-import { requestWithBody } from "../types/root-type";
+import { requestWithBody, requestWithQuery } from "../types/root-type";
 import { loginType } from "../types/auth-type";
 import { QueryUserRepository } from "../repositories/query/query-UserRepository";
 import { authValidate, authValidator } from "../middlewares/auth-validator";
@@ -21,7 +21,14 @@ authRouter.post("/login",authValidator, authValidate ,async (req:requestWithBody
     res.status(200).send({accessToken: token})
 })
 authRouter.post("/registration",registerValidator, registerValidate ,async (req:requestWithBody<userInputType>, res: Response) => {
-    const user = await authService.registerUser(req.body)
-    
+    const user = await authService.registerUser(req.body) 
+    res.sendStatus(204)
+})
+authRouter.post("/registration-confirmation", async (req:requestWithQuery<{code: string}>,res:Response) => {
+    const code = req.query.code
+    if(!code){
+        res.sendStatus(400)
+        return
+    }
     res.sendStatus(204)
 })

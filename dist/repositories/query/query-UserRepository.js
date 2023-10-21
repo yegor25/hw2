@@ -78,5 +78,5 @@ exports.QueryUserRepository = {
                 return user;
             return null;
         });
-    }
+    },
 };
