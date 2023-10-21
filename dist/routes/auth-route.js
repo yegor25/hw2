@@ -14,6 +14,8 @@ const express_1 = require("express");
 const query_UserRepository_1 = require("../repositories/query/query-UserRepository");
 const auth_validator_1 = require("../middlewares/auth-validator");
 const jwt_service_1 = require("../application/jwt-service");
+const auth_service_1 = require("../domain/auth-service");
+const register_validator_1 = require("../middlewares/register-validator");
 exports.authRouter = (0, express_1.Router)({});
 exports.authRouter.post("/login", auth_validator_1.authValidator, auth_validator_1.authValidate, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user = yield query_UserRepository_1.QueryUserRepository.checkUser(req.body);
@@ -24,5 +26,11 @@ exports.authRouter.post("/login", auth_validator_1.authValidator, auth_validator
     const token = yield jwt_service_1.jwtService.createAccesToken(user);
     res.status(200).send({ accessToken: token });
 }));
-exports.authRouter.post("/registration", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.authRouter.post("/registration", register_validator_1.registerValidator, register_validator_1.registerValidate, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield auth_service_1.authService.registerUser(req.body);
+    if (!user) {
+        res.sendStatus(400);
+        return;
+    }
+    res.sendStatus(204);
 }));
