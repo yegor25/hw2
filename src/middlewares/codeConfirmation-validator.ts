@@ -1,11 +1,11 @@
-import { query, validationResult } from "express-validator";
+import { body, query, validationResult } from "express-validator";
 import { authService } from "../domain/auth-service";
 import { NextFunction, Request, Response } from "express";
 import { helperValidator } from "./helper/helper-validator";
 
 
 export const codeConfiramtionValidator = [
-    query("code").exists().isString().custom(async(val: string) => {
+    body("code").exists().isString().custom(async(val: string) => {
         const validCode = await authService.confirmUser(val)
         if(!validCode) throw new Error()
     })

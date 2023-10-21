@@ -14,7 +14,7 @@ const express_validator_1 = require("express-validator");
 const auth_service_1 = require("../domain/auth-service");
 const helper_validator_1 = require("./helper/helper-validator");
 exports.codeConfiramtionValidator = [
-    (0, express_validator_1.query)("code").exists().isString().custom((val) => __awaiter(void 0, void 0, void 0, function* () {
+    (0, express_validator_1.body)("code").exists().isString().custom((val) => __awaiter(void 0, void 0, void 0, function* () {
         const validCode = yield auth_service_1.authService.confirmUser(val);
         if (!validCode)
             throw new Error();
