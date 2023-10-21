@@ -7,6 +7,7 @@ import { jwtService } from "../application/jwt-service";
 import { userInputType } from "../types/user-type";
 import { authService } from "../domain/auth-service";
 import { registerValidate, registerValidator } from "../middlewares/register-validator";
+import { codeConfiramtionValidator, validateCodeConfirmation } from "../middlewares/codeConfirmation-validator";
 
 
 export const authRouter = Router({})
@@ -24,7 +25,7 @@ authRouter.post("/registration",registerValidator, registerValidate ,async (req:
     const user = await authService.registerUser(req.body) 
     res.sendStatus(204)
 })
-authRouter.post("/registration-confirmation", async (req:requestWithQuery<{code: string}>,res:Response) => {
+authRouter.post("/registration-confirmation", codeConfiramtionValidator, validateCodeConfirmation,async (req:requestWithQuery<{code: string}>,res:Response) => {
     const code = req.query.code
     if(!code){
         res.sendStatus(400)
