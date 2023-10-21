@@ -17,12 +17,18 @@ exports.registerValidator = [
     (0, express_validator_1.body)("login").isString().trim().notEmpty()
         .custom((val) => __awaiter(void 0, void 0, void 0, function* () {
         const user = yield query_UserRepository_1.QueryUserRepository.checkUser(val)
-            .then(res => { throw new Error(); });
+            .then(res => {
+            if (res)
+                throw new Error();
+        });
     }))
         .withMessage("invalid login"),
     (0, express_validator_1.body)("email").isString().trim().notEmpty().isEmail().custom((val) => __awaiter(void 0, void 0, void 0, function* () {
         const user = yield query_UserRepository_1.QueryUserRepository.checkUser(val)
-            .then(res => { throw new Error(); });
+            .then(res => {
+            if (res)
+                throw new Error();
+        });
     })).withMessage("invalid login"),
     (0, express_validator_1.body)("password").isString().trim().notEmpty().isLength({ min: 6, max: 20 }).withMessage("invalid password")
 ];

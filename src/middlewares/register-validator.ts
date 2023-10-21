@@ -6,22 +6,26 @@ import { helperValidator } from "./helper/helper-validator";
 
 export const registerValidator = [
     body("login").isString().trim().notEmpty()
-    .custom(async(val) => {
+        .custom(async (val) => {
+            const user = await QueryUserRepository.checkUser(val)
+                .then(res => {
+                    if (res) throw new Error()
+                })
+        })
+        .withMessage("invalid login"),
+    body("email").isString().trim().notEmpty().isEmail().custom(async (val) => {
         const user = await QueryUserRepository.checkUser(val)
-        .then(res => {throw new Error()})
-    })
-    .withMessage("invalid login"),
-    body("email").isString().trim().notEmpty().isEmail().custom( async(val) => {
-        const user = await QueryUserRepository.checkUser(val)
-        .then(res => { throw new Error()})
+            .then(res => {
+                if (res) throw new Error()
+            })
     }).withMessage("invalid login"),
-    body("password").isString().trim().notEmpty().isLength({min: 6, max: 20}).withMessage("invalid password")
+    body("password").isString().trim().notEmpty().isLength({ min: 6, max: 20 }).withMessage("invalid password")
 ]
 
-export const registerValidate = async(req:Request, res:Response, next: NextFunction) => {
+export const registerValidate = async (req: Request, res: Response, next: NextFunction) => {
     const error = validationResult(req).formatWith(helperValidator.errorFomatter)
-    if(!error.isEmpty()){
-        res.status(400).send({errorMessages: error.array()})
+    if (!error.isEmpty()) {
+        res.status(400).send({ errorMessages: error.array() })
         return
     }
     next()
