@@ -10,7 +10,6 @@ export const resendingEmailValidator = [
        const user = await QueryUserRepository.findUserByLoginOrEmail(val)
        if(!user )  throw new Error("invalid email")
         if( user.emailConfirmation.isConfirmed) throw new Error("already confirmed")
-        if(user.emailConfirmation.expirationDate > new Date) throw new Error("email")
     })
     .withMessage("invalid email")
 ]
