@@ -19,7 +19,7 @@ exports.resendingEmailValidator = [
         const user = yield query_UserRepository_1.QueryUserRepository.findUserByLoginOrEmail(val);
         if (!user)
             throw new Error("invalid email");
-        if (user.emailConfirmation.isConfirmed)
+        if (user && user.emailConfirmation.isConfirmed)
             throw new Error("already confirmed");
     }))
         .withMessage("invalid email")
