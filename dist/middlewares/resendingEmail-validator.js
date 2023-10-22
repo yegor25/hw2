@@ -14,7 +14,7 @@ const express_validator_1 = require("express-validator");
 const query_UserRepository_1 = require("../repositories/query/query-UserRepository");
 const helper_validator_1 = require("./helper/helper-validator");
 exports.resendingEmailValidator = [
-    (0, express_validator_1.body)("email").exists().isEmail()
+    (0, express_validator_1.body)("email").exists().trim().isEmail()
         .custom((val) => __awaiter(void 0, void 0, void 0, function* () {
         const user = yield query_UserRepository_1.QueryUserRepository.findUserByLoginOrEmail(val);
         if (!user)

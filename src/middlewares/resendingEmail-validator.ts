@@ -5,7 +5,7 @@ import { helperValidator } from "./helper/helper-validator";
 
 
 export const resendingEmailValidator = [
-    body("email").exists().isEmail()
+    body("email").exists().trim().isEmail()
     .custom(async(val: string) => {
        const user = await QueryUserRepository.findUserByLoginOrEmail(val)
        if(!user )  throw new Error("invalid email")
