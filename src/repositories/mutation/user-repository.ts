@@ -27,7 +27,6 @@ export const userRepository = {
       const confirmedUser = await userCollection.updateOne(
           {_id: user._id},
           {$set: {"emailConfirmation.isConfirmed": true}}
-         //  {$set: {emailConfirmation: {code: code, expirationDate: user.emailConfirmation.expirationDate, isConfirmed: true}}}
       )
       return confirmedUser.modifiedCount === 1
   },

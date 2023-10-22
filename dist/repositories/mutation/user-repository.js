@@ -41,9 +41,7 @@ exports.userRepository = {
                 return false;
             if (user.emailConfirmation.expirationDate < new Date())
                 return false;
-            const confirmedUser = yield db_1.userCollection.updateOne({ _id: user._id }, { $set: { "emailConfirmation.isConfirmed": true } }
-            //  {$set: {emailConfirmation: {code: code, expirationDate: user.emailConfirmation.expirationDate, isConfirmed: true}}}
-            );
+            const confirmedUser = yield db_1.userCollection.updateOne({ _id: user._id }, { $set: { "emailConfirmation.isConfirmed": true } });
             return confirmedUser.modifiedCount === 1;
         });
     },
