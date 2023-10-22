@@ -8,8 +8,8 @@ export const resendingEmailValidator = [
     body("email").exists().isEmail()
     .custom(async(val: string) => {
        const user = await QueryUserRepository.findUserByLoginOrEmail(val)
-       if(!user) throw new Error("")
-       if(user.emailConfirmation.isConfirmed) throw new Error("") 
+       if(!user || user.emailConfirmation.isConfirmed) throw new Error("invalid email")
+        
     })
     .withMessage("invalid email")
 ]
