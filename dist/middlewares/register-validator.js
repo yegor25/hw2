@@ -14,7 +14,7 @@ const express_validator_1 = require("express-validator");
 const query_UserRepository_1 = require("../repositories/query/query-UserRepository");
 const helper_validator_1 = require("./helper/helper-validator");
 exports.registerValidator = [
-    (0, express_validator_1.body)("login").isString().trim().notEmpty()
+    (0, express_validator_1.body)("login").isString().trim().notEmpty().isLength({ min: 3, max: 10 })
         .custom((val) => __awaiter(void 0, void 0, void 0, function* () {
         const user = yield query_UserRepository_1.QueryUserRepository.findUserByLoginOrEmail(val);
         if (user)

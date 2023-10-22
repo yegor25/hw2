@@ -5,8 +5,8 @@ import { helperValidator } from "./helper/helper-validator";
 
 
 export const registerValidator = [
-    body("login").isString().trim().notEmpty()
-        
+    body("login").isString().trim().notEmpty().isLength({min: 3, max: 10})
+
         .custom(async (val) => {
             const user = await QueryUserRepository.findUserByLoginOrEmail(val)
             if(user) throw new Error()
