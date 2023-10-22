@@ -17,7 +17,8 @@ exports.resendingEmailValidator = [
     (0, express_validator_1.body)("email").exists().isEmail()
         .custom((val) => __awaiter(void 0, void 0, void 0, function* () {
         const user = yield query_UserRepository_1.QueryUserRepository.findUserByLoginOrEmail(val);
-        //    if(!user )  throw new Error("invalid email")
+        if (!user)
+            throw new Error("invalid email");
         if (user && user.emailConfirmation.isConfirmed === true)
             throw new Error("already confirmed");
     }))

@@ -8,7 +8,7 @@ export const resendingEmailValidator = [
     body("email").exists().isEmail()
     .custom(async(val: string) => {
        const user = await QueryUserRepository.findUserByLoginOrEmail(val)
-    //    if(!user )  throw new Error("invalid email")
+       if(!user )  throw new Error("invalid email")
         if( user && user.emailConfirmation.isConfirmed === true) throw new Error("already confirmed")
         
     })
