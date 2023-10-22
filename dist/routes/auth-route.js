@@ -17,6 +17,7 @@ const jwt_service_1 = require("../application/jwt-service");
 const auth_service_1 = require("../domain/auth-service");
 const register_validator_1 = require("../middlewares/register-validator");
 const codeConfirmation_validator_1 = require("../middlewares/codeConfirmation-validator");
+const resendingEmail_validator_1 = require("../middlewares/resendingEmail-validator");
 exports.authRouter = (0, express_1.Router)({});
 exports.authRouter.post("/login", auth_validator_1.authValidator, auth_validator_1.authValidate, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user = yield query_UserRepository_1.QueryUserRepository.checkUser(req.body);
@@ -43,5 +44,8 @@ exports.authRouter.post("/registration-confirmation", codeConfirmation_validator
     //     res.sendStatus(400)
     //     return
     // }
+    res.sendStatus(204);
+}));
+exports.authRouter.post("/registration-email-resending", resendingEmail_validator_1.resendingEmailValidator, resendingEmail_validator_1.validateResendingEmail, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     res.sendStatus(204);
 }));

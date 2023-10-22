@@ -8,6 +8,7 @@ import { userInputType } from "../types/user-type";
 import { authService } from "../domain/auth-service";
 import { registerValidate, registerValidator } from "../middlewares/register-validator";
 import { codeConfiramtionValidator, validateCodeConfirmation } from "../middlewares/codeConfirmation-validator";
+import { resendingEmailValidator, validateResendingEmail } from "../middlewares/resendingEmail-validator";
 
 
 export const authRouter = Router({})
@@ -38,5 +39,10 @@ authRouter.post("/registration-confirmation", codeConfiramtionValidator, validat
     //     res.sendStatus(400)
     //     return
     // }
+    res.sendStatus(204)
+})
+authRouter.post("/registration-email-resending", resendingEmailValidator, validateResendingEmail,async (req:requestWithBody<{code: string}>,res:Response) => {
+    
+    
     res.sendStatus(204)
 })
