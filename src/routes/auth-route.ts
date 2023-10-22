@@ -41,8 +41,8 @@ authRouter.post("/registration-confirmation", codeConfiramtionValidator, validat
     // }
     res.sendStatus(204)
 })
-authRouter.post("/registration-email-resending", resendingEmailValidator, validateResendingEmail,async (req:requestWithBody<{code: string}>,res:Response) => {
-    
+authRouter.post("/registration-email-resending", resendingEmailValidator, validateResendingEmail,async (req:requestWithBody<{email: string}>,res:Response) => {
+    const resending = await authService.resendingEmail(req.body.email)
     
     res.sendStatus(204)
 })

@@ -23,15 +23,19 @@ exports.helper = {
                 email: user.email,
                 login: user.login,
                 createdAt: new Date().toISOString(),
-                emailConfirmation: {
-                    code: (0, uuid_1.v4)(),
-                    expirationDate: (0, date_fns_1.addDays)(new Date, 3),
-                    isConfirmed: false
-                },
+                emailConfirmation: this.confiramtionDataMapper(),
                 hashPassword: passwordData.hash,
                 passwordSalt: passwordData.salt
             };
             return res;
         });
+    },
+    confiramtionDataMapper() {
+        const data = {
+            code: (0, uuid_1.v4)(),
+            expirationDate: (0, date_fns_1.addDays)(new Date(), 3),
+            isConfirmed: false
+        };
+        return data;
     }
 };

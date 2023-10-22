@@ -17,5 +17,10 @@ export const authService = {
     async confirmUser(code: string):Promise<boolean>{
         const res = await userRepository.checkCodeConfirmation(code)
         return res
+    },
+    async resendingEmail(email: string): Promise<string>{
+        const code = await userRepository.changeConfirmationData(email, helper.confiramtionDataMapper())
+        const message = await mailManager.registerConfirmation(email,code)
+        return code
     }
 }

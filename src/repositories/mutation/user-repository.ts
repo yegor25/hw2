@@ -1,8 +1,9 @@
 import { ObjectId } from "mongodb";
 import { userCollection } from "../../db";
-import { userDbType, userInputType, userViewType } from "../../types/user-type";
+import { userConfirmationType, userDbType, userInputType, userViewType } from "../../types/user-type";
 import { userHelper } from "../helpers/user-helper";
 import { isAfter } from "date-fns";
+import { v4 } from "uuid";
 
 
 export const userRepository = {
@@ -28,5 +29,13 @@ export const userRepository = {
           {$set: {"emailConfirmation.code": true}}
       )
       return confirmedUser.modifiedCount === 1
+  },
+  async changeConfirmationData(email: string, data: userConfirmationType):Promise<string>{
+   const newCode = v4()
+   const user = await userCollection.updateOne(
+      {email: email},
+      {$set: {emailConfirmation: data}}
+   )
+   return data.code
   }
 }

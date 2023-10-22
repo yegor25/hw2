@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.userRepository = void 0;
 const db_1 = require("../../db");
 const user_helper_1 = require("../helpers/user-helper");
+const uuid_1 = require("uuid");
 exports.userRepository = {
     createUser(payload) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -42,6 +43,13 @@ exports.userRepository = {
                 return false;
             const confirmedUser = yield db_1.userCollection.updateOne({ _id: user._id }, { $set: { "emailConfirmation.code": true } });
             return confirmedUser.modifiedCount === 1;
+        });
+    },
+    changeConfirmationData(email, data) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const newCode = (0, uuid_1.v4)();
+            const user = yield db_1.userCollection.updateOne({ email: email }, { $set: { emailConfirmation: data } });
+            return data.code;
         });
     }
 };

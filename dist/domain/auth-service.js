@@ -28,5 +28,12 @@ exports.authService = {
             const res = yield user_repository_1.userRepository.checkCodeConfirmation(code);
             return res;
         });
+    },
+    resendingEmail(email) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const code = yield user_repository_1.userRepository.changeConfirmationData(email, helper_1.helper.confiramtionDataMapper());
+            const message = yield mail_manager_1.mailManager.registerConfirmation(email, code);
+            return code;
+        });
     }
 };
