@@ -20,6 +20,8 @@ authRouter.post("/login",authValidator, authValidate ,async (req:requestWithBody
         return
     }
     const token = await jwtService.createAccesToken(user)
+    const refresh = await jwtService.createRefreshToken(user)
+    res.cookie("refreshToken", refresh, {httpOnly: true, secure: true})
     res.status(200).send({accessToken: token})
 })
 authRouter.post("/registration",registerValidator, registerValidate ,async (req:requestWithBody<userInputType>, res: Response) => {

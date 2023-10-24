@@ -5,11 +5,13 @@ import { testingRouter } from "./routes/testing-route";
 import { userRouter } from "./routes/user-route";
 import { authRouter } from "./routes/auth-route";
 import { commentRouter } from "./routes/comments-route";
+import cookieParser from "cookie-parser";
 
 
 export const app = express()
 
 app.use(express.json())
+app.use(cookieParser())
 
 app.use("/blogs", blogRouter)
 app.use("/posts", postRouter)

@@ -26,6 +26,8 @@ exports.authRouter.post("/login", auth_validator_1.authValidator, auth_validator
         return;
     }
     const token = yield jwt_service_1.jwtService.createAccesToken(user);
+    const refresh = yield jwt_service_1.jwtService.createRefreshToken(user);
+    res.cookie("refreshToken", refresh, { httpOnly: true, secure: true });
     res.status(200).send({ accessToken: token });
 }));
 exports.authRouter.post("/registration", register_validator_1.registerValidator, register_validator_1.registerValidate, (req, res) => __awaiter(void 0, void 0, void 0, function* () {

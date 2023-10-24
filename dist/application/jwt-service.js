@@ -19,8 +19,24 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 exports.jwtService = {
     createAccesToken(user) {
         return __awaiter(this, void 0, void 0, function* () {
-            const token = jsonwebtoken_1.default.sign({ userId: user._id }, configuration_1.configuration.ACCESS_SECRET, { expiresIn: '1h' });
+            const token = jsonwebtoken_1.default.sign({ userId: user._id }, configuration_1.configuration.ACCESS_SECRET, { expiresIn: '10s' });
             return token;
+        });
+    },
+    createRefreshToken(user) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const token = jsonwebtoken_1.default.sign({ userId: user._id }, configuration_1.configuration.REFRESH_SECRET, { expiresIn: "20s" });
+            return token;
+        });
+    },
+    checkRefreshToken(token) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const isValid = jsonwebtoken_1.default.verify(token, configuration_1.configuration.REFRESH_SECRET);
+            }
+            catch (error) {
+                return null;
+            }
         });
     },
     getUserIdByToken(token) {
