@@ -51,14 +51,14 @@ authRouter.post("/registration-email-resending", resendingEmailValidator, valida
     res.sendStatus(204)
 })
 authRouter.get("/me",authMiddleware,async(req:Request, res: Response) => {
-    // if(req.user){
-    //     const {email,login,_id} = req.user
-    //     const userId = _id.toString()
-    //     res.status(200).send({email, login, userId})
+    if(req.user){
+        const {email,login,_id} = req.user
+        const userId = _id.toString()
+        res.status(200).send({email, login, userId})
 
-    // }
-    
-    res.status(200).send({email:req.user?.email, login: req.user?.login, userId: req.user?._id.toString()})
+    }
+    res.sendStatus(401)
+    // res.status(200).send({email:req.user?.email, login: req.user?.login, userId: req.user?._id.toString()})
 })
 authRouter.post("/logout", checkRefreshToken,async(req:Request, res:Response) => {
     if(req.user) await authService.saveOldToken(req.cookies.refreshToken, req.user?._id.toString() as string)
