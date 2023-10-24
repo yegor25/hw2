@@ -59,21 +59,22 @@ exports.authRouter.get("/me", auth_middleware_1.authMiddleware, (req, res) => __
     //     const {email,login,_id} = req.user
     //     const userId = _id.toString()
     //     res.status(200).send({email, login, userId})
+    var _a, _b, _c;
     // }
-    res.sendStatus(200);
+    res.status(200).send({ email: (_a = req.user) === null || _a === void 0 ? void 0 : _a.email, login: (_b = req.user) === null || _b === void 0 ? void 0 : _b.login, userId: (_c = req.user) === null || _c === void 0 ? void 0 : _c._id.toString() });
 }));
 exports.authRouter.post("/logout", checkRefreshToken_middleware_1.checkRefreshToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
+    var _d;
     if (req.user)
-        yield auth_service_1.authService.saveOldToken(req.cookies.refreshToken, (_a = req.user) === null || _a === void 0 ? void 0 : _a._id.toString());
+        yield auth_service_1.authService.saveOldToken(req.cookies.refreshToken, (_d = req.user) === null || _d === void 0 ? void 0 : _d._id.toString());
     res.clearCookie("refreshToken");
     res.sendStatus(204);
 }));
 exports.authRouter.post("/refresh-token", checkRefreshToken_middleware_1.checkRefreshToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _b;
+    var _e;
     const user = req.user;
     if (user)
-        yield auth_service_1.authService.saveOldToken(req.cookies.refreshToken, (_b = req.user) === null || _b === void 0 ? void 0 : _b._id.toString());
+        yield auth_service_1.authService.saveOldToken(req.cookies.refreshToken, (_e = req.user) === null || _e === void 0 ? void 0 : _e._id.toString());
     const refreshToken = yield jwt_service_1.jwtService.createRefreshToken(user);
     const accessToken = yield jwt_service_1.jwtService.createAccesToken(user);
     res.cookie("refreshToken", refreshToken, { httpOnly: true, secure: true });
