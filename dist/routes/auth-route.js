@@ -59,6 +59,7 @@ exports.authRouter.get("/me", auth_middleware_1.authMiddleware, (req, res) => __
         const { email, login, _id } = req.user;
         const userId = _id.toString();
         res.status(200).send({ email, login, userId });
+        return;
     }
     res.sendStatus(401);
     // res.status(200).send({email:req.user?.email, login: req.user?.login, userId: req.user?._id.toString()})
