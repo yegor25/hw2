@@ -66,14 +66,9 @@ exports.authRouter.post("/logout", checkRefreshToken_middleware_1.checkRefreshTo
     res.clearCookie("refreshToken");
     res.sendStatus(204);
 }));
-exports.authRouter.post("/refresh-token", checkRefreshToken_middleware_1.checkRefreshToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = req.user;
-    if (!user) {
-        res.sendStatus(401);
-        return;
-    }
-    const refreshToken = yield jwt_service_1.jwtService.createRefreshToken(user);
-    const accessToken = yield jwt_service_1.jwtService.createAccesToken(user);
-    res.cookie("refreshToken", refreshToken, { httpOnly: true, secure: true });
-    res.status(200).send({ accessToken });
+exports.authRouter.post("/refresh-token", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    // const refreshToken = await jwtService.createRefreshToken(user)
+    // const accessToken = await jwtService.createAccesToken(user)
+    // res.cookie("refreshToken", refreshToken,{httpOnly: true, secure: true})
+    res.status(200).send({ accessToken: "qwdqw" });
 }));

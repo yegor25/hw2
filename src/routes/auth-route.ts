@@ -50,7 +50,7 @@ authRouter.post("/registration-email-resending", resendingEmailValidator, valida
     
     res.sendStatus(204)
 })
-authRouter.get("/me", authMiddleware,async(req, res) => {
+authRouter.get("/me", authMiddleware,async(req:Request, res: Response) => {
     if(req.user){
         const {email,login,_id} = req.user
         const userId = _id.toString()
@@ -63,15 +63,11 @@ authRouter.post("/logout", checkRefreshToken,async(req:Request, res:Response) =>
     res.clearCookie("refreshToken")
     res.sendStatus(204)
 })
-authRouter.post("/refresh-token", checkRefreshToken,async(req:Request, res:Response) => {
-    const user = req.user
-    if(!user){
-        res.sendStatus(401)
-        return
-    }
+authRouter.post("/refresh-token", async(req:Request, res:Response) => {
     
-    const refreshToken = await jwtService.createRefreshToken(user)
-    const accessToken = await jwtService.createAccesToken(user)
-    res.cookie("refreshToken", refreshToken,{httpOnly: true, secure: true})
-    res.status(200).send({accessToken})
+    
+    // const refreshToken = await jwtService.createRefreshToken(user)
+    // const accessToken = await jwtService.createAccesToken(user)
+    // res.cookie("refreshToken", refreshToken,{httpOnly: true, secure: true})
+    res.status(200).send({accessToken:"qwdqw"})
 })
