@@ -9,6 +9,7 @@ import { authService } from "../domain/auth-service";
 import { registerValidate, registerValidator } from "../middlewares/register-validator";
 import { codeConfiramtionValidator, validateCodeConfirmation } from "../middlewares/codeConfirmation-validator";
 import { resendingEmailValidator, validateResendingEmail } from "../middlewares/resendingEmail-validator";
+import { authMiddleware } from "../middlewares/auth-middleware";
 
 
 export const authRouter = Router({})
@@ -47,4 +48,13 @@ authRouter.post("/registration-email-resending", resendingEmailValidator, valida
     const resending = await authService.resendingEmail(req.body.email)
     
     res.sendStatus(204)
+})
+authRouter.get("/auth/me", authMiddleware,async(req, res) => {
+    if(req.user){
+        const {email,login,_id} = req.user
+        const userId = _id.toString()
+        res.status(200).send({email, login, userId})
+
+    }
+    res.sendStatus(401)
 })

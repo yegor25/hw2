@@ -18,6 +18,7 @@ const auth_service_1 = require("../domain/auth-service");
 const register_validator_1 = require("../middlewares/register-validator");
 const codeConfirmation_validator_1 = require("../middlewares/codeConfirmation-validator");
 const resendingEmail_validator_1 = require("../middlewares/resendingEmail-validator");
+const auth_middleware_1 = require("../middlewares/auth-middleware");
 exports.authRouter = (0, express_1.Router)({});
 exports.authRouter.post("/login", auth_validator_1.authValidator, auth_validator_1.authValidate, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user = yield query_UserRepository_1.QueryUserRepository.checkUser(req.body);
@@ -51,4 +52,12 @@ exports.authRouter.post("/registration-confirmation", codeConfirmation_validator
 exports.authRouter.post("/registration-email-resending", resendingEmail_validator_1.resendingEmailValidator, resendingEmail_validator_1.validateResendingEmail, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const resending = yield auth_service_1.authService.resendingEmail(req.body.email);
     res.sendStatus(204);
+}));
+exports.authRouter.get("/auth/me", auth_middleware_1.authMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    if (req.user) {
+        const { email, login, _id } = req.user;
+        const userId = _id.toString();
+        res.status(200).send({ email, login, userId });
+    }
+    res.sendStatus(401);
 }));
