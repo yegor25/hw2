@@ -20,6 +20,7 @@ export const jwtService = {
     async checkRefreshToken(token: string){
         try {
             const isValid = jwt.verify(token, configuration.REFRESH_SECRET)
+            return isValid
         } catch (error) {
             return null
         }

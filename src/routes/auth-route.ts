@@ -10,6 +10,7 @@ import { registerValidate, registerValidator } from "../middlewares/register-val
 import { codeConfiramtionValidator, validateCodeConfirmation } from "../middlewares/codeConfirmation-validator";
 import { resendingEmailValidator, validateResendingEmail } from "../middlewares/resendingEmail-validator";
 import { authMiddleware } from "../middlewares/auth-middleware";
+import { checkRefreshToken } from "../middlewares/checkRefreshToken-middleware";
 
 
 export const authRouter = Router({})
@@ -57,4 +58,8 @@ authRouter.get("/me", authMiddleware,async(req, res) => {
 
     }
     res.sendStatus(401)
+})
+authRouter.post("/logout", checkRefreshToken,async(req:Request, res:Response) => {
+    res.clearCookie("refreshToken")
+    res.sendStatus(204)
 })

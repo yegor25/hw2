@@ -33,6 +33,7 @@ exports.jwtService = {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const isValid = jsonwebtoken_1.default.verify(token, configuration_1.configuration.REFRESH_SECRET);
+                return isValid;
             }
             catch (error) {
                 return null;

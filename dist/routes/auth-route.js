@@ -19,6 +19,7 @@ const register_validator_1 = require("../middlewares/register-validator");
 const codeConfirmation_validator_1 = require("../middlewares/codeConfirmation-validator");
 const resendingEmail_validator_1 = require("../middlewares/resendingEmail-validator");
 const auth_middleware_1 = require("../middlewares/auth-middleware");
+const checkRefreshToken_middleware_1 = require("../middlewares/checkRefreshToken-middleware");
 exports.authRouter = (0, express_1.Router)({});
 exports.authRouter.post("/login", auth_validator_1.authValidator, auth_validator_1.authValidate, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user = yield query_UserRepository_1.QueryUserRepository.checkUser(req.body);
@@ -60,4 +61,8 @@ exports.authRouter.get("/me", auth_middleware_1.authMiddleware, (req, res) => __
         res.status(200).send({ email, login, userId });
     }
     res.sendStatus(401);
+}));
+exports.authRouter.post("/logout", checkRefreshToken_middleware_1.checkRefreshToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    res.clearCookie("refreshToken");
+    res.sendStatus(204);
 }));
