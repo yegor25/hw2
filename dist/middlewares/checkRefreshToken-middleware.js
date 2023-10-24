@@ -11,23 +11,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.checkRefreshToken = void 0;
 const jwt_service_1 = require("../application/jwt-service");
-const query_UserRepository_1 = require("../repositories/query/query-UserRepository");
 const checkRefreshToken = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const token = req.cookies.refreshToken;
     if (!token) {
         res.sendStatus(401);
         return;
     }
-    try {
-        const isValid = yield jwt_service_1.jwtService.checkRefreshToken(token);
-        req.user = yield query_UserRepository_1.QueryUserRepository.findUserById(isValid.userId);
-        if (isValid)
-            next();
-        res.sendStatus(401);
-    }
-    catch (error) {
+    const isValid = yield jwt_service_1.jwtService.checkRefreshToken(token);
+    if (isValid) {
         res.sendStatus(401);
         return;
     }
+    next();
 });
 exports.checkRefreshToken = checkRefreshToken;

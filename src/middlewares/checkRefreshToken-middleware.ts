@@ -10,13 +10,10 @@ export const checkRefreshToken = async(req:Request, res:Response, next: NextFunc
         res.sendStatus(401)
         return
     }
-    try {
-        const isValid:any = await jwtService.checkRefreshToken(token)
-        req.user = await QueryUserRepository.findUserById(isValid.userId)
-        if(isValid) next()
-        res.sendStatus(401)
-    } catch (error) {
+    const isValid = await jwtService.checkRefreshToken(token)
+    if(isValid){
         res.sendStatus(401)
         return
     }
+    next()
 }
