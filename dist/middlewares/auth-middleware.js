@@ -53,7 +53,13 @@ const authMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
         return;
     }
     req.user = yield query_UserRepository_1.QueryUserRepository.findUserById(userId);
-    next();
+    if (req.user) {
+        next();
+    }
+    else {
+        res.sendStatus(401);
+        return;
+    }
 });
 exports.authMiddleware = authMiddleware;
 /*

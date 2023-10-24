@@ -43,7 +43,12 @@ export const authMiddleware = async(req:Request,res:Response, next: NextFunction
         return
     }
     req.user = await QueryUserRepository.findUserById(userId)
-    next()
+    if(req.user){
+        next()
+    } else {
+        res.sendStatus(401)
+        return
+    }
 }
 /*
 
