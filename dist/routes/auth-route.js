@@ -53,7 +53,7 @@ exports.authRouter.post("/registration-email-resending", resendingEmail_validato
     const resending = yield auth_service_1.authService.resendingEmail(req.body.email);
     res.sendStatus(204);
 }));
-exports.authRouter.get("/auth/me", auth_middleware_1.authMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.authRouter.post("/me", auth_middleware_1.authMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (req.user) {
         const { email, login, _id } = req.user;
         const userId = _id.toString();
