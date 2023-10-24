@@ -60,7 +60,7 @@ exports.authRouter.get("/me", auth_middleware_1.authMiddleware, (req, res) => __
     //     const userId = _id.toString()
     //     res.status(200).send({email, login, userId})
     // }
-    res.sendStatus(401);
+    res.sendStatus(200);
 }));
 exports.authRouter.post("/logout", checkRefreshToken_middleware_1.checkRefreshToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;

@@ -57,7 +57,7 @@ authRouter.get("/me",authMiddleware,async(req:Request, res: Response) => {
     //     res.status(200).send({email, login, userId})
 
     // }
-    res.sendStatus(401)
+    res.sendStatus(200)
 })
 authRouter.post("/logout", checkRefreshToken,async(req:Request, res:Response) => {
     if(req.user) await authService.saveOldToken(req.cookies.refreshToken, req.user?._id.toString() as string)
