@@ -70,7 +70,10 @@ exports.authRouter.post("/logout", checkRefreshToken_middleware_1.checkRefreshTo
     res.sendStatus(204);
 }));
 exports.authRouter.post("/refresh-token", checkRefreshToken_middleware_1.checkRefreshToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _b;
     const user = req.user;
+    if (user)
+        yield auth_service_1.authService.saveOldToken(req.cookies.refreshToken, (_b = req.user) === null || _b === void 0 ? void 0 : _b._id.toString());
     const refreshToken = yield jwt_service_1.jwtService.createRefreshToken(user);
     const accessToken = yield jwt_service_1.jwtService.createAccesToken(user);
     res.cookie("refreshToken", refreshToken, { httpOnly: true, secure: true });

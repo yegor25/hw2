@@ -67,6 +67,7 @@ authRouter.post("/logout", checkRefreshToken,async(req:Request, res:Response) =>
 authRouter.post("/refresh-token", checkRefreshToken,async(req:Request, res:Response) => {
     
     const user = req.user as userDbType
+    if(user) await authService.saveOldToken(req.cookies.refreshToken, req.user?._id.toString() as string)
     const refreshToken = await jwtService.createRefreshToken(user)
     const accessToken = await jwtService.createAccesToken(user)
     res.cookie("refreshToken", refreshToken,{httpOnly: true, secure: true})
