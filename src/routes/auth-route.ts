@@ -4,7 +4,7 @@ import { loginType } from "../types/auth-type";
 import { QueryUserRepository } from "../repositories/query/query-UserRepository";
 import { authValidate, authValidator } from "../middlewares/auth-validator";
 import { jwtService } from "../application/jwt-service";
-import { userInputType } from "../types/user-type";
+import { userDbType, userInputType } from "../types/user-type";
 import { authService } from "../domain/auth-service";
 import { registerValidate, registerValidator } from "../middlewares/register-validator";
 import { codeConfiramtionValidator, validateCodeConfirmation } from "../middlewares/codeConfirmation-validator";
@@ -65,9 +65,9 @@ authRouter.post("/logout", checkRefreshToken,async(req:Request, res:Response) =>
 })
 authRouter.post("/refresh-token", checkRefreshToken,async(req:Request, res:Response) => {
     
-    
-    // const refreshToken = await jwtService.createRefreshToken(user)
-    // const accessToken = await jwtService.createAccesToken(user)
-    // res.cookie("refreshToken", refreshToken,{httpOnly: true, secure: true})
-    res.status(200).send({accessToken:"qwdqw"})
+    const user = req.user as userDbType
+    const refreshToken = await jwtService.createRefreshToken(user)
+    const accessToken = await jwtService.createAccesToken(user)
+    res.cookie("refreshToken", refreshToken,{httpOnly: true, secure: true})
+    res.status(200).send({accessToken})
 })
