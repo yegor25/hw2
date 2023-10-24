@@ -21,6 +21,7 @@ const checkRefreshToken = (req, res, next) => __awaiter(void 0, void 0, void 0, 
         const isValid = yield jwt_service_1.jwtService.checkRefreshToken(token);
         if (isValid)
             next();
+        res.sendStatus(401);
     }
     catch (error) {
         res.sendStatus(401);
