@@ -1,8 +1,11 @@
+import { ObjectId } from "mongodb"
 import { userCollection } from "../db"
 import { mailManager } from "../managers/mail-manager"
 import { userRepository } from "../repositories/mutation/user-repository"
+import { TokenDbType } from "../types/tokens-type"
 import { userInputType } from "../types/user-type"
 import { helper } from "./helper"
+import { tokenRepository } from "../repositories/mutation/token-repository"
 
 
 
@@ -22,5 +25,13 @@ export const authService = {
         const code = await userRepository.changeConfirmationData(email, helper.confiramtionDataMapper())
         const message = await mailManager.registerConfirmation(email,code)
         return code
+    },
+    async saveOldToken(token: string, userId: string): Promise<TokenDbType>{
+        const data: TokenDbType = {
+            _id: new ObjectId(),
+            token, 
+            userId
+        }
+        return await tokenRepository.saveToken(data)
     }
 }

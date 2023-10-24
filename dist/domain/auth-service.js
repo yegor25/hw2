@@ -10,9 +10,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.authService = void 0;
+const mongodb_1 = require("mongodb");
 const mail_manager_1 = require("../managers/mail-manager");
 const user_repository_1 = require("../repositories/mutation/user-repository");
 const helper_1 = require("./helper");
+const token_repository_1 = require("../repositories/mutation/token-repository");
 exports.authService = {
     registerUser(data) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -34,6 +36,16 @@ exports.authService = {
             const code = yield user_repository_1.userRepository.changeConfirmationData(email, helper_1.helper.confiramtionDataMapper());
             const message = yield mail_manager_1.mailManager.registerConfirmation(email, code);
             return code;
+        });
+    },
+    saveOldToken(token, userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const data = {
+                _id: new mongodb_1.ObjectId(),
+                token,
+                userId
+            };
+            return yield token_repository_1.tokenRepository.saveToken(data);
         });
     }
 };

@@ -63,6 +63,9 @@ exports.authRouter.get("/me", auth_middleware_1.authMiddleware, (req, res) => __
     res.sendStatus(401);
 }));
 exports.authRouter.post("/logout", checkRefreshToken_middleware_1.checkRefreshToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    if (req.user)
+        yield auth_service_1.authService.saveOldToken(req.cookies.refreshToken, (_a = req.user) === null || _a === void 0 ? void 0 : _a._id.toString());
     res.clearCookie("refreshToken");
     res.sendStatus(204);
 }));
