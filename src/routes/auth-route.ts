@@ -49,7 +49,7 @@ authRouter.post("/registration-email-resending", resendingEmailValidator, valida
     
     res.sendStatus(204)
 })
-authRouter.post("/me", authMiddleware,async(req, res) => {
+authRouter.get("/me", authMiddleware,async(req, res) => {
     if(req.user){
         const {email,login,_id} = req.user
         const userId = _id.toString()
