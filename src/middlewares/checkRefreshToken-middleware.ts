@@ -11,7 +11,7 @@ export const checkRefreshToken = async(req:Request, res:Response, next: NextFunc
         return
     }
     const isValid = await jwtService.checkRefreshToken(token)
-    if(isValid){
+    if(!isValid){
         res.sendStatus(401)
         return
     }
