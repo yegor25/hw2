@@ -23,7 +23,7 @@ exports.sessionsQuery = {
     },
     getAllSessions(userId) {
         return __awaiter(this, void 0, void 0, function* () {
-            const res = yield db_1.securityDevicesCollection.find({ userId: userId }).toArray();
+            const res = yield db_1.securityDevicesCollection.find({ userId: userId, isActive: true }).toArray();
             if (!res)
                 return null;
             return sessions_helper_1.sessionsHelper.sesionsViewMapperArray(res);
