@@ -20,6 +20,16 @@ devicesRouter.get("/devices", checkRefreshToken,async(req:Request, res:Response)
     }
     res.status(200).send(result)
 })
+devicesRouter.delete("/devices", checkRefreshToken,async(req:Request, res:Response) => {
+    // const user = req.user as userDbType
+    // const result = await sessionsQuery.getAllSessions(user._id.toString())
+    // if(!result) {
+    //     res.end()
+    //     return
+    // }
+    // res.status(200).send(result)
+    res.end()
+})
 devicesRouter.delete("/devices/:deviceId",checkRefreshToken, async(req:requestWithParams<{deviceId: string}>, res:Response) => {
     const result = await sessionService.deleteSession(req.params.deviceId)
     if(!result){

@@ -24,6 +24,16 @@ exports.devicesRouter.get("/devices", checkRefreshToken_middleware_1.checkRefres
     }
     res.status(200).send(result);
 }));
+exports.devicesRouter.delete("/devices", checkRefreshToken_middleware_1.checkRefreshToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    // const user = req.user as userDbType
+    // const result = await sessionsQuery.getAllSessions(user._id.toString())
+    // if(!result) {
+    //     res.end()
+    //     return
+    // }
+    // res.status(200).send(result)
+    res.end();
+}));
 exports.devicesRouter.delete("/devices/:deviceId", checkRefreshToken_middleware_1.checkRefreshToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const result = yield session_service_1.sessionService.deleteSession(req.params.deviceId);
