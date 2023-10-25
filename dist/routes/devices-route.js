@@ -37,10 +37,10 @@ exports.devicesRouter.delete("/devices", checkRefreshToken_middleware_1.checkRef
 exports.devicesRouter.delete("/devices/:deviceId", checkRefreshToken_middleware_1.checkRefreshToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const result = yield session_service_1.sessionService.deleteSession(req.params.deviceId);
-    // if(!result){
-    //     res.sendStatus(404)
-    //     return
-    // }
+    if (!result) {
+        res.sendStatus(404);
+        return;
+    }
     const session = yield query_Sessions_1.sessionsQuery.checkUserSession(req.params.deviceId);
     if (session && session.userId !== ((_a = req.user) === null || _a === void 0 ? void 0 : _a._id.toString())) {
         res.sendStatus(403);
