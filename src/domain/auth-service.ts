@@ -6,6 +6,9 @@ import { TokenDbType } from "../types/tokens-type"
 import { userInputType } from "../types/user-type"
 import { helper } from "./helper"
 import { tokenRepository } from "../repositories/mutation/token-repository"
+import { securityDevicesInputType, securityDevicesViewType } from "../types/securityDevices-type"
+import { securityDevicesRepository } from "../repositories/mutation/secirityDevices-repository"
+import { sessionsHelper } from "../repositories/helpers/sessions-helper"
 
 
 
@@ -33,5 +36,10 @@ export const authService = {
             userId
         }
         return await tokenRepository.saveToken(data)
+    },
+    async saveSession(data: securityDevicesInputType):Promise<securityDevicesViewType>{
+        const res = await securityDevicesRepository.saveSessions(sessionsHelper.sessionMapperForDb(data))
+        return sessionsHelper.sessionViewMapper(res)
     }
+    
 }

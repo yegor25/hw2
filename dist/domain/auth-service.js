@@ -15,6 +15,8 @@ const mail_manager_1 = require("../managers/mail-manager");
 const user_repository_1 = require("../repositories/mutation/user-repository");
 const helper_1 = require("./helper");
 const token_repository_1 = require("../repositories/mutation/token-repository");
+const secirityDevices_repository_1 = require("../repositories/mutation/secirityDevices-repository");
+const sessions_helper_1 = require("../repositories/helpers/sessions-helper");
 exports.authService = {
     registerUser(data) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -46,6 +48,12 @@ exports.authService = {
                 userId
             };
             return yield token_repository_1.tokenRepository.saveToken(data);
+        });
+    },
+    saveSession(data) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const res = yield secirityDevices_repository_1.securityDevicesRepository.saveSessions(sessions_helper_1.sessionsHelper.sessionMapperForDb(data));
+            return sessions_helper_1.sessionsHelper.sessionViewMapper(res);
         });
     }
 };

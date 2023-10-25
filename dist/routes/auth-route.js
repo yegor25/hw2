@@ -27,8 +27,11 @@ exports.authRouter.post("/login", auth_validator_1.authValidator, auth_validator
         res.sendStatus(401);
         return;
     }
+    const ip = req.ip;
+    const title = req.headers["user-agent"] || "Chrome 105";
+    const session = yield auth_service_1.authService.saveSession({ ip, title, userId: user === null || user === void 0 ? void 0 : user._id.toString() });
     const token = yield jwt_service_1.jwtService.createAccesToken(user);
-    const refresh = yield jwt_service_1.jwtService.createRefreshToken(user);
+    const refresh = yield jwt_service_1.jwtService.createRefreshToken(user, session.deviceId);
     res.cookie("refreshToken", refresh, { httpOnly: true, secure: true });
     res.status(200).send({ accessToken: token });
 }));
@@ -62,7 +65,6 @@ exports.authRouter.get("/me", auth_middleware_1.authMiddleware, (req, res) => __
         return;
     }
     res.sendStatus(401);
-    // res.status(200).send({email:req.user?.email, login: req.user?.login, userId: req.user?._id.toString()})
 }));
 exports.authRouter.post("/logout", checkRefreshToken_middleware_1.checkRefreshToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
@@ -76,7 +78,10 @@ exports.authRouter.post("/refresh-token", checkRefreshToken_middleware_1.checkRe
     const user = req.user;
     if (user)
         yield auth_service_1.authService.saveOldToken(req.cookies.refreshToken, (_b = req.user) === null || _b === void 0 ? void 0 : _b._id.toString());
-    const refreshToken = yield jwt_service_1.jwtService.createRefreshToken(user);
+    const ip = req.ip;
+    const title = req.headers["user-agent"] || "Chrome 105";
+    const session = yield auth_service_1.authService.saveSession({ ip, title, userId: user._id.toString() });
+    const refreshToken = yield jwt_service_1.jwtService.createRefreshToken(user, session.deviceId);
     const accessToken = yield jwt_service_1.jwtService.createAccesToken(user);
     res.cookie("refreshToken", refreshToken, { httpOnly: true, secure: true });
     res.status(200).send({ accessToken });

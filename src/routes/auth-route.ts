@@ -11,18 +11,23 @@ import { codeConfiramtionValidator, validateCodeConfirmation } from "../middlewa
 import { resendingEmailValidator, validateResendingEmail } from "../middlewares/resendingEmail-validator";
 import { authMiddleware } from "../middlewares/auth-middleware";
 import { checkRefreshToken } from "../middlewares/checkRefreshToken-middleware";
+import { securityDevicesRepository } from "../repositories/mutation/secirityDevices-repository";
 
 
 export const authRouter = Router({})
 
 authRouter.post("/login",authValidator, authValidate ,async (req:requestWithBody<loginType>, res: Response) => {
+    
     const user = await QueryUserRepository.checkUser(req.body)
     if(!user){
         res.sendStatus(401)
         return
     }
+    const ip = req.ip
+    const title = req.headers["user-agent"] || "Chrome 105"
+    const session = await authService.saveSession({ip, title,userId: user?._id.toString()})
     const token = await jwtService.createAccesToken(user)
-    const refresh = await jwtService.createRefreshToken(user)
+    const refresh = await jwtService.createRefreshToken(user, session.deviceId)
     res.cookie("refreshToken", refresh, {httpOnly: true, secure: true})
     res.status(200).send({accessToken: token})
 })
@@ -58,7 +63,6 @@ authRouter.get("/me",authMiddleware,async(req:Request, res: Response) => {
         return
     }
     res.sendStatus(401)
-    // res.status(200).send({email:req.user?.email, login: req.user?.login, userId: req.user?._id.toString()})
 })
 authRouter.post("/logout", checkRefreshToken,async(req:Request, res:Response) => {
     if(req.user) await authService.saveOldToken(req.cookies.refreshToken, req.user?._id.toString() as string)
@@ -69,7 +73,10 @@ authRouter.post("/refresh-token", checkRefreshToken,async(req:Request, res:Respo
     
     const user = req.user as userDbType
     if(user) await authService.saveOldToken(req.cookies.refreshToken, req.user?._id.toString() as string)
-    const refreshToken = await jwtService.createRefreshToken(user)
+    const ip = req.ip
+    const title = req.headers["user-agent"] || "Chrome 105"
+    const session = await authService.saveSession({ip, title, userId: user._id.toString()})
+    const refreshToken = await jwtService.createRefreshToken(user, session.deviceId)
     const accessToken = await jwtService.createAccesToken(user)
     res.cookie("refreshToken", refreshToken,{httpOnly: true, secure: true})
     res.status(200).send({accessToken})

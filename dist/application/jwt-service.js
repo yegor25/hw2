@@ -23,9 +23,9 @@ exports.jwtService = {
             return token;
         });
     },
-    createRefreshToken(user) {
+    createRefreshToken(user, deviceId) {
         return __awaiter(this, void 0, void 0, function* () {
-            const token = jsonwebtoken_1.default.sign({ userId: user._id }, configuration_1.configuration.REFRESH_SECRET, { expiresIn: "20s" });
+            const token = jsonwebtoken_1.default.sign({ userId: user._id, deviceId }, configuration_1.configuration.REFRESH_SECRET, { expiresIn: "20s" });
             return token;
         });
     },
