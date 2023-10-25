@@ -25,5 +25,11 @@ export const securityDevicesRepository = {
 
         )
         return res.modifiedCount === 1
+    },
+    async deleteAllsessionBesideCurrent(deviceId: string, userId: string):Promise<boolean>{
+        const res = await securityDevicesCollection.deleteMany(
+            {userId: userId, deviceId: {$ne: deviceId}}
+        )
+        return res.deletedCount >= 0
     }
 }

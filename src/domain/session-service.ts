@@ -12,5 +12,8 @@ export const sessionService = {
     },
     async changectiveDate(deviceId: string):Promise<boolean>{
         return securityDevicesRepository.changeActiveDate(deviceId)
+    },
+    async deleteAllsessionsBesideCurrenr(deviceId: string, userId: string):Promise<boolean>{
+        return securityDevicesRepository.deleteAllsessionBesideCurrent(deviceId, userId)
     }
 }
