@@ -9,19 +9,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.securityDevicesRepository = void 0;
-const db_1 = require("../../db");
-exports.securityDevicesRepository = {
-    saveSessions(data) {
+exports.sessionService = void 0;
+const secirityDevices_repository_1 = require("../repositories/mutation/secirityDevices-repository");
+exports.sessionService = {
+    deleteSession(deviceId) {
         return __awaiter(this, void 0, void 0, function* () {
-            const res = yield db_1.securityDevicesCollection.insertOne(data);
-            return data;
-        });
-    },
-    deleteDeviceSession(deviceId) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const res = yield db_1.securityDevicesCollection.deleteOne({ deviceId: deviceId });
-            return res.deletedCount === 1;
+            return secirityDevices_repository_1.securityDevicesRepository.deleteDeviceSession(deviceId);
         });
     }
 };

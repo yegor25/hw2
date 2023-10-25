@@ -28,5 +28,11 @@ exports.sessionsQuery = {
                 return null;
             return sessions_helper_1.sessionsHelper.sesionsViewMapperArray(res);
         });
+    },
+    checkUserSession(deviceId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const res = yield db_1.securityDevicesCollection.findOne({ deviceId: deviceId });
+            return res;
+        });
     }
 };

@@ -2,6 +2,8 @@ import { Request, Response, Router } from "express";
 import { checkRefreshToken } from "../middlewares/checkRefreshToken-middleware";
 import { sessionsQuery } from "../repositories/query/query-Sessions";
 import { userDbType } from "../types/user-type";
+import { requestWithParams } from "../types/root-type";
+import { sessionService } from "../domain/session-service";
 
 
 
@@ -17,4 +19,17 @@ devicesRouter.get("/devices", checkRefreshToken,async(req:Request, res:Response)
         return
     }
     res.status(200).send(result)
+})
+devicesRouter.delete("/devices/:deviceId",checkRefreshToken, async(req:requestWithParams<{deviceId: string}>, res:Response) => {
+    const result = await sessionService.deleteSession(req.params.deviceId)
+    if(!result){
+        res.sendStatus(404)
+        return
+    }
+    const session = await sessionsQuery.checkUserSession(req.params.deviceId)
+    if(session && session.userId !== req.user?._id.toString()){
+        res.sendStatus(403)
+        return
+    }
+    res.sendStatus(204)
 })

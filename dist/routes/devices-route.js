@@ -13,6 +13,7 @@ exports.devicesRouter = void 0;
 const express_1 = require("express");
 const checkRefreshToken_middleware_1 = require("../middlewares/checkRefreshToken-middleware");
 const query_Sessions_1 = require("../repositories/query/query-Sessions");
+const session_service_1 = require("../domain/session-service");
 exports.devicesRouter = (0, express_1.Router)({});
 exports.devicesRouter.get("/devices", checkRefreshToken_middleware_1.checkRefreshToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user = req.user;
@@ -22,4 +23,18 @@ exports.devicesRouter.get("/devices", checkRefreshToken_middleware_1.checkRefres
         return;
     }
     res.status(200).send(result);
+}));
+exports.devicesRouter.delete("/devices/:deviceId", checkRefreshToken_middleware_1.checkRefreshToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    const result = yield session_service_1.sessionService.deleteSession(req.params.deviceId);
+    if (!result) {
+        res.sendStatus(404);
+        return;
+    }
+    const session = yield query_Sessions_1.sessionsQuery.checkUserSession(req.params.deviceId);
+    if (session && session.userId !== ((_a = req.user) === null || _a === void 0 ? void 0 : _a._id.toString())) {
+        res.sendStatus(403);
+        return;
+    }
+    res.sendStatus(204);
 }));

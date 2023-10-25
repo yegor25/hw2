@@ -1,5 +1,5 @@
 import { securityDevicesCollection } from "../../db"
-import {  securityDevicesViewType } from "../../types/securityDevices-type"
+import {  securityDevicesDbType, securityDevicesViewType } from "../../types/securityDevices-type"
 import { sessionsHelper } from "../helpers/sessions-helper"
 
 
@@ -14,5 +14,9 @@ export const sessionsQuery = {
         const res = await securityDevicesCollection.find({userId: userId}).toArray()
         if(!res) return null
         return sessionsHelper.sesionsViewMapperArray(res)
+    },
+    async checkUserSession(deviceId: string):Promise<securityDevicesDbType | null>{
+        const res = await securityDevicesCollection.findOne({deviceId: deviceId})
+        return res
     }
 }
