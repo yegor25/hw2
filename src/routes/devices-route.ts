@@ -32,10 +32,10 @@ devicesRouter.delete("/devices", checkRefreshToken,async(req:Request, res:Respon
 })
 devicesRouter.delete("/devices/:deviceId",checkRefreshToken, async(req:requestWithParams<{deviceId: string}>, res:Response) => {
     const result = await sessionService.deleteSession(req.params.deviceId)
-    if(!result){
-        res.sendStatus(404)
-        return
-    }
+    // if(!result){
+    //     res.sendStatus(404)
+    //     return
+    // }
     const session = await sessionsQuery.checkUserSession(req.params.deviceId)
     if(session && session.userId !== req.user?._id.toString()){
         res.sendStatus(403)
