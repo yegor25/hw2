@@ -80,6 +80,7 @@ authRouter.post("/refresh-token", checkRefreshToken,async(req:Request, res:Respo
     const session = await authService.saveSession({ip, title, userId: user._id.toString()})
     const refreshToken = await jwtService.createRefreshToken(user, session.deviceId)
     const accessToken = await jwtService.createAccesToken(user)
+    await sessionService.changectiveDate(req.body.deviceId)
     res.cookie("refreshToken", refreshToken,{httpOnly: true, secure: true})
     res.status(200).send({accessToken})
 })

@@ -85,6 +85,7 @@ exports.authRouter.post("/refresh-token", checkRefreshToken_middleware_1.checkRe
     const session = yield auth_service_1.authService.saveSession({ ip, title, userId: user._id.toString() });
     const refreshToken = yield jwt_service_1.jwtService.createRefreshToken(user, session.deviceId);
     const accessToken = yield jwt_service_1.jwtService.createAccesToken(user);
+    yield session_service_1.sessionService.changectiveDate(req.body.deviceId);
     res.cookie("refreshToken", refreshToken, { httpOnly: true, secure: true });
     res.status(200).send({ accessToken });
 }));

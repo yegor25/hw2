@@ -17,5 +17,13 @@ export const securityDevicesRepository = {
             {$set: {isActive: false}}
         )
         return res.modifiedCount === 1
+    },
+    async changeActiveDate(deviceId: string):Promise<boolean>{
+        const res = await securityDevicesCollection.updateOne(
+            {deviceId: deviceId},
+            {$set: {lastActiveDate: new Date().toISOString()}}
+
+        )
+        return res.modifiedCount === 1
     }
 }

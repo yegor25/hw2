@@ -29,5 +29,11 @@ exports.securityDevicesRepository = {
             const res = yield db_1.securityDevicesCollection.updateOne({ deviceId: deviceId }, { $set: { isActive: false } });
             return res.modifiedCount === 1;
         });
+    },
+    changeActiveDate(deviceId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const res = yield db_1.securityDevicesCollection.updateOne({ deviceId: deviceId }, { $set: { lastActiveDate: new Date().toISOString() } });
+            return res.modifiedCount === 1;
+        });
     }
 };

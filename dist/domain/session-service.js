@@ -21,5 +21,10 @@ exports.sessionService = {
         return __awaiter(this, void 0, void 0, function* () {
             return secirityDevices_repository_1.securityDevicesRepository.deactivateSession(deviceId);
         });
+    },
+    changectiveDate(deviceId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return secirityDevices_repository_1.securityDevicesRepository.changeActiveDate(deviceId);
+        });
     }
 };

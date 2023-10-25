@@ -9,5 +9,8 @@ export const sessionService = {
     async deactivateSession(deviceId: string):Promise<boolean>{
         return  securityDevicesRepository.deactivateSession(deviceId)
         
+    },
+    async changectiveDate(deviceId: string):Promise<boolean>{
+        return securityDevicesRepository.changeActiveDate(deviceId)
     }
 }
