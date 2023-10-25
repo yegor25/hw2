@@ -25,6 +25,7 @@ export const checkRefreshToken = async(req:Request, res:Response, next: NextFunc
             return
         }
         req.user = await  QueryUserRepository.findUserById(new ObjectId(isValid.userId))
+        req.body.deviceId = isValid.deviceId
         next()
     }
     

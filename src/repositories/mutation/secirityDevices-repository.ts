@@ -10,5 +10,12 @@ export const securityDevicesRepository = {
     async deleteDeviceSession(deviceId: string):Promise<boolean>{
         const res = await securityDevicesCollection.deleteOne({deviceId: deviceId})
         return res.deletedCount === 1
+    },
+    async deactivateSession(deviceId: string):Promise<boolean>{
+        const res = await securityDevicesCollection.updateOne(
+            {deviceId: deviceId},
+            {$set: {isActive: false}}
+        )
+        return res.modifiedCount === 1
     }
 }

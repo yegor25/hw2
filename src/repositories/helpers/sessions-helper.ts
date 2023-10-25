@@ -11,7 +11,8 @@ export const sessionsHelper = {
             userId,
             ip,
             deviceId: v4(),
-            lastActiveDate: new Date().toISOString()
+            lastActiveDate: new Date().toISOString(),
+            isActive: true
         }
         return res
     },

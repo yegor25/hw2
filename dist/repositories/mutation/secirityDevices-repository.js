@@ -23,5 +23,11 @@ exports.securityDevicesRepository = {
             const res = yield db_1.securityDevicesCollection.deleteOne({ deviceId: deviceId });
             return res.deletedCount === 1;
         });
+    },
+    deactivateSession(deviceId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const res = yield db_1.securityDevicesCollection.updateOne({ deviceId: deviceId }, { $set: { isActive: false } });
+            return res.modifiedCount === 1;
+        });
     }
 };

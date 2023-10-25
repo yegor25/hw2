@@ -32,6 +32,7 @@ const checkRefreshToken = (req, res, next) => __awaiter(void 0, void 0, void 0, 
             return;
         }
         req.user = yield query_UserRepository_1.QueryUserRepository.findUserById(new mongodb_1.ObjectId(isValid.userId));
+        req.body.deviceId = isValid.deviceId;
         next();
     }
 });

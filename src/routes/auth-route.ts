@@ -12,6 +12,7 @@ import { resendingEmailValidator, validateResendingEmail } from "../middlewares/
 import { authMiddleware } from "../middlewares/auth-middleware";
 import { checkRefreshToken } from "../middlewares/checkRefreshToken-middleware";
 import { securityDevicesRepository } from "../repositories/mutation/secirityDevices-repository";
+import { sessionService } from "../domain/session-service";
 
 
 export const authRouter = Router({})
@@ -66,6 +67,7 @@ authRouter.get("/me",authMiddleware,async(req:Request, res: Response) => {
 })
 authRouter.post("/logout", checkRefreshToken,async(req:Request, res:Response) => {
     if(req.user) await authService.saveOldToken(req.cookies.refreshToken, req.user?._id.toString() as string)
+    await sessionService.deactivateSession(req.body.deviceId)
     res.clearCookie("refreshToken")
     res.sendStatus(204)
 })

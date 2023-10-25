@@ -20,6 +20,7 @@ const codeConfirmation_validator_1 = require("../middlewares/codeConfirmation-va
 const resendingEmail_validator_1 = require("../middlewares/resendingEmail-validator");
 const auth_middleware_1 = require("../middlewares/auth-middleware");
 const checkRefreshToken_middleware_1 = require("../middlewares/checkRefreshToken-middleware");
+const session_service_1 = require("../domain/session-service");
 exports.authRouter = (0, express_1.Router)({});
 exports.authRouter.post("/login", auth_validator_1.authValidator, auth_validator_1.authValidate, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user = yield query_UserRepository_1.QueryUserRepository.checkUser(req.body);
@@ -70,6 +71,7 @@ exports.authRouter.post("/logout", checkRefreshToken_middleware_1.checkRefreshTo
     var _a;
     if (req.user)
         yield auth_service_1.authService.saveOldToken(req.cookies.refreshToken, (_a = req.user) === null || _a === void 0 ? void 0 : _a._id.toString());
+    yield session_service_1.sessionService.deactivateSession(req.body.deviceId);
     res.clearCookie("refreshToken");
     res.sendStatus(204);
 }));

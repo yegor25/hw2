@@ -8,7 +8,8 @@ export type securityDevicesDbType = {
     title: string,
     lastActiveDate: string,
     deviceId: string,
-    userId: string
+    userId: string,
+    isActive: boolean
 }
 export type securityDevicesViewType = {
     ip: string,

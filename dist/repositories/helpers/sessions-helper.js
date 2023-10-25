@@ -12,7 +12,8 @@ exports.sessionsHelper = {
             userId,
             ip,
             deviceId: (0, uuid_1.v4)(),
-            lastActiveDate: new Date().toISOString()
+            lastActiveDate: new Date().toISOString(),
+            isActive: true
         };
         return res;
     },
