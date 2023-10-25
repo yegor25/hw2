@@ -31,6 +31,10 @@ export const securityDevicesRepository = {
             {userId: userId, deviceId: {$ne: deviceId}},
             {$set: {isActive: false}}
         )
-        return res.modifiedCount >= 0
+        return res.modifiedCount > 0
+    },
+    async deletAllData():Promise<boolean>{
+        const res = await securityDevicesCollection.deleteMany({})
+        return res.deletedCount > 0
     }
 }

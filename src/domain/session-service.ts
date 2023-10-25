@@ -15,5 +15,8 @@ export const sessionService = {
     },
     async deleteAllsessionsBesideCurrenr(deviceId: string, userId: string):Promise<boolean>{
         return securityDevicesRepository.deleteAllsessionBesideCurrent(deviceId, userId)
+    },
+    async deleteAllsessions(){
+        return securityDevicesRepository.deletAllData()
     }
 }

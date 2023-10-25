@@ -31,5 +31,10 @@ exports.sessionService = {
         return __awaiter(this, void 0, void 0, function* () {
             return secirityDevices_repository_1.securityDevicesRepository.deleteAllsessionBesideCurrent(deviceId, userId);
         });
+    },
+    deleteAllsessions() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return secirityDevices_repository_1.securityDevicesRepository.deletAllData();
+        });
     }
 };

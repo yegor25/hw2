@@ -39,7 +39,13 @@ exports.securityDevicesRepository = {
     deleteAllsessionBesideCurrent(deviceId, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             const res = yield db_1.securityDevicesCollection.updateMany({ userId: userId, deviceId: { $ne: deviceId } }, { $set: { isActive: false } });
-            return res.modifiedCount >= 0;
+            return res.modifiedCount > 0;
+        });
+    },
+    deletAllData() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const res = yield db_1.securityDevicesCollection.deleteMany({});
+            return res.deletedCount > 0;
         });
     }
 };
