@@ -32,8 +32,9 @@ exports.authRouter.post("/login", auth_validator_1.authValidator, auth_validator
     const ip = req.ip;
     const title = req.headers["user-agent"] || "Chrome 105";
     const session = yield auth_service_1.authService.saveSession({ ip, title, userId: user === null || user === void 0 ? void 0 : user._id.toString() });
+    console.log(session);
     const token = yield jwt_service_1.jwtService.createAccesToken(user);
-    const refresh = yield jwt_service_1.jwtService.createRefreshToken(user, session.deviceId);
+    const refresh = yield jwt_service_1.jwtService.createRefreshToken(user, session);
     res.cookie("refreshToken", refresh, { httpOnly: true, secure: true });
     res.status(200).send({ accessToken: token });
 }));
@@ -75,7 +76,7 @@ exports.authRouter.post("/refresh-token", checkRefreshToken_middleware_1.checkRe
     const ip = req.ip;
     const title = req.headers["user-agent"] || "Chrome 105";
     const session = yield auth_service_1.authService.saveSession({ ip, title, userId: user._id.toString() });
-    const refreshToken = yield jwt_service_1.jwtService.createRefreshToken(user, session.deviceId);
+    const refreshToken = yield jwt_service_1.jwtService.createRefreshToken(user, session);
     const accessToken = yield jwt_service_1.jwtService.createAccesToken(user);
     yield session_service_1.sessionService.changectiveDate(req.body.deviceId);
     res.cookie("refreshToken", refreshToken, { httpOnly: true, secure: true });

@@ -29,8 +29,10 @@ authRouter.post("/login",authValidator,authValidate ,rateLimiting,async (req:req
     const ip = req.ip
     const title = req.headers["user-agent"] || "Chrome 105"
     const session = await authService.saveSession({ip, title,userId: user?._id.toString()})
+   
+console.log(session)
     const token = await jwtService.createAccesToken(user)
-    const refresh = await jwtService.createRefreshToken(user, session.deviceId)
+    const refresh = await jwtService.createRefreshToken(user, session)
     res.cookie("refreshToken", refresh, {httpOnly: true, secure: true})
     res.status(200).send({accessToken: token})
 })
@@ -73,7 +75,7 @@ authRouter.post("/refresh-token", checkRefreshToken,async(req:Request, res:Respo
     const ip = req.ip
     const title = req.headers["user-agent"] || "Chrome 105"
     const session = await authService.saveSession({ip, title, userId: user._id.toString()})
-    const refreshToken = await jwtService.createRefreshToken(user, session.deviceId)
+    const refreshToken = await jwtService.createRefreshToken(user, session)
     const accessToken = await jwtService.createAccesToken(user)
     await sessionService.changectiveDate(req.body.deviceId)
     res.cookie("refreshToken", refreshToken,{httpOnly: true, secure: true})

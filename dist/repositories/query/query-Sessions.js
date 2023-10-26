@@ -36,4 +36,12 @@ exports.sessionsQuery = {
             return res;
         });
     },
+    checkSession(data) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const res = yield db_1.securityDevicesCollection.findOne({ userId: data.userId, title: data.title, ip: data.ip });
+            if (!res)
+                return null;
+            return res.deviceId;
+        });
+    }
 };

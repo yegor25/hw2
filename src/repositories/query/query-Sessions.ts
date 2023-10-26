@@ -1,5 +1,5 @@
 import { securityDevicesCollection } from "../../db"
-import {  securityDevicesDbType, securityDevicesViewType } from "../../types/securityDevices-type"
+import {  securityDevicesDbType, securityDevicesInputType, securityDevicesViewType } from "../../types/securityDevices-type"
 import { sessionsHelper } from "../helpers/sessions-helper"
 
 
@@ -20,5 +20,10 @@ export const sessionsQuery = {
         const res = await securityDevicesCollection.findOne({deviceId: deviceId})
         return res
     },
+    async checkSession(data: securityDevicesInputType):Promise<string | null>{
+        const res = await securityDevicesCollection.findOne({userId: data.userId, title:data.title, ip: data.ip})
+        if(!res) return null
+        return res.deviceId
+    }
     
 }
