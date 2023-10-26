@@ -13,8 +13,10 @@ export const devicesRouter = Router({})
 
 
 devicesRouter.get("/devices", checkRefreshToken, async (req: Request, res: Response) => {
+    
     const user = req.user as userDbType
     const result = await sessionsQuery.getAllSessions(user._id.toString())
+    console.log("result get", result)
     if (!result) {
         res.end()
         return

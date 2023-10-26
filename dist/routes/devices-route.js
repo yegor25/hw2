@@ -18,6 +18,7 @@ exports.devicesRouter = (0, express_1.Router)({});
 exports.devicesRouter.get("/devices", checkRefreshToken_middleware_1.checkRefreshToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user = req.user;
     const result = yield query_Sessions_1.sessionsQuery.getAllSessions(user._id.toString());
+    console.log("result get", result);
     if (!result) {
         res.end();
         return;
