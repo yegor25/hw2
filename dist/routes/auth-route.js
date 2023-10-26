@@ -41,18 +41,9 @@ exports.authRouter.post("/registration", rateLimiting_middleware_1.rateLimiting,
     const user = yield auth_service_1.authService.registerUser(req.body);
     res.sendStatus(204);
 }));
-exports.authRouter.post("/registration-confirmation", codeConfirmation_validator_1.codeConfiramtionValidator, codeConfirmation_validator_1.validateCodeConfirmation, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.authRouter.post("/registration-confirmation", rateLimiting_middleware_1.rateLimiting, codeConfirmation_validator_1.codeConfiramtionValidator, codeConfirmation_validator_1.validateCodeConfirmation, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const code = req.body.code;
-    // console.log("code", code)
-    // if(!code){
-    //     res.sendStatus(400)
-    //     return
-    // }
     const confirmedUser = yield auth_service_1.authService.confirmUser(code);
-    // if(!confirmedUser){
-    //     res.sendStatus(400)
-    //     return
-    // }
     res.sendStatus(204);
 }));
 exports.authRouter.post("/registration-email-resending", rateLimiting_middleware_1.rateLimiting, resendingEmail_validator_1.resendingEmailValidator, resendingEmail_validator_1.validateResendingEmail, (req, res) => __awaiter(void 0, void 0, void 0, function* () {

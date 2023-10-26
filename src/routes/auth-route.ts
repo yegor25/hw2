@@ -37,19 +37,12 @@ authRouter.post("/registration",rateLimiting,registerValidator, registerValidate
     const user = await authService.registerUser(req.body) 
     res.sendStatus(204)
 })
-authRouter.post("/registration-confirmation", codeConfiramtionValidator, validateCodeConfirmation,async (req:requestWithBody<{code: string}>,res:Response) => {
+authRouter.post("/registration-confirmation", rateLimiting,codeConfiramtionValidator, validateCodeConfirmation,async (req:requestWithBody<{code: string}>,res:Response) => {
     
     const code = req.body.code
-    // console.log("code", code)
-    // if(!code){
-    //     res.sendStatus(400)
-    //     return
-    // }
+    
     const confirmedUser = await authService.confirmUser(code)
-    // if(!confirmedUser){
-    //     res.sendStatus(400)
-    //     return
-    // }
+   
     res.sendStatus(204)
 })
 authRouter.post("/registration-email-resending", rateLimiting,resendingEmailValidator, validateResendingEmail,async (req:requestWithBody<{email: string}>,res:Response) => {
