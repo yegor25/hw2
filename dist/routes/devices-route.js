@@ -27,7 +27,7 @@ exports.devicesRouter.get("/devices", checkRefreshToken_middleware_1.checkRefres
 }));
 exports.devicesRouter.delete("/devices", checkRefreshToken_middleware_1.checkRefreshToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user = req.user;
-    const result = yield db_1.securityDevicesCollection.deleteMany({ isActive: { $ne: true } }
+    const result = yield db_1.securityDevicesCollection.deleteMany({ deviceId: { $ne: req.body.deviceId } }
     // {userId: user._id.toString(), deviceId: {$ne: req.body.deviceId}},
     );
     // await sessionService.deleteAllsessionsBesideCurrenr(req.body.deviceId,user._id.toString())
