@@ -18,13 +18,14 @@ import { rateLimiting } from "../middlewares/rateLimiting-middleware";
 
 export const authRouter = Router({})
 
-authRouter.post("/login",authValidator, authValidate ,rateLimiting,async (req:requestWithBody<loginType>, res: Response) => {
+authRouter.post("/login",authValidator,authValidate, rateLimiting ,async (req:requestWithBody<loginType>, res: Response) => {
     
     const user = await QueryUserRepository.checkUser(req.body)
     if(!user){
         res.sendStatus(401)
         return
     }
+    
     const ip = req.ip
     const title = req.headers["user-agent"] || "Chrome 105"
     const session = await authService.saveSession({ip, title,userId: user?._id.toString()})
