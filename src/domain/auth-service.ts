@@ -9,7 +9,6 @@ import { tokenRepository } from "../repositories/mutation/token-repository"
 import { securityDevicesInputType, securityDevicesViewType } from "../types/securityDevices-type"
 import { securityDevicesRepository } from "../repositories/mutation/secirityDevices-repository"
 import { sessionsHelper } from "../repositories/helpers/sessions-helper"
-import { sessionsQuery } from "../repositories/query/query-Sessions"
 
 
 
@@ -38,15 +37,9 @@ export const authService = {
         }
         return await tokenRepository.saveToken(data)
     },
-    async saveSession(data: securityDevicesInputType):Promise< string>{
-        const isExist = await sessionsQuery.checkSession(data)
-        if(isExist){
-           await securityDevicesRepository.changeActiveDate(isExist)
-           return isExist
-            
-        }
+    async saveSession(data: securityDevicesInputType):Promise<securityDevicesViewType>{
         const res = await securityDevicesRepository.saveSessions(sessionsHelper.sessionMapperForDb(data))
-        return sessionsHelper.sessionViewMapper(res).deviceId
+        return sessionsHelper.sessionViewMapper(res)
     }
     
 }

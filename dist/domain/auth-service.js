@@ -17,7 +17,6 @@ const helper_1 = require("./helper");
 const token_repository_1 = require("../repositories/mutation/token-repository");
 const secirityDevices_repository_1 = require("../repositories/mutation/secirityDevices-repository");
 const sessions_helper_1 = require("../repositories/helpers/sessions-helper");
-const query_Sessions_1 = require("../repositories/query/query-Sessions");
 exports.authService = {
     registerUser(data) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -53,13 +52,8 @@ exports.authService = {
     },
     saveSession(data) {
         return __awaiter(this, void 0, void 0, function* () {
-            const isExist = yield query_Sessions_1.sessionsQuery.checkSession(data);
-            if (isExist) {
-                yield secirityDevices_repository_1.securityDevicesRepository.changeActiveDate(isExist);
-                return isExist;
-            }
             const res = yield secirityDevices_repository_1.securityDevicesRepository.saveSessions(sessions_helper_1.sessionsHelper.sessionMapperForDb(data));
-            return sessions_helper_1.sessionsHelper.sessionViewMapper(res).deviceId;
+            return sessions_helper_1.sessionsHelper.sessionViewMapper(res);
         });
     }
 };
