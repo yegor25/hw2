@@ -22,7 +22,7 @@ export const blogCollection = db.collection<blogDbType>('blogs')
 export const userCollection = db.collection<userDbType>('users')
 export const commentsCollection = db.collection<CommentDbModelType>('comments')
 export const tokensCollection = db.collection<TokenDbType>('tokens')
-export const securityDevicesCollection = db.collection<securityDevicesDbType>("securityDe")
+export const securityDevicesCollection = db.collection<securityDevicesDbType>("securityDevices")
 export const requestUserCollections = db.collection<requestUserDbType>("requestUsers")
 
 export const runDb = async () => {

@@ -18,7 +18,7 @@ import { rateLimiting } from "../middlewares/rateLimiting-middleware";
 
 export const authRouter = Router({})
 
-authRouter.post("/login",authValidator,authValidate, rateLimiting ,async (req:requestWithBody<loginType>, res: Response) => {
+authRouter.post("/login",authValidator,authValidate ,async (req:requestWithBody<loginType>, res: Response) => {
     
     const user = await QueryUserRepository.checkUser(req.body)
     if(!user){

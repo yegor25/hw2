@@ -24,7 +24,7 @@ exports.blogCollection = exports.db.collection('blogs');
 exports.userCollection = exports.db.collection('users');
 exports.commentsCollection = exports.db.collection('comments');
 exports.tokensCollection = exports.db.collection('tokens');
-exports.securityDevicesCollection = exports.db.collection("securityDe");
+exports.securityDevicesCollection = exports.db.collection("securityDevices");
 exports.requestUserCollections = exports.db.collection("requestUsers");
 const runDb = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
