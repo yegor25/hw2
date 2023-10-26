@@ -13,7 +13,7 @@ exports.rateLimiting = void 0;
 const requestUser_service_1 = require("../domain/requestUser-service");
 const query_requestUser_1 = require("../repositories/query/query-requestUser");
 const rateLimiting = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const URL = req.baseUrl;
+    const URL = req.originalUrl;
     const IP = req.ip;
     const date = new Date();
     yield requestUser_service_1.requestUserService.saveRequestData({ URL, IP, date });

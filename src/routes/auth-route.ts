@@ -74,7 +74,6 @@ authRouter.post("/refresh-token", checkRefreshToken,async(req:Request, res:Respo
     if(user) await authService.saveOldToken(req.cookies.refreshToken, req.user?._id.toString() as string)
     const ip = req.ip
     const title = req.headers["user-agent"] || "Chrome 105"
-    // const session = await authService.saveSession({ip, title, userId: user._id.toString()})
     const refreshToken = await jwtService.createRefreshToken(user, req.body.deviceId)
     const accessToken = await jwtService.createAccesToken(user)
     await sessionService.changectiveDate(req.body.deviceId)
