@@ -75,8 +75,8 @@ exports.authRouter.post("/refresh-token", checkRefreshToken_middleware_1.checkRe
         yield auth_service_1.authService.saveOldToken(req.cookies.refreshToken, (_b = req.user) === null || _b === void 0 ? void 0 : _b._id.toString());
     const ip = req.ip;
     const title = req.headers["user-agent"] || "Chrome 105";
-    const session = yield auth_service_1.authService.saveSession({ ip, title, userId: user._id.toString() });
-    const refreshToken = yield jwt_service_1.jwtService.createRefreshToken(user, session.deviceId);
+    // const session = await authService.saveSession({ip, title, userId: user._id.toString()})
+    const refreshToken = yield jwt_service_1.jwtService.createRefreshToken(user, req.body.deviceId);
     const accessToken = yield jwt_service_1.jwtService.createAccesToken(user);
     yield session_service_1.sessionService.changectiveDate(req.body.deviceId);
     res.cookie("refreshToken", refreshToken, { httpOnly: true, secure: true });
