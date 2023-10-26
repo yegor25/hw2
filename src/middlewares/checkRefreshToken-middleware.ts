@@ -2,8 +2,6 @@ import { NextFunction, Request, Response } from "express";
 import { jwtService } from "../application/jwt-service";
 import { QueryUserRepository } from "../repositories/query/query-UserRepository";
 import { ObjectId } from "mongodb";
-import { userDbType } from "../types/user-type";
-import { authService } from "../domain/auth-service";
 import { QueryTokenRepository } from "../repositories/query/queryToken-repository";
 
 
@@ -19,11 +17,11 @@ export const checkRefreshToken = async(req:Request, res:Response, next: NextFunc
         res.sendStatus(401)
         return
     } else {
-        const tokenOfBlackList = await QueryTokenRepository.findToken(token)
-        if (tokenOfBlackList){
-            res.sendStatus(401)
-            return
-        }
+        // const tokenOfBlackList = await QueryTokenRepository.findToken(token)
+        // if (tokenOfBlackList){
+        //     res.sendStatus(401)
+        //     return
+        // }
         req.user = await  QueryUserRepository.findUserById(new ObjectId(isValid.userId))
         req.body.deviceId = isValid.deviceId
         next()

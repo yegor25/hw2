@@ -12,37 +12,33 @@ export const devicesRouter = Router({})
 
 
 
-devicesRouter.get("/devices", checkRefreshToken,async(req:Request, res:Response) => {
+devicesRouter.get("/devices", checkRefreshToken, async (req: Request, res: Response) => {
     const user = req.user as userDbType
     const result = await sessionsQuery.getAllSessions(user._id.toString())
-    if(!result) {
+    if (!result) {
         res.end()
         return
     }
     res.status(200).send(result)
 })
-devicesRouter.delete("/devices", checkRefreshToken,async(req:Request, res:Response) => {
+devicesRouter.delete("/devices", checkRefreshToken, async (req: Request, res: Response) => {
     const user = req.user as userDbType
-    const result = await securityDevicesCollection.deleteMany(
-        {userId: req.user?._id.toString(),deviceId: {$ne: req.body.deviceId}}
-        // {userId: user._id.toString(), deviceId: {$ne: req.body.deviceId}},
-    )
-    // await sessionService.deleteAllsessionsBesideCurrenr(req.body.deviceId,user._id.toString())
-    // if(!result) {
-    //     res.end()
-    //     return
-    // }
+    const result = await sessionService.deleteAllsessionsBesideCurrenr(req.body.deviceId, user._id.toString())
+    if (!result) {
+        res.end()
+        return
+    }
     res.sendStatus(204)
-    
+
 })
-devicesRouter.delete("/devices/:deviceId",checkRefreshToken, async(req:requestWithParams<{deviceId: string}>, res:Response) => {
+devicesRouter.delete("/devices/:deviceId", checkRefreshToken, async (req: requestWithParams<{ deviceId: string }>, res: Response) => {
     const result = await sessionService.deleteSession(req.params.deviceId)
-    if(!result){
+    if (!result) {
         res.sendStatus(404)
         return
     }
     const session = await sessionsQuery.checkUserSession(req.params.deviceId)
-    if(session && session.userId !== req.user?._id.toString()){
+    if (session && session.userId !== req.user?._id.toString()) {
         res.sendStatus(403)
         return
     }

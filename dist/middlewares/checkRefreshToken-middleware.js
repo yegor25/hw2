@@ -13,7 +13,6 @@ exports.checkRefreshToken = void 0;
 const jwt_service_1 = require("../application/jwt-service");
 const query_UserRepository_1 = require("../repositories/query/query-UserRepository");
 const mongodb_1 = require("mongodb");
-const queryToken_repository_1 = require("../repositories/query/queryToken-repository");
 const checkRefreshToken = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const token = req.cookies.refreshToken;
     if (!token) {
@@ -26,11 +25,11 @@ const checkRefreshToken = (req, res, next) => __awaiter(void 0, void 0, void 0, 
         return;
     }
     else {
-        const tokenOfBlackList = yield queryToken_repository_1.QueryTokenRepository.findToken(token);
-        if (tokenOfBlackList) {
-            res.sendStatus(401);
-            return;
-        }
+        // const tokenOfBlackList = await QueryTokenRepository.findToken(token)
+        // if (tokenOfBlackList){
+        //     res.sendStatus(401)
+        //     return
+        // }
         req.user = yield query_UserRepository_1.QueryUserRepository.findUserById(new mongodb_1.ObjectId(isValid.userId));
         req.body.deviceId = isValid.deviceId;
         next();
