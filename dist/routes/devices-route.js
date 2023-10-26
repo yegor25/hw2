@@ -14,6 +14,7 @@ const express_1 = require("express");
 const checkRefreshToken_middleware_1 = require("../middlewares/checkRefreshToken-middleware");
 const query_Sessions_1 = require("../repositories/query/query-Sessions");
 const session_service_1 = require("../domain/session-service");
+const db_1 = require("../db");
 exports.devicesRouter = (0, express_1.Router)({});
 exports.devicesRouter.get("/devices", checkRefreshToken_middleware_1.checkRefreshToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user = req.user;
@@ -26,11 +27,12 @@ exports.devicesRouter.get("/devices", checkRefreshToken_middleware_1.checkRefres
 }));
 exports.devicesRouter.delete("/devices", checkRefreshToken_middleware_1.checkRefreshToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user = req.user;
-    const result = yield session_service_1.sessionService.deleteAllsessionsBesideCurrenr(req.body.deviceId, user._id.toString());
-    if (!result) {
-        res.end();
-        return;
-    }
+    const result = yield db_1.securityDevicesCollection.deleteMany({ userId: user._id.toString(), deviceId: { $ne: req.body.deviceId } });
+    // await sessionService.deleteAllsessionsBesideCurrenr(req.body.deviceId,user._id.toString())
+    // if(!result) {
+    //     res.end()
+    //     return
+    // }
     res.sendStatus(204);
 }));
 exports.devicesRouter.delete("/devices/:deviceId", checkRefreshToken_middleware_1.checkRefreshToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {

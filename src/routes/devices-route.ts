@@ -4,6 +4,7 @@ import { sessionsQuery } from "../repositories/query/query-Sessions";
 import { userDbType } from "../types/user-type";
 import { requestWithParams } from "../types/root-type";
 import { sessionService } from "../domain/session-service";
+import { securityDevicesCollection } from "../db";
 
 
 
@@ -22,11 +23,14 @@ devicesRouter.get("/devices", checkRefreshToken,async(req:Request, res:Response)
 })
 devicesRouter.delete("/devices", checkRefreshToken,async(req:Request, res:Response) => {
     const user = req.user as userDbType
-    const result = await sessionService.deleteAllsessionsBesideCurrenr(req.body.deviceId,user._id.toString())
-    if(!result) {
-        res.end()
-        return
-    }
+    const result = await securityDevicesCollection.deleteMany(
+        {userId: user._id.toString(), deviceId: {$ne: req.body.deviceId}},
+    )
+    // await sessionService.deleteAllsessionsBesideCurrenr(req.body.deviceId,user._id.toString())
+    // if(!result) {
+    //     res.end()
+    //     return
+    // }
     res.sendStatus(204)
     
 })
