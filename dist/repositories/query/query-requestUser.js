@@ -15,7 +15,7 @@ exports.QueryRequestUser = {
     countLastRequet(url, ip) {
         return __awaiter(this, void 0, void 0, function* () {
             const filterDate = new Date(Date.now() - 10000);
-            const count = yield db_1.requestUserCollections.countDocuments({ URL: url, IP: ip, date: { $gte: filterDate } });
+            const count = yield db_1.requestUserCollections.countDocuments({ URL: url, IP: ip, date: { $gt: filterDate } });
             return count;
         });
     }
