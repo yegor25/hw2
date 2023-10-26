@@ -24,7 +24,7 @@ devicesRouter.get("/devices", checkRefreshToken,async(req:Request, res:Response)
 devicesRouter.delete("/devices", checkRefreshToken,async(req:Request, res:Response) => {
     const user = req.user as userDbType
     const result = await securityDevicesCollection.deleteMany(
-        {isActive: false}
+        {userId: req.user?._id.toString()}
         // {userId: user._id.toString(), deviceId: {$ne: req.body.deviceId}},
     )
     // await sessionService.deleteAllsessionsBesideCurrenr(req.body.deviceId,user._id.toString())
