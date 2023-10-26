@@ -26,6 +26,7 @@ exports.sessionsQuery = {
             const res = yield db_1.securityDevicesCollection.find({ userId: userId, isActive: true }).toArray();
             if (!res)
                 return null;
+            console.log("sessions in db for user", res);
             return sessions_helper_1.sessionsHelper.sesionsViewMapperArray(res);
         });
     },

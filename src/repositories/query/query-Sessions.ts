@@ -13,6 +13,7 @@ export const sessionsQuery = {
     async getAllSessions(userId: string):Promise<securityDevicesViewType[] | null> {
         const res = await securityDevicesCollection.find({userId: userId, isActive: true}).toArray()
         if(!res) return null
+        console.log("sessions in db for user", res)
         return sessionsHelper.sesionsViewMapperArray(res)
     },
     async checkUserSession(deviceId: string):Promise<securityDevicesDbType | null>{
