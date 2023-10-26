@@ -13,11 +13,12 @@ import { authMiddleware } from "../middlewares/auth-middleware";
 import { checkRefreshToken } from "../middlewares/checkRefreshToken-middleware";
 import { securityDevicesRepository } from "../repositories/mutation/secirityDevices-repository";
 import { sessionService } from "../domain/session-service";
+import { rateLimiting } from "../middlewares/rateLimiting-middleware";
 
 
 export const authRouter = Router({})
 
-authRouter.post("/login",authValidator, authValidate ,async (req:requestWithBody<loginType>, res: Response) => {
+authRouter.post("/login",authValidator, authValidate ,rateLimiting,async (req:requestWithBody<loginType>, res: Response) => {
     
     const user = await QueryUserRepository.checkUser(req.body)
     if(!user){
@@ -32,7 +33,7 @@ authRouter.post("/login",authValidator, authValidate ,async (req:requestWithBody
     res.cookie("refreshToken", refresh, {httpOnly: true, secure: true})
     res.status(200).send({accessToken: token})
 })
-authRouter.post("/registration",registerValidator, registerValidate ,async (req:requestWithBody<userInputType>, res: Response) => {
+authRouter.post("/registration",rateLimiting,registerValidator, registerValidate ,async (req:requestWithBody<userInputType>, res: Response) => {
     const user = await authService.registerUser(req.body) 
     res.sendStatus(204)
 })
@@ -51,7 +52,7 @@ authRouter.post("/registration-confirmation", codeConfiramtionValidator, validat
     // }
     res.sendStatus(204)
 })
-authRouter.post("/registration-email-resending", resendingEmailValidator, validateResendingEmail,async (req:requestWithBody<{email: string}>,res:Response) => {
+authRouter.post("/registration-email-resending", rateLimiting,resendingEmailValidator, validateResendingEmail,async (req:requestWithBody<{email: string}>,res:Response) => {
     const resending = await authService.resendingEmail(req.body.email)
     
     res.sendStatus(204)

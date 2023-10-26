@@ -21,8 +21,9 @@ const resendingEmail_validator_1 = require("../middlewares/resendingEmail-valida
 const auth_middleware_1 = require("../middlewares/auth-middleware");
 const checkRefreshToken_middleware_1 = require("../middlewares/checkRefreshToken-middleware");
 const session_service_1 = require("../domain/session-service");
+const rateLimiting_middleware_1 = require("../middlewares/rateLimiting-middleware");
 exports.authRouter = (0, express_1.Router)({});
-exports.authRouter.post("/login", auth_validator_1.authValidator, auth_validator_1.authValidate, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.authRouter.post("/login", auth_validator_1.authValidator, auth_validator_1.authValidate, rateLimiting_middleware_1.rateLimiting, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user = yield query_UserRepository_1.QueryUserRepository.checkUser(req.body);
     if (!user) {
         res.sendStatus(401);
@@ -36,7 +37,7 @@ exports.authRouter.post("/login", auth_validator_1.authValidator, auth_validator
     res.cookie("refreshToken", refresh, { httpOnly: true, secure: true });
     res.status(200).send({ accessToken: token });
 }));
-exports.authRouter.post("/registration", register_validator_1.registerValidator, register_validator_1.registerValidate, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.authRouter.post("/registration", rateLimiting_middleware_1.rateLimiting, register_validator_1.registerValidator, register_validator_1.registerValidate, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user = yield auth_service_1.authService.registerUser(req.body);
     res.sendStatus(204);
 }));
@@ -54,7 +55,7 @@ exports.authRouter.post("/registration-confirmation", codeConfirmation_validator
     // }
     res.sendStatus(204);
 }));
-exports.authRouter.post("/registration-email-resending", resendingEmail_validator_1.resendingEmailValidator, resendingEmail_validator_1.validateResendingEmail, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.authRouter.post("/registration-email-resending", rateLimiting_middleware_1.rateLimiting, resendingEmail_validator_1.resendingEmailValidator, resendingEmail_validator_1.validateResendingEmail, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const resending = yield auth_service_1.authService.resendingEmail(req.body.email);
     res.sendStatus(204);
 }));
