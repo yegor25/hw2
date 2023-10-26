@@ -26,9 +26,8 @@ exports.devicesRouter.get("/devices", checkRefreshToken_middleware_1.checkRefres
     res.status(200).send(result);
 }));
 exports.devicesRouter.delete("/devices", checkRefreshToken_middleware_1.checkRefreshToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
     const user = req.user;
-    const result = yield db_1.securityDevicesCollection.deleteMany({ userId: (_a = req.user) === null || _a === void 0 ? void 0 : _a._id.toString() }
+    const result = yield db_1.securityDevicesCollection.deleteMany({ deviceId: { $ne: req.body.device } }
     // {userId: user._id.toString(), deviceId: {$ne: req.body.deviceId}},
     );
     // await sessionService.deleteAllsessionsBesideCurrenr(req.body.deviceId,user._id.toString())
@@ -39,14 +38,14 @@ exports.devicesRouter.delete("/devices", checkRefreshToken_middleware_1.checkRef
     res.sendStatus(204);
 }));
 exports.devicesRouter.delete("/devices/:deviceId", checkRefreshToken_middleware_1.checkRefreshToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _b;
+    var _a;
     const result = yield session_service_1.sessionService.deleteSession(req.params.deviceId);
     if (!result) {
         res.sendStatus(404);
         return;
     }
     const session = yield query_Sessions_1.sessionsQuery.checkUserSession(req.params.deviceId);
-    if (session && session.userId !== ((_b = req.user) === null || _b === void 0 ? void 0 : _b._id.toString())) {
+    if (session && session.userId !== ((_a = req.user) === null || _a === void 0 ? void 0 : _a._id.toString())) {
         res.sendStatus(403);
         return;
     }
