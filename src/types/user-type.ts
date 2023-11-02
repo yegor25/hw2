@@ -32,3 +32,10 @@ export type userConfirmationType = {
     isConfirmed: boolean,
     expirationDate: Date
 }
+export type passRecoveryDbType = {
+    _id: ObjectId,
+    userId: string,
+    recoveryCode: string,
+    expirationDate: Date
+}
+

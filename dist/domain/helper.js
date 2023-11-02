@@ -37,5 +37,14 @@ exports.helper = {
             isConfirmed: false
         };
         return data;
+    },
+    recoverPassDataMapper(userId) {
+        const res = {
+            _id: new mongodb_1.ObjectId(),
+            userId,
+            expirationDate: (0, date_fns_1.addDays)(new Date(), 1),
+            recoveryCode: (0, uuid_1.v4)()
+        };
+        return res;
     }
 };

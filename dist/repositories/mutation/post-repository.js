@@ -10,9 +10,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.postRepository = void 0;
-const db_1 = require("../../db");
 const mongodb_1 = require("mongodb");
 const post_helper_1 = require("../helpers/post-helper");
+const Post_1 = require("../../types/models/Post");
 // let posts: postType[] = [
 //     {
 //         id: "string",
@@ -26,19 +26,19 @@ const post_helper_1 = require("../helpers/post-helper");
 exports.postRepository = {
     createPost(post) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield db_1.postsCollection.insertOne(post);
+            yield Post_1.PostModel.create(post);
             return post_helper_1.postHelper.mapPostToView(post);
         });
     },
     createPostForBlog(post) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield db_1.postsCollection.insertOne(post);
+            yield Post_1.PostModel.create(post);
             return post_helper_1.postHelper.mapPostToView(post);
         });
     },
     changePost(id, payload) {
         return __awaiter(this, void 0, void 0, function* () {
-            const post = yield db_1.postsCollection.updateOne({ _id: id }, { $set: {
+            const post = yield Post_1.PostModel.updateOne({ _id: id }, { $set: {
                     title: payload.title,
                     shortDescription: payload.shortDescription,
                     blogId: payload.blogId,
@@ -49,13 +49,13 @@ exports.postRepository = {
     },
     deletePost(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const res = yield db_1.postsCollection.deleteOne({ _id: new mongodb_1.ObjectId(id) });
+            const res = yield Post_1.PostModel.deleteOne({ _id: new mongodb_1.ObjectId(id) });
             return res.deletedCount === 1;
         });
     },
     deleteAll() {
         return __awaiter(this, void 0, void 0, function* () {
-            const res = yield db_1.postsCollection.deleteMany({});
+            const res = yield Post_1.PostModel.deleteMany({});
             return res.deletedCount > 0;
         });
     }

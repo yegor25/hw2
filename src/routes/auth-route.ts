@@ -1,5 +1,5 @@
 import { Router, Request, Response } from "express";
-import { requestWithBody, requestWithQuery } from "../types/root-type";
+import { requestWithBody } from "../types/root-type";
 import { loginType } from "../types/auth-type";
 import { QueryUserRepository } from "../repositories/query/query-UserRepository";
 import { authValidate, authValidator } from "../middlewares/auth-validator";
@@ -11,9 +11,12 @@ import { codeConfiramtionValidator, validateCodeConfirmation } from "../middlewa
 import { resendingEmailValidator, validateResendingEmail } from "../middlewares/resendingEmail-validator";
 import { authMiddleware } from "../middlewares/auth-middleware";
 import { checkRefreshToken } from "../middlewares/checkRefreshToken-middleware";
-import { securityDevicesRepository } from "../repositories/mutation/secirityDevices-repository";
 import { sessionService } from "../domain/session-service";
 import { rateLimiting } from "../middlewares/rateLimiting-middleware";
+import { passRecoveryValidation } from "../middlewares/passRecovery-validation";
+import { userValidate } from "../middlewares/user-validation";
+import { recoveryCodeValidator } from "../middlewares/recoveryCode-validator";
+import { userService } from "../domain/user-service";
 
 
 export const authRouter = Router({})
@@ -37,19 +40,19 @@ console.log(session)
     res.status(200).send({accessToken: token})
 })
 authRouter.post("/registration",rateLimiting,registerValidator, registerValidate ,async (req:requestWithBody<userInputType>, res: Response) => {
-    const user = await authService.registerUser(req.body) 
+    await authService.registerUser(req.body) 
     res.sendStatus(204)
 })
 authRouter.post("/registration-confirmation", rateLimiting,codeConfiramtionValidator, validateCodeConfirmation,async (req:requestWithBody<{code: string}>,res:Response) => {
     
     const code = req.body.code
     
-    const confirmedUser = await authService.confirmUser(code)
+     await authService.confirmUser(code)
    
     res.sendStatus(204)
 })
 authRouter.post("/registration-email-resending", rateLimiting,resendingEmailValidator, validateResendingEmail,async (req:requestWithBody<{email: string}>,res:Response) => {
-    const resending = await authService.resendingEmail(req.body.email)
+     await authService.resendingEmail(req.body.email)
     
     res.sendStatus(204)
 })
@@ -72,11 +75,18 @@ authRouter.post("/refresh-token", checkRefreshToken,async(req:Request, res:Respo
     
     const user = req.user as userDbType
     if(user) await authService.saveOldToken(req.cookies.refreshToken, req.user?._id.toString() as string)
-    const ip = req.ip
-    const title = req.headers["user-agent"] || "Chrome 105"
     const refreshToken = await jwtService.createRefreshToken(user, req.body.deviceId)
     const accessToken = await jwtService.createAccesToken(user)
     await sessionService.changectiveDate(req.body.deviceId)
     res.cookie("refreshToken", refreshToken,{httpOnly: true, secure: true})
     res.status(200).send({accessToken})
+})
+authRouter.post("/password-recovery", rateLimiting,passRecoveryValidation, userValidate,async (req:requestWithBody<{email: string}>, res:Response) => {
+    await authService.recoverPassword(req.body.email)
+    res.sendStatus(204)
+})
+authRouter.post("/new-password", rateLimiting,recoveryCodeValidator, userValidate,async (req:requestWithBody<{newPassword: string,recoveryCode: string}>, res: Response) => {
+    const {newPassword, recoveryCode} = req.body
+    await userService.recoverPassword(newPassword, recoveryCode)
+    res.sendStatus(204)
 })

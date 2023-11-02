@@ -1,5 +1,5 @@
 import { ObjectId } from "mongodb"
-import { userConfirmationType, userDbType, userInputType } from "../types/user-type"
+import { passRecoveryDbType, userConfirmationType, userDbType, userInputType } from "../types/user-type"
 import { cryptoService } from "../application/crypto-service"
 import uuid, { v4 } from "uuid"
 import { addDays } from "date-fns"
@@ -25,5 +25,14 @@ export const helper = {
             isConfirmed: false
         } 
         return data
+    },
+    recoverPassDataMapper(userId: string):passRecoveryDbType {
+        const res: passRecoveryDbType = {
+            _id: new ObjectId(),
+            userId,
+            expirationDate: addDays(new Date(),1),
+            recoveryCode: v4()
+        }
+        return res
     }
 }

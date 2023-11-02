@@ -4,6 +4,8 @@ import { userRepository } from "../repositories/mutation/user-repository";
 import { userDbType, userInputType, userViewType } from "../types/user-type";
 import bcrypt from "bcrypt"
 import { mailManager } from "../managers/mail-manager";
+import { cryptoService } from "../application/crypto-service";
+import { queryRecoverPass } from "../repositories/query/query-recoveryPass";
 
 
 const convertId = (id: string) => new ObjectId(id)
@@ -37,5 +39,13 @@ export const userService = {
     },
    async deleteAllUsers ():Promise<boolean> {
     return userRepository.deleteAllUsers()
+   },
+   async recoverPassword(newPassword: string, code: string):Promise<boolean>{
+    const hash = await cryptoService.genHash(newPassword)
+    const user = await queryRecoverPass.checkCode(code)
+    if(!user) return false
+    const res = await userRepository.changePassword(hash.hash, convertId(user.userId))
+    if(!res) return false
+    return true
    }
 }

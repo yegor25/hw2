@@ -17,6 +17,8 @@ const helper_1 = require("./helper");
 const token_repository_1 = require("../repositories/mutation/token-repository");
 const secirityDevices_repository_1 = require("../repositories/mutation/secirityDevices-repository");
 const sessions_helper_1 = require("../repositories/helpers/sessions-helper");
+const query_UserRepository_1 = require("../repositories/query/query-UserRepository");
+const passRecovery_repository_1 = require("../repositories/mutation/passRecovery-repository");
 exports.authService = {
     registerUser(data) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -54,6 +56,17 @@ exports.authService = {
         return __awaiter(this, void 0, void 0, function* () {
             const res = yield secirityDevices_repository_1.securityDevicesRepository.saveSessions(sessions_helper_1.sessionsHelper.sessionMapperForDb(data));
             return sessions_helper_1.sessionsHelper.sessionViewMapper(res);
+        });
+    },
+    recoverPassword(email) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = yield query_UserRepository_1.QueryUserRepository.findUserByLoginOrEmail(email);
+            if (!user)
+                return true;
+            const data = helper_1.helper.recoverPassDataMapper(user._id.toString());
+            const dataForRecovery = yield passRecovery_repository_1.passRecoveryRepository.createPassRecoveryCode(data);
+            yield mail_manager_1.mailManager.passRecovery(email, dataForRecovery);
+            return true;
         });
     }
 };

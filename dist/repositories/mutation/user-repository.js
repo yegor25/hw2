@@ -51,5 +51,11 @@ exports.userRepository = {
             const user = yield db_1.userCollection.updateOne({ email: email }, { $set: { emailConfirmation: data } });
             return data.code;
         });
+    },
+    changePassword(hash, userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const newPass = yield db_1.userCollection.updateOne({ _id: userId }, { $set: { hashPassword: hash } });
+            return newPass.modifiedCount === 1;
+        });
     }
 };

@@ -12,14 +12,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.runDb = exports.requestUserCollections = exports.securityDevicesCollection = exports.tokensCollection = exports.commentsCollection = exports.userCollection = exports.blogCollection = exports.postsCollection = exports.db = void 0;
+exports.runDb = exports.requestUserCollections = exports.securityDevicesCollection = exports.tokensCollection = exports.commentsCollection = exports.userCollection = exports.blogCollection = exports.db = void 0;
 const mongodb_1 = require("mongodb");
 const dotenv_1 = __importDefault(require("dotenv"));
+const mongoose_1 = __importDefault(require("mongoose"));
 dotenv_1.default.config();
 const url = process.env.MONGO_URL || "mongodb://0.0.0.0:27017";
+const dbName = "my-db";
 const client = new mongodb_1.MongoClient(url);
-exports.db = client.db('my-db');
-exports.postsCollection = exports.db.collection('posts');
+exports.db = client.db(dbName);
+// export const postsCollection = db.collection<PostDbType>('posts')
 exports.blogCollection = exports.db.collection('blogs');
 exports.userCollection = exports.db.collection('users');
 exports.commentsCollection = exports.db.collection('comments');
@@ -28,13 +30,13 @@ exports.securityDevicesCollection = exports.db.collection("securityDevices");
 exports.requestUserCollections = exports.db.collection("requestUsers");
 const runDb = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        yield client.connect();
+        yield mongoose_1.default.connect(url + "/" + dbName);
         console.log("db is connected");
     }
     catch (error) {
         console.log("err", error);
         console.log("database is disconnect");
-        yield client.close();
+        yield mongoose_1.default.disconnect();
     }
 });
 exports.runDb = runDb;

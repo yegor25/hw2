@@ -17,6 +17,8 @@ const mongodb_1 = require("mongodb");
 const db_1 = require("../db");
 const user_repository_1 = require("../repositories/mutation/user-repository");
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const crypto_service_1 = require("../application/crypto-service");
+const query_recoveryPass_1 = require("../repositories/query/query-recoveryPass");
 const convertId = (id) => new mongodb_1.ObjectId(id);
 exports.userService = {
     createUser(user) {
@@ -52,6 +54,18 @@ exports.userService = {
     deleteAllUsers() {
         return __awaiter(this, void 0, void 0, function* () {
             return user_repository_1.userRepository.deleteAllUsers();
+        });
+    },
+    recoverPassword(newPassword, code) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const hash = yield crypto_service_1.cryptoService.genHash(newPassword);
+            const user = yield query_recoveryPass_1.queryRecoverPass.checkCode(code);
+            if (!user)
+                return false;
+            const res = yield user_repository_1.userRepository.changePassword(hash.hash, convertId(user.userId));
+            if (!res)
+                return false;
+            return true;
         });
     }
 };

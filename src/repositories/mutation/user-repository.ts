@@ -37,5 +37,12 @@ export const userRepository = {
       {$set: {emailConfirmation: data}}
    )
    return data.code
+  },
+  async changePassword(hash: string, userId: ObjectId):Promise<boolean>{
+    const newPass = await userCollection.updateOne(
+        {_id: userId},
+        {$set: {hashPassword: hash}}
+    )
+    return newPass.modifiedCount === 1
   }
 }

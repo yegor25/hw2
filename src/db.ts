@@ -7,17 +7,18 @@ import { CommentDbModelType } from "./types/comment-type"
 import { TokenDbType } from "./types/tokens-type"
 import { securityDevicesDbType } from "./types/securityDevices-type"
 import { requestUserDbType, requestUserType } from "./types/requestUserType"
+import mongoose from "mongoose"
 dotenv.config()
 
 const url = process.env.MONGO_URL || "mongodb://0.0.0.0:27017"
 
-
+const dbName = "my-db"
 const client = new MongoClient(url)
 
-export const db = client.db('my-db')
+export const db = client.db(dbName)
 
 
-export const postsCollection = db.collection<PostDbType>('posts')
+// export const postsCollection = db.collection<PostDbType>('posts')
 export const blogCollection = db.collection<blogDbType>('blogs')
 export const userCollection = db.collection<userDbType>('users')
 export const commentsCollection = db.collection<CommentDbModelType>('comments')
@@ -27,11 +28,11 @@ export const requestUserCollections = db.collection<requestUserDbType>("requestU
 
 export const runDb = async () => {
     try {
-        await client.connect()
+        await mongoose.connect(url + "/" + dbName)
         console.log("db is connected")
     } catch (error) {
         console.log("err",error)
         console.log("database is disconnect")
-        await client.close()
+        await mongoose.disconnect()
     }
 }

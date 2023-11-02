@@ -22,6 +22,10 @@ const auth_middleware_1 = require("../middlewares/auth-middleware");
 const checkRefreshToken_middleware_1 = require("../middlewares/checkRefreshToken-middleware");
 const session_service_1 = require("../domain/session-service");
 const rateLimiting_middleware_1 = require("../middlewares/rateLimiting-middleware");
+const passRecovery_validation_1 = require("../middlewares/passRecovery-validation");
+const user_validation_1 = require("../middlewares/user-validation");
+const recoveryCode_validator_1 = require("../middlewares/recoveryCode-validator");
+const user_service_1 = require("../domain/user-service");
 exports.authRouter = (0, express_1.Router)({});
 exports.authRouter.post("/login", auth_validator_1.authValidator, auth_validator_1.authValidate, rateLimiting_middleware_1.rateLimiting, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user = yield query_UserRepository_1.QueryUserRepository.checkUser(req.body);
@@ -39,16 +43,16 @@ exports.authRouter.post("/login", auth_validator_1.authValidator, auth_validator
     res.status(200).send({ accessToken: token });
 }));
 exports.authRouter.post("/registration", rateLimiting_middleware_1.rateLimiting, register_validator_1.registerValidator, register_validator_1.registerValidate, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield auth_service_1.authService.registerUser(req.body);
+    yield auth_service_1.authService.registerUser(req.body);
     res.sendStatus(204);
 }));
 exports.authRouter.post("/registration-confirmation", rateLimiting_middleware_1.rateLimiting, codeConfirmation_validator_1.codeConfiramtionValidator, codeConfirmation_validator_1.validateCodeConfirmation, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const code = req.body.code;
-    const confirmedUser = yield auth_service_1.authService.confirmUser(code);
+    yield auth_service_1.authService.confirmUser(code);
     res.sendStatus(204);
 }));
 exports.authRouter.post("/registration-email-resending", rateLimiting_middleware_1.rateLimiting, resendingEmail_validator_1.resendingEmailValidator, resendingEmail_validator_1.validateResendingEmail, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const resending = yield auth_service_1.authService.resendingEmail(req.body.email);
+    yield auth_service_1.authService.resendingEmail(req.body.email);
     res.sendStatus(204);
 }));
 exports.authRouter.get("/me", auth_middleware_1.authMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -73,11 +77,18 @@ exports.authRouter.post("/refresh-token", checkRefreshToken_middleware_1.checkRe
     const user = req.user;
     if (user)
         yield auth_service_1.authService.saveOldToken(req.cookies.refreshToken, (_b = req.user) === null || _b === void 0 ? void 0 : _b._id.toString());
-    const ip = req.ip;
-    const title = req.headers["user-agent"] || "Chrome 105";
     const refreshToken = yield jwt_service_1.jwtService.createRefreshToken(user, req.body.deviceId);
     const accessToken = yield jwt_service_1.jwtService.createAccesToken(user);
     yield session_service_1.sessionService.changectiveDate(req.body.deviceId);
     res.cookie("refreshToken", refreshToken, { httpOnly: true, secure: true });
     res.status(200).send({ accessToken });
+}));
+exports.authRouter.post("/password-recovery", rateLimiting_middleware_1.rateLimiting, passRecovery_validation_1.passRecoveryValidation, user_validation_1.userValidate, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    yield auth_service_1.authService.recoverPassword(req.body.email);
+    res.sendStatus(204);
+}));
+exports.authRouter.post("/new-password", rateLimiting_middleware_1.rateLimiting, recoveryCode_validator_1.recoveryCodeValidator, user_validation_1.userValidate, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { newPassword, recoveryCode } = req.body;
+    yield user_service_1.userService.recoverPassword(newPassword, recoveryCode);
+    res.sendStatus(204);
 }));

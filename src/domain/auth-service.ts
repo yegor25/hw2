@@ -9,6 +9,8 @@ import { tokenRepository } from "../repositories/mutation/token-repository"
 import { securityDevicesInputType, securityDevicesViewType } from "../types/securityDevices-type"
 import { securityDevicesRepository } from "../repositories/mutation/secirityDevices-repository"
 import { sessionsHelper } from "../repositories/helpers/sessions-helper"
+import { QueryUserRepository } from "../repositories/query/query-UserRepository"
+import { passRecoveryRepository } from "../repositories/mutation/passRecovery-repository"
 
 
 
@@ -40,6 +42,14 @@ export const authService = {
     async saveSession(data: securityDevicesInputType):Promise<securityDevicesViewType>{
         const res = await securityDevicesRepository.saveSessions(sessionsHelper.sessionMapperForDb(data))
         return sessionsHelper.sessionViewMapper(res)
+    },
+    async recoverPassword(email: string):Promise<boolean>{
+        const user = await QueryUserRepository.findUserByLoginOrEmail(email)
+        if(!user) return true
+        const data = helper.recoverPassDataMapper(user._id.toString())
+        const dataForRecovery = await passRecoveryRepository.createPassRecoveryCode(data)
+        await mailManager.passRecovery(email, dataForRecovery)
+        return true
     }
     
 }

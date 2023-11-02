@@ -21,5 +21,16 @@ exports.mailManager = {
                     </p>`;
             return mail_adapter_1.mailAdapter.send(email, subject, message);
         });
+    },
+    passRecovery(email, code) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const message = `
+        <h1>Password recovery</h1>
+        <p>To finish password recovery please follow the link below:
+           <a href='https://somesite.com/password-recovery?recoveryCode=${code}'>recovery password</a>
+       </p>
+       `;
+            return mail_adapter_1.mailAdapter.send(email, "Восстановление пароля", message);
+        });
     }
 };
