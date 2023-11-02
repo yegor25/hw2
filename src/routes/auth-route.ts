@@ -90,3 +90,4 @@ authRouter.post("/new-password", rateLimiting,recoveryCodeValidator, userValidat
     await userService.recoverPassword(newPassword, recoveryCode)
     res.sendStatus(204)
 })
+//

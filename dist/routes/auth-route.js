@@ -92,3 +92,4 @@ exports.authRouter.post("/new-password", rateLimiting_middleware_1.rateLimiting,
     yield user_service_1.userService.recoverPassword(newPassword, recoveryCode);
     res.sendStatus(204);
 }));
+//
