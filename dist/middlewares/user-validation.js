@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.userValidate = exports.userValidator = void 0;
 const express_validator_1 = require("express-validator");
 exports.userValidator = [
-    (0, express_validator_1.body)("email").isString().trim().notEmpty().isLength({ max: 20, min: 6 }).withMessage("invalid length").isEmail().matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/).withMessage("invalid email"),
+    (0, express_validator_1.body)("email").isString().trim().notEmpty().isEmail().matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/).withMessage("invalid email"),
     (0, express_validator_1.body)("login").isString().trim().notEmpty().isLength({ min: 3, max: 10 }).matches(/^[a-zA-Z0-9_-]*$/).withMessage("invalid login"),
     (0, express_validator_1.body)("password").isString().trim().notEmpty().isLength({ min: 6, max: 20 }).withMessage("invalid password")
 ];
