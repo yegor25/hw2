@@ -2,7 +2,7 @@ import { ValidationChain, body, validationResult } from "express-validator";
 import {NextFunction, Request, Response} from "express"
 
 export const userValidator:ValidationChain[] = [
-    body("email").isString().trim().notEmpty().isLength({max: 20, min: 6}).withMessage("invalid length").isEmail().matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/).withMessage("invalid email"),
+    body("email").isString().trim().notEmpty().withMessage("invalid length").isEmail().matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/).withMessage("invalid email"),
     body("login").isString().trim().notEmpty().isLength({min: 3, max: 10}).matches(/^[a-zA-Z0-9_-]*$/).withMessage("invalid login"),
     body("password").isString().trim().notEmpty().isLength({min: 6, max: 20}).withMessage("invalid password")
 
