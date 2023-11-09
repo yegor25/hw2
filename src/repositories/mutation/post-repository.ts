@@ -47,10 +47,16 @@ export const postRepository = {
        const res = await PostModel.deleteOne({_id: new ObjectId(id)})
        return res.deletedCount === 1
     },
-    async deleteAll():Promise<boolean> {
+    async deleteAll():Promise<void> {
+        try {
+            console.log("model", PostModel)
+            const res = await PostModel.deleteMany({})
+        // return res.deletedCount > 0
+        } catch (error) {
+            console.log("mongio", error)
+            
+        }
         
-        const res = await PostModel.deleteMany({})
-        return res.deletedCount > 0
     }
 }
 

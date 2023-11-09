@@ -18,10 +18,16 @@ const comment_service_1 = require("../domain/comment-service");
 const session_service_1 = require("../domain/session-service");
 exports.testingRouter = (0, express_1.Router)({});
 exports.testingRouter.delete("/all-data", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const posts = yield post_service_1.postService.deleteAllPosts();
-    const blogs = yield blog_service_1.blogService.deleteAllBlogs();
-    const users = yield user_service_1.userService.deleteAllUsers();
-    const comments = yield comment_service_1.commentService.deleteAllComments();
-    const sessions = yield session_service_1.sessionService.deleteAllsessions();
-    return res.sendStatus(204);
+    try {
+        const posts = yield post_service_1.postService.deleteAllPosts();
+        const blogs = yield blog_service_1.blogService.deleteAllBlogs();
+        const users = yield user_service_1.userService.deleteAllUsers();
+        const comments = yield comment_service_1.commentService.deleteAllComments();
+        const sessions = yield session_service_1.sessionService.deleteAllsessions();
+        return res.sendStatus(204);
+    }
+    catch (error) {
+        res.send("error");
+        return;
+    }
 }));

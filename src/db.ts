@@ -28,7 +28,7 @@ export const requestUserCollections = db.collection<requestUserDbType>("requestU
 
 export const runDb = async () => {
     try {
-        await mongoose.connect(url + "/" + dbName)
+        await mongoose.connect(url + "/" + dbName + "?w=majority")
         console.log("db is connected")
     } catch (error) {
         console.log("err",error)

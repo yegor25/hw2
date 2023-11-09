@@ -18,7 +18,8 @@ const comments = await commentService.deleteAllComments()
 const sessions = await sessionService.deleteAllsessions()
    return res.sendStatus(204)
    } catch (error) {
-      console.log("error",error)
+      res.send("error")
+      return
    }
 
     

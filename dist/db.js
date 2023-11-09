@@ -30,7 +30,7 @@ exports.securityDevicesCollection = exports.db.collection("securityDevices");
 exports.requestUserCollections = exports.db.collection("requestUsers");
 const runDb = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        yield mongoose_1.default.connect(url + "/" + dbName);
+        yield mongoose_1.default.connect(url + "/" + dbName + "?w=majority");
         console.log("db is connected");
     }
     catch (error) {

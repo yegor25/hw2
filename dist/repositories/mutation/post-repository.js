@@ -55,8 +55,14 @@ exports.postRepository = {
     },
     deleteAll() {
         return __awaiter(this, void 0, void 0, function* () {
-            const res = yield Post_1.PostModel.deleteMany({});
-            return res.deletedCount > 0;
+            try {
+                console.log("model", Post_1.PostModel);
+                const res = yield Post_1.PostModel.deleteMany({});
+                // return res.deletedCount > 0
+            }
+            catch (error) {
+                console.log("mongio", error);
+            }
         });
     }
 };
