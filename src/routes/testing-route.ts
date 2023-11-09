@@ -10,11 +10,16 @@ import { sessionService } from "../domain/session-service";
 export const testingRouter = Router({})
 
 testingRouter.delete("/all-data", async (req, res) => {
-const posts = await postService.deleteAllPosts()
+   try {
+      const posts = await postService.deleteAllPosts()
 const blogs = await blogService.deleteAllBlogs()
 const users = await userService.deleteAllUsers()
 const comments = await commentService.deleteAllComments()
 const sessions = await sessionService.deleteAllsessions()
    return res.sendStatus(204)
+   } catch (error) {
+      console.log("error",error)
+   }
+
     
 })
