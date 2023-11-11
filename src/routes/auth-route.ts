@@ -26,7 +26,7 @@ authRouter.post("/login",authValidator,authValidate ,rateLimiting,loginMiddlewar
     
     const user = await QueryUserRepository.checkUser(req.body)
     if(!user){
-        res.sendStatus(403)
+        res.sendStatus(401)
         return
     }
     
