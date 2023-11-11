@@ -52,9 +52,9 @@ exports.userRepository = {
             return data.code;
         });
     },
-    changePassword(hash, userId) {
+    changePassword(hash, userId, salt) {
         return __awaiter(this, void 0, void 0, function* () {
-            const newPass = yield db_1.userCollection.updateOne({ _id: userId }, { $set: { hashPassword: hash } });
+            const newPass = yield db_1.userCollection.updateOne({ _id: userId }, { $set: { hashPassword: hash, passwordSalt: salt } });
             return newPass.modifiedCount === 1;
         });
     }

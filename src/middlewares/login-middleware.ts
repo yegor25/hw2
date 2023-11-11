@@ -8,7 +8,7 @@ import { cryptoService } from "../application/crypto-service";
 
 
 export const loginMiddleware = async(req:requestWithBody<loginType>, res:Response, next:NextFunction) => {
-    const user = await QueryUserRepository.checkUser(req.body)
+    const user = await QueryUserRepository.findUserByLoginOrEmail(req.body.loginOrEmail)
     if(!user) {
         res.sendStatus(401)
         return

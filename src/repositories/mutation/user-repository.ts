@@ -38,10 +38,10 @@ export const userRepository = {
    )
    return data.code
   },
-  async changePassword(hash: string, userId: ObjectId):Promise<boolean>{
+  async changePassword(hash: string, userId: ObjectId, salt: string):Promise<boolean>{
     const newPass = await userCollection.updateOne(
         {_id: userId},
-        {$set: {hashPassword: hash}}
+        {$set: {hashPassword: hash, passwordSalt: salt}}
     )
     return newPass.modifiedCount === 1
   }

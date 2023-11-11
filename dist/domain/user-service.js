@@ -68,7 +68,7 @@ exports.userService = {
             if (!user)
                 return false;
             yield oldPassword_repository_1.oldPasswordRepo.savePassword(userCode.userId, user.hashPassword);
-            const res = yield user_repository_1.userRepository.changePassword(hash.hash, convertId(userCode.userId));
+            const res = yield user_repository_1.userRepository.changePassword(hash.hash, convertId(userCode.userId), hash.salt);
             if (!res)
                 return false;
             return true;

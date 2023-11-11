@@ -14,7 +14,7 @@ const query_UserRepository_1 = require("../repositories/query/query-UserReposito
 const query_oldPass_1 = require("../repositories/query/query-oldPass");
 const crypto_service_1 = require("../application/crypto-service");
 const loginMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield query_UserRepository_1.QueryUserRepository.checkUser(req.body);
+    const user = yield query_UserRepository_1.QueryUserRepository.findUserByLoginOrEmail(req.body.loginOrEmail);
     if (!user) {
         res.sendStatus(401);
         return;
