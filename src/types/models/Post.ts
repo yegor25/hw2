@@ -3,7 +3,7 @@ import { PostDbType } from "../post-type";
 import { ObjectId } from "mongodb";
 
 
-const postSchema = new mongoose.Schema<PostDbType>({
+ export const postSchema = new mongoose.Schema<PostDbType>({
     _id: {type: ObjectId, default: new ObjectId()},
     title: {type: String, required: true},
     shortDescription: {type: String, required: true},
@@ -12,6 +12,6 @@ const postSchema = new mongoose.Schema<PostDbType>({
     blogName: {type: String, required: true},
     createdAt: {type: String, required: true}
 })
+// 
 
-export const PostModel =  mongoose.model("posts", postSchema)
 

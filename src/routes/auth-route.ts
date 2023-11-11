@@ -17,11 +17,12 @@ import { passRecoveryValidation } from "../middlewares/passRecovery-validation";
 import { userValidate } from "../middlewares/user-validation";
 import { recoveryCodeValidator } from "../middlewares/recoveryCode-validator";
 import { userService } from "../domain/user-service";
+import { loginMiddleware } from "../middlewares/login-middleware";
 
 
 export const authRouter = Router({})
 
-authRouter.post("/login",authValidator,authValidate ,rateLimiting,async (req:requestWithBody<loginType>, res: Response) => {
+authRouter.post("/login",authValidator,authValidate ,rateLimiting,loginMiddleware,async (req:requestWithBody<loginType>, res: Response) => {
     
     const user = await QueryUserRepository.checkUser(req.body)
     if(!user){
@@ -33,7 +34,6 @@ authRouter.post("/login",authValidator,authValidate ,rateLimiting,async (req:req
     const title = req.headers["user-agent"] || "Chrome 105"
     const session = await authService.saveSession({ip, title,userId: user?._id.toString()})
    
-console.log(session)
     const token = await jwtService.createAccesToken(user)
     const refresh = await jwtService.createRefreshToken(user, session.deviceId)
     res.cookie("refreshToken", refresh, {httpOnly: true, secure: true})

@@ -2,7 +2,7 @@ import { PostDbType,  postBodyType, postType } from "../../types/post-type";
 import { ObjectId } from "mongodb";
 import { blogService } from "../../domain/blog-service";
 import { postHelper } from "../helpers/post-helper";
-import { PostModel } from "../../types/models/Post";
+import { PostModel } from "../../db";
 
 // let posts: postType[] = [
 //     {
@@ -24,12 +24,18 @@ export const postRepository = {
         await PostModel.create(post)
         return postHelper.mapPostToView(post)
     },
-    async createPostForBlog(post: PostDbType): Promise<postType> {
-      await PostModel.create(post)
+    async createPostForBlog(post: PostDbType): Promise<postType | null> {
+        try {
+            await PostModel.create(post)
         return postHelper.mapPostToView(post)
+        } catch (error) {
+            console.log("post error", error)
+            return null
+        }
+      
     },
     
-
+//
     async changePost(id: ObjectId, payload: postBodyType):Promise<boolean> {
         const post = await PostModel.updateOne(
             {_id: id},
@@ -51,7 +57,7 @@ export const postRepository = {
         try {
             console.log("model", PostModel)
             const res = await PostModel.deleteMany({})
-        // return res.deletedCount > 0
+        return
         } catch (error) {
             console.log("mongio", error)
             

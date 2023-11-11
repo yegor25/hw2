@@ -26,8 +26,9 @@ const passRecovery_validation_1 = require("../middlewares/passRecovery-validatio
 const user_validation_1 = require("../middlewares/user-validation");
 const recoveryCode_validator_1 = require("../middlewares/recoveryCode-validator");
 const user_service_1 = require("../domain/user-service");
+const login_middleware_1 = require("../middlewares/login-middleware");
 exports.authRouter = (0, express_1.Router)({});
-exports.authRouter.post("/login", auth_validator_1.authValidator, auth_validator_1.authValidate, rateLimiting_middleware_1.rateLimiting, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.authRouter.post("/login", auth_validator_1.authValidator, auth_validator_1.authValidate, rateLimiting_middleware_1.rateLimiting, login_middleware_1.loginMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user = yield query_UserRepository_1.QueryUserRepository.checkUser(req.body);
     if (!user) {
         res.sendStatus(401);
@@ -36,7 +37,6 @@ exports.authRouter.post("/login", auth_validator_1.authValidator, auth_validator
     const ip = req.ip;
     const title = req.headers["user-agent"] || "Chrome 105";
     const session = yield auth_service_1.authService.saveSession({ ip, title, userId: user === null || user === void 0 ? void 0 : user._id.toString() });
-    console.log(session);
     const token = yield jwt_service_1.jwtService.createAccesToken(user);
     const refresh = yield jwt_service_1.jwtService.createRefreshToken(user, session.deviceId);
     res.cookie("refreshToken", refresh, { httpOnly: true, secure: true });

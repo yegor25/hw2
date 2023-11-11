@@ -6,6 +6,8 @@ import bcrypt from "bcrypt"
 import { mailManager } from "../managers/mail-manager";
 import { cryptoService } from "../application/crypto-service";
 import { queryRecoverPass } from "../repositories/query/query-recoveryPass";
+import { QueryUserRepository } from "../repositories/query/query-UserRepository";
+import { oldPasswordRepo } from "../repositories/mutation/oldPassword-repository";
 
 
 const convertId = (id: string) => new ObjectId(id)
@@ -42,9 +44,11 @@ export const userService = {
    },
    async recoverPassword(newPassword: string, code: string):Promise<boolean>{
     const hash = await cryptoService.genHash(newPassword)
-    const user = await queryRecoverPass.checkCode(code)
-    if(!user) return false
-    const res = await userRepository.changePassword(hash.hash, convertId(user.userId))
+    const userCode = await queryRecoverPass.checkCode(code)
+    if(!userCode) return false
+    const user = await QueryUserRepository.findUserById(convertId(userCode.userId))
+    if(user) await oldPasswordRepo.savePassword(userCode.userId, user.hashPassword)
+    const res = await userRepository.changePassword(hash.hash, convertId(userCode.userId))
     if(!res) return false
     return true
    }
