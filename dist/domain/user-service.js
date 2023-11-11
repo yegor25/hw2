@@ -65,8 +65,9 @@ exports.userService = {
             if (!userCode)
                 return false;
             const user = yield query_UserRepository_1.QueryUserRepository.findUserById(convertId(userCode.userId));
-            if (user)
-                yield oldPassword_repository_1.oldPasswordRepo.savePassword(userCode.userId, user.hashPassword);
+            if (!user)
+                return false;
+            yield oldPassword_repository_1.oldPasswordRepo.savePassword(userCode.userId, user.hashPassword);
             const res = yield user_repository_1.userRepository.changePassword(hash.hash, convertId(userCode.userId));
             if (!res)
                 return false;

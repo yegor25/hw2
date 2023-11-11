@@ -47,7 +47,8 @@ export const userService = {
     const userCode = await queryRecoverPass.checkCode(code)
     if(!userCode) return false
     const user = await QueryUserRepository.findUserById(convertId(userCode.userId))
-    if(user) await oldPasswordRepo.savePassword(userCode.userId, user.hashPassword)
+    if(!user) return false
+     await oldPasswordRepo.savePassword(userCode.userId, user.hashPassword)
     const res = await userRepository.changePassword(hash.hash, convertId(userCode.userId))
     if(!res) return false
     return true
