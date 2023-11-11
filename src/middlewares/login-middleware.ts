@@ -10,7 +10,7 @@ import { cryptoService } from "../application/crypto-service";
 export const loginMiddleware = async(req:requestWithBody<loginType>, res:Response, next:NextFunction) => {
     const user = await QueryUserRepository.checkUser(req.body)
     if(!user) {
-        res.sendStatus(404)
+        res.sendStatus(401)
         return
     }
     const checkOldPass = await queryOldPasswordRepo.getOldPassword(user._id.toString())

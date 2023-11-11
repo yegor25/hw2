@@ -16,7 +16,7 @@ const crypto_service_1 = require("../application/crypto-service");
 const loginMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const user = yield query_UserRepository_1.QueryUserRepository.checkUser(req.body);
     if (!user) {
-        res.sendStatus(404);
+        res.sendStatus(401);
         return;
     }
     const checkOldPass = yield query_oldPass_1.queryOldPasswordRepo.getOldPassword(user._id.toString());
