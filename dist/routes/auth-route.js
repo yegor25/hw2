@@ -31,7 +31,7 @@ exports.authRouter = (0, express_1.Router)({});
 exports.authRouter.post("/login", auth_validator_1.authValidator, auth_validator_1.authValidate, rateLimiting_middleware_1.rateLimiting, login_middleware_1.loginMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user = yield query_UserRepository_1.QueryUserRepository.checkUser(req.body);
     if (!user) {
-        res.sendStatus(401);
+        res.sendStatus(403);
         return;
     }
     const ip = req.ip;
