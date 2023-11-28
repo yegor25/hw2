@@ -13,7 +13,7 @@ export const jwtService = {
         const token = jwt.sign(
             {userId: user._id, deviceId},
             configuration.REFRESH_SECRET,
-            {expiresIn: "20s"}
+            {expiresIn: "30m"}
         )
         return token
     },
@@ -32,6 +32,7 @@ export const jwtService = {
             const result: any = jwt.verify(token, configuration.ACCESS_SECRET)
             return new ObjectId(result.userId)
         } catch (error) {
+            console.log("error",error)
             return null
         }
 

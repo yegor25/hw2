@@ -14,7 +14,7 @@ const mongodb_1 = require("mongodb");
 const post_helper_1 = require("../helpers/post-helper");
 const paginator_helper_1 = require("../helpers/paginator-helper");
 const query_BlogsRepository_1 = require("./query-BlogsRepository");
-const Post_1 = require("../../types/models/Post");
+const db_1 = require("../../db");
 const convertId = (id) => new mongodb_1.ObjectId(id);
 // const fun = <T>(params:T): T[] => {}
 exports.QueryPostRepository = {
@@ -22,11 +22,11 @@ exports.QueryPostRepository = {
         return __awaiter(this, void 0, void 0, function* () {
             const parametres = paginator_helper_1.paginatorHelper.postParamsMapper(params);
             const skipcount = (parametres.pageNumber - 1) * parametres.pageSize;
-            const res = yield Post_1.PostModel.find({}).lean()
+            const res = yield db_1.PostModel.find({}).lean()
                 .sort({ [parametres.sortBy]: parametres.sortDirection })
                 .skip(skipcount)
                 .limit(parametres.pageSize);
-            const totalCount = yield Post_1.PostModel.countDocuments({});
+            const totalCount = yield db_1.PostModel.countDocuments({});
             return {
                 pagesCount: Math.ceil(totalCount / +parametres.pageSize),
                 page: +parametres.pageNumber,
@@ -44,11 +44,11 @@ exports.QueryPostRepository = {
             }
             const parametres = paginator_helper_1.paginatorHelper.postParamsMapper(params);
             const skipcount = (parametres.pageNumber - 1) * parametres.pageSize;
-            const res = yield Post_1.PostModel.find({ blogId: id }).lean()
+            const res = yield db_1.PostModel.find({ blogId: id }).lean()
                 .sort({ [parametres.sortBy]: parametres.sortDirection })
                 .skip(skipcount)
                 .limit(parametres.pageSize);
-            const totalCount = yield Post_1.PostModel.countDocuments({ blogId: id });
+            const totalCount = yield db_1.PostModel.countDocuments({ blogId: id });
             return {
                 pagesCount: Math.ceil(totalCount / +parametres.pageSize),
                 page: +parametres.pageNumber,
@@ -60,7 +60,7 @@ exports.QueryPostRepository = {
     },
     findPostById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const post = yield Post_1.PostModel.findOne({ _id: convertId(id) });
+            const post = yield db_1.PostModel.findOne({ _id: convertId(id) });
             if (!post)
                 return null;
             return post_helper_1.postHelper.mapPostToView(post);

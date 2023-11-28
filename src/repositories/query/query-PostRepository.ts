@@ -4,7 +4,7 @@ import { postHelper } from "../helpers/post-helper"
 import { paramsPostPaginatorType } from "../../types/paginator-type"
 import { paginatorHelper } from "../helpers/paginator-helper"
 import { QueryBlogRepositiry } from "./query-BlogsRepository"
-import { PostModel } from "../../types/models/Post"
+import { PostModel } from "../../db"
 
 
 const convertId = (id: string) => new ObjectId(id)

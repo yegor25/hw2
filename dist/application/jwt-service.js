@@ -25,7 +25,7 @@ exports.jwtService = {
     },
     createRefreshToken(user, deviceId) {
         return __awaiter(this, void 0, void 0, function* () {
-            const token = jsonwebtoken_1.default.sign({ userId: user._id, deviceId }, configuration_1.configuration.REFRESH_SECRET, { expiresIn: "20s" });
+            const token = jsonwebtoken_1.default.sign({ userId: user._id, deviceId }, configuration_1.configuration.REFRESH_SECRET, { expiresIn: "30m" });
             return token;
         });
     },
@@ -47,6 +47,7 @@ exports.jwtService = {
                 return new mongodb_1.ObjectId(result.userId);
             }
             catch (error) {
+                console.log("error", error);
                 return null;
             }
         });
