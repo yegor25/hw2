@@ -16,13 +16,14 @@ exports.userService = void 0;
 const mongodb_1 = require("mongodb");
 const db_1 = require("../db");
 const user_repository_1 = require("../repositories/mutation/user-repository");
+const user_type_1 = require("../types/user-type");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const crypto_service_1 = require("../application/crypto-service");
 const query_recoveryPass_1 = require("../repositories/query/query-recoveryPass");
 const query_UserRepository_1 = require("../repositories/query/query-UserRepository");
 const oldPassword_repository_1 = require("../repositories/mutation/oldPassword-repository");
 const convertId = (id) => new mongodb_1.ObjectId(id);
-exports.userService = {
+class UserService {
     createUser(user) {
         return __awaiter(this, void 0, void 0, function* () {
             const { password, login, email } = user;
@@ -32,32 +33,20 @@ exports.userService = {
             }
             const salt = yield bcrypt_1.default.genSalt(10);
             const hashPassword = yield bcrypt_1.default.hash(password, salt);
-            const newUser = {
-                _id: new mongodb_1.ObjectId(),
-                login,
-                email,
-                createdAt: new Date().toISOString(),
-                hashPassword,
-                passwordSalt: salt,
-                emailConfirmation: {
-                    code: "none",
-                    isConfirmed: true,
-                    expirationDate: new Date()
-                }
-            };
+            const newUser = new user_type_1.userDbType(new mongodb_1.ObjectId, login, email, new Date().toISOString(), hashPassword, salt, { code: "none", isConfirmed: true, expirationDate: new Date() });
             return user_repository_1.userRepository.createUser(newUser);
         });
-    },
+    }
     deleteUser(id) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield user_repository_1.userRepository.deleteUser(convertId(id));
         });
-    },
+    }
     deleteAllUsers() {
         return __awaiter(this, void 0, void 0, function* () {
             return user_repository_1.userRepository.deleteAllUsers();
         });
-    },
+    }
     recoverPassword(newPassword, code) {
         return __awaiter(this, void 0, void 0, function* () {
             const hash = yield crypto_service_1.cryptoService.genHash(newPassword);
@@ -74,4 +63,5 @@ exports.userService = {
             return true;
         });
     }
-};
+}
+exports.userService = new UserService();

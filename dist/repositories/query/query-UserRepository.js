@@ -34,7 +34,7 @@ exports.QueryUserRepository = {
     findUsers(params) {
         return __awaiter(this, void 0, void 0, function* () {
             const parametres = paginator_helper_1.paginatorHelper.usersParamsMapper(params);
-            const skipCount = (parametres.pageNumber - 1) * parametres.pageSize;
+            const skipCount = (+parametres.pageNumber - 1) * Number(parametres.pageSize);
             const users = yield db_1.userCollection.find({
                 $or: [
                     { email: { $regex: parametres.searchEmailTerm, $options: "i" } },
@@ -43,7 +43,7 @@ exports.QueryUserRepository = {
             })
                 .sort({ [parametres.sortBy]: parametres.sortDirection })
                 .skip(skipCount)
-                .limit(parametres.pageSize)
+                .limit(+parametres.pageSize)
                 .toArray();
             const totalCount = yield db_1.userCollection.countDocuments({
                 $or: [

@@ -11,7 +11,7 @@ import { oldPasswordRepo } from "../repositories/mutation/oldPassword-repository
 
 
 const convertId = (id: string) => new ObjectId(id)
-export const userService = {
+ class UserService {
     async createUser(user: userInputType):Promise<userViewType | null>{
         const {password, login, email} = user
         const existUser = await userCollection.findOne({$or: [{email: email}, {login: login} ]})
@@ -20,28 +20,15 @@ export const userService = {
         }
         const salt = await bcrypt.genSalt(10)
         const hashPassword = await bcrypt.hash(password, salt)
-        const newUser:userDbType = {
-            _id: new ObjectId(),
-            login,
-            email,
-            createdAt: new Date().toISOString(),
-            hashPassword,
-            passwordSalt: salt,
-            emailConfirmation: {
-                code: "none",
-                isConfirmed: true,
-                expirationDate: new Date()
-            }
-        }
-        
+        const newUser:userDbType = new userDbType(new ObjectId,login,email,new Date().toISOString(),hashPassword,salt,{code: "none",isConfirmed: true,expirationDate: new Date()})
         return userRepository.createUser(newUser)
-    },
+    }
     async deleteUser (id: string):Promise<boolean> {
         return await userRepository.deleteUser(convertId(id))
-    },
+    }
    async deleteAllUsers ():Promise<boolean> {
     return userRepository.deleteAllUsers()
-   },
+   }
    async recoverPassword(newPassword: string, code: string):Promise<boolean>{
     const hash = await cryptoService.genHash(newPassword)
     const userCode = await queryRecoverPass.checkCode(code)
@@ -54,3 +41,5 @@ export const userService = {
     return true
    }
 }
+
+export const userService = new UserService()

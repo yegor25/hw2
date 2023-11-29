@@ -10,6 +10,7 @@ import { requestUserDbType, requestUserType } from "./types/requestUserType"
 import mongoose from "mongoose"
 import { postSchema } from "./types/models/Post"
 import { oldPasswordSchema } from "./types/models/OldPasswors"
+import { commentsLikesInfoSchema, commentsSchema } from "./types/models/Comments"
 dotenv.config()
 
 const url = process.env.MONGO_URL || "mongodb://0.0.0.0:27017"
@@ -24,10 +25,11 @@ export const PostModel =  mongoose.model("posts", postSchema)
 export const OldPassword = mongoose.model("oldPasswords", oldPasswordSchema)
 export const blogCollection = db.collection<blogDbType>('blogs')
 export const userCollection = db.collection<userDbType>('users')
-export const commentsCollection = db.collection<CommentDbModelType>('comments')
+export const CommentsModel = mongoose.model('comments', commentsSchema)
 export const tokensCollection = db.collection<TokenDbType>('tokens')
 export const securityDevicesCollection = db.collection<securityDevicesDbType>("securityDevices")
 export const requestUserCollections = db.collection<requestUserDbType>("requestUsers")
+export const LikeCommentsModel = mongoose.model("likeComments", commentsLikesInfoSchema)
 
 export const runDb = async () => {
     try {

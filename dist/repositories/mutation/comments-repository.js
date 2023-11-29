@@ -15,33 +15,33 @@ const comments_helper_1 = require("../helpers/comments-helper");
 exports.comentsRepository = {
     createComment(comment) {
         return __awaiter(this, void 0, void 0, function* () {
-            const res = yield db_1.commentsCollection.insertOne(comment);
+            const res = yield db_1.CommentsModel.create(comment);
             return comments_helper_1.commentHelper.commentsMapper(comment);
         });
     },
     deleteComments(id, userId) {
         return __awaiter(this, void 0, void 0, function* () {
-            const comment = yield db_1.commentsCollection.findOne({ _id: id });
+            const comment = yield db_1.CommentsModel.findOne({ _id: id });
             if ((comment === null || comment === void 0 ? void 0 : comment.commentatorInfo.userId) !== userId) {
                 return false;
             }
-            const res = yield db_1.commentsCollection.deleteOne({ _id: id });
+            const res = yield db_1.CommentsModel.deleteOne({ _id: id });
             return res.deletedCount === 1;
         });
     },
     updateComment(id, userId, content) {
         return __awaiter(this, void 0, void 0, function* () {
-            const comment = yield db_1.commentsCollection.findOne({ _id: id });
+            const comment = yield db_1.CommentsModel.findOne({ _id: id });
             if ((comment === null || comment === void 0 ? void 0 : comment.commentatorInfo.userId) !== userId) {
                 return false;
             }
-            const res = yield db_1.commentsCollection.updateOne({ _id: id }, { $set: { content: content } });
+            const res = yield db_1.CommentsModel.updateOne({ _id: id }, { $set: { content: content } });
             return res.matchedCount === 1;
         });
     },
     deleteAll() {
         return __awaiter(this, void 0, void 0, function* () {
-            const res = yield db_1.commentsCollection.deleteMany({});
+            const res = yield db_1.CommentsModel.deleteMany({});
             return res.deletedCount > 0;
         });
     }

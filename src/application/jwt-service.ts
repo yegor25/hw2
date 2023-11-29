@@ -32,7 +32,6 @@ export const jwtService = {
             const result: any = jwt.verify(token, configuration.ACCESS_SECRET)
             return new ObjectId(result.userId)
         } catch (error) {
-            console.log("error",error)
             return null
         }
 

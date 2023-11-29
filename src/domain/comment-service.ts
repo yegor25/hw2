@@ -4,6 +4,7 @@ import { CommentDbModelType, CommentViewModelType } from "../types/comment-type"
 import { userDbType } from "../types/user-type"
 import { commentHelper } from "../repositories/helpers/comments-helper"
 import { comentsRepository } from "../repositories/mutation/comments-repository"
+import { LikeStatus } from "../types/like-type"
 
 const convertId = (id: string) => new ObjectId(id)
 export const commentService = {
@@ -21,6 +22,7 @@ export const commentService = {
                 userId: user._id.toString(),
                 userLogin: user.login
             },
+            likeComments: [],
             createdAt: new Date().toISOString()
         }
         return  comentsRepository.createComment(newComment)
@@ -33,5 +35,8 @@ export const commentService = {
     },
     async deleteAllComments():Promise<boolean>{
         return comentsRepository.deleteAll()
+    },
+    async updateLikeStatus(likeStatus: LikeStatus, userId: string):Promise<boolean>{
+        return true
     }
 }

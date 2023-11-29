@@ -13,17 +13,27 @@ export type userViewType = {
     login: string,
     email: string,
     createdAt: string,
-    
+
 }
-export type userDbType = {
-    _id: ObjectId,
-    login: string,
-    email: string,
-    createdAt: string,
-    hashPassword: string,
-    passwordSalt: string,
-    emailConfirmation: userConfirmationType
+
+export class userDbType {
+    constructor(
+        public _id: ObjectId,
+        public login: string,
+        public email: string,
+        public createdAt: string,
+        public hashPassword: string,
+        public passwordSalt: string,
+        public emailConfirmation: {
+            code: string,
+            isConfirmed: boolean,
+            expirationDate: Date
+        }
+    ) {
+
+    }
 }
+
 export type usersResponseType = paginatorType & {
     items: userViewType[]
 }

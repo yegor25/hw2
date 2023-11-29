@@ -47,7 +47,6 @@ exports.jwtService = {
                 return new mongodb_1.ObjectId(result.userId);
             }
             catch (error) {
-                console.log("error", error);
                 return null;
             }
         });

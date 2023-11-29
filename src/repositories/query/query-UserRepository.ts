@@ -21,7 +21,7 @@ export const QueryUserRepository = {
     },
     async findUsers(params: paramsUserPaginatorType): Promise<usersResponseType> {
         const parametres = paginatorHelper.usersParamsMapper(params)
-        const skipCount = (parametres.pageNumber - 1) * parametres.pageSize
+        const skipCount = (+parametres.pageNumber - 1) * Number(parametres.pageSize)
         const users = await userCollection.find({
             $or: [
                 { email: { $regex: parametres.searchEmailTerm, $options: "i" } },
@@ -31,7 +31,7 @@ export const QueryUserRepository = {
         )
         .sort({[parametres.sortBy]: parametres.sortDirection})
         .skip(skipCount)
-        .limit(parametres.pageSize)
+        .limit(+parametres.pageSize)
         .toArray()
 
         const totalCount = await userCollection.countDocuments({

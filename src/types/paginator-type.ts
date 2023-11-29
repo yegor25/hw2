@@ -65,12 +65,13 @@ export type paramsPostPaginatorType = {
     pageSize: number
 }
 export type paramsUserPaginatorType = {
+    pageNumber: string,
+    pageSize: string,
     searchLoginTerm: string,
     searchEmailTerm: string,
     sortBy: keyof userViewType,
     sortDirection: SortDirection,
-    pageNumber: number,
-    pageSize: number
+    
 }
 export type paramsCommentsPaginatorType = {
     sortBy: keyof CommentDbModelType,

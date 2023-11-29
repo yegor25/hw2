@@ -29,6 +29,7 @@ exports.commentService = {
                     userId: user._id.toString(),
                     userLogin: user.login
                 },
+                likeComments: [],
                 createdAt: new Date().toISOString()
             };
             return comments_repository_1.comentsRepository.createComment(newComment);
@@ -47,6 +48,11 @@ exports.commentService = {
     deleteAllComments() {
         return __awaiter(this, void 0, void 0, function* () {
             return comments_repository_1.comentsRepository.deleteAll();
+        });
+    },
+    updateLikeStatus(likeStatus, userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return true;
         });
     }
 };

@@ -55,3 +55,19 @@ exports.commentRouter.put("/:commentId", auth_middleware_1.authMiddleware, comme
     }
     res.sendStatus(204);
 }));
+exports.commentRouter.put("/:commentId/like-status", auth_middleware_1.authMiddleware, comment_validator_1.commentValidator, comment_validator_1.commentValidate, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const status = req.body.likeStatus;
+    const data = yield query_commentsRepository_1.QueryCommentsRepository.getCommentsById(req.params.commentId);
+    if (!data) {
+        res.sendStatus(404);
+        return;
+    }
+    const commentId = req.params.commentId;
+    const user = req.user;
+    const result = yield comment_service_1.commentService.updateLikeStatus(status, user === null || user === void 0 ? void 0 : user._id.toString());
+    if (!result) {
+        res.sendStatus(403);
+        return;
+    }
+    res.sendStatus(204);
+}));
