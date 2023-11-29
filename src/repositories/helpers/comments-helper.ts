@@ -1,26 +1,29 @@
-import { CommentDbModelType, CommentViewModelType } from "../../types/comment-type";
+import { CommentDbModelType, CommentViewModelType, likeInfoType } from "../../types/comment-type";
+import { LikeStatus } from "../../types/like-type";
 
 
 
 export const commentHelper = {
-    commentsMapper(comment: CommentDbModelType): CommentViewModelType{
+    commentsMapper(comment: CommentDbModelType, likeInfo: likeInfoType): CommentViewModelType{
+        
         return {
             id: comment._id.toString(),
             content: comment.content,
             commentatorInfo: comment.commentatorInfo,
-            createdAt: comment.createdAt
+            createdAt: comment.createdAt,
+            likesInfo: likeInfo
+            
         }
     },
-    commentsArrayMapper(comments: CommentDbModelType[]): CommentViewModelType[]  {
-        const res:CommentViewModelType[] = comments.map(el => ({
-            id: el._id.toString(),
-            content: el.content,
-            commentatorInfo: {
-                userId: el.commentatorInfo.userId,
-                userLogin: el.commentatorInfo.userLogin
-            },
-            createdAt: el.createdAt
-        }))
-        return res
-    }
+    // commentsArrayMapper(comments: CommentDbModelType[]): CommentViewModelType[]  {
+    //     const res:CommentViewModelType[] = comments.map(el => ({
+    //         id: el._id.toString(),
+    //         content: el.content,
+    //         commentatorInfo: el.commentatorInfo,
+    //         createdAt: el.createdAt,
+            
+    //     }))
+        
+    //     return res
+    // }
 }

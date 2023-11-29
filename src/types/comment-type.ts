@@ -1,6 +1,6 @@
 import { ObjectId } from "mongodb"
 import { paginatorType } from "./paginator-type"
-import { commentsLikeType } from "./like-type"
+import { LikeStatus, commentsLikeType } from "./like-type"
 
 
 
@@ -18,7 +18,8 @@ export type CommentViewModelType = {
     id: string,
     content: string,
     commentatorInfo: commentatorInfoType,
-    createdAt: string
+    createdAt: string,
+    likesInfo: likeInfoType
 }
 export type CommentDbModelType = {
     _id: ObjectId,
@@ -30,4 +31,10 @@ export type CommentDbModelType = {
 }
 export type viewAllCommentsType = paginatorType & {
     items: CommentViewModelType[]
+}
+
+export type likeInfoType = {
+    likesCount: number,
+    dislikesCount: number,
+    myStatus: LikeStatus
 }

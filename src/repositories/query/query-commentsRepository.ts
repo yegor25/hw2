@@ -4,6 +4,7 @@ import { CommentViewModelType, viewAllCommentsType } from "../../types/comment-t
 import { commentHelper } from "../helpers/comments-helper"
 import { paginatorType, paramsCommentsPaginatorType } from "../../types/paginator-type"
 import { paginatorHelper } from "../helpers/paginator-helper"
+import { LikeStatus } from "../../types/like-type"
 
 
 const convertId = (id: string) => new ObjectId(id)
@@ -13,7 +14,8 @@ export const QueryCommentsRepository = {
     async getCommentsById(id: string):Promise<CommentViewModelType | null>{
         const res = await CommentsModel.findOne({_id: convertId(id)})
         if(!res) return null
-        return commentHelper.commentsMapper(res)
+        const likeInfo = res.getLikesInfo(res.commentatorInfo.userId)
+        return commentHelper.commentsMapper(res, likeInfo)
     },
     
     async getComments(params: paramsCommentsPaginatorType,postId: string):Promise<viewAllCommentsType>{
@@ -26,6 +28,7 @@ export const QueryCommentsRepository = {
             .limit(parametres.pageSize)
             .lean()
             
+            
             const totalCount = await CommentsModel.countDocuments(filter)
         
             return {
@@ -33,7 +36,7 @@ export const QueryCommentsRepository = {
                 page: +parametres.pageNumber,
                 pageSize: +parametres.pageSize,
                 totalCount,
-                items: commentHelper.commentsArrayMapper(data)
+                items: data.map(el => commentHelper.commentsMapper(el, {likesCount: 0, dislikesCount: 0,myStatus: LikeStatus.None}))
             }
     }
 }

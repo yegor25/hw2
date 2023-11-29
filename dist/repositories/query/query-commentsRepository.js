@@ -14,6 +14,7 @@ const mongodb_1 = require("mongodb");
 const db_1 = require("../../db");
 const comments_helper_1 = require("../helpers/comments-helper");
 const paginator_helper_1 = require("../helpers/paginator-helper");
+const like_type_1 = require("../../types/like-type");
 const convertId = (id) => new mongodb_1.ObjectId(id);
 exports.QueryCommentsRepository = {
     getCommentsById(id) {
@@ -21,7 +22,8 @@ exports.QueryCommentsRepository = {
             const res = yield db_1.CommentsModel.findOne({ _id: convertId(id) });
             if (!res)
                 return null;
-            return comments_helper_1.commentHelper.commentsMapper(res);
+            const likeInfo = res.getLikesInfo(res.commentatorInfo.userId);
+            return comments_helper_1.commentHelper.commentsMapper(res, likeInfo);
         });
     },
     getComments(params, postId) {
@@ -40,7 +42,7 @@ exports.QueryCommentsRepository = {
                 page: +parametres.pageNumber,
                 pageSize: +parametres.pageSize,
                 totalCount,
-                items: comments_helper_1.commentHelper.commentsArrayMapper(data)
+                items: data.map(el => comments_helper_1.commentHelper.commentsMapper(el, { likesCount: 0, dislikesCount: 0, myStatus: like_type_1.LikeStatus.None }))
             };
         });
     }

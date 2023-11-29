@@ -16,7 +16,8 @@ exports.comentsRepository = {
     createComment(comment) {
         return __awaiter(this, void 0, void 0, function* () {
             const res = yield db_1.CommentsModel.create(comment);
-            return comments_helper_1.commentHelper.commentsMapper(comment);
+            const likeInfo = res.getDefaultLikeInfo();
+            return comments_helper_1.commentHelper.commentsMapper(comment, likeInfo);
         });
     },
     deleteComments(id, userId) {

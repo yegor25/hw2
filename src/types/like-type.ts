@@ -9,5 +9,6 @@ export enum LikeStatus {
 export type commentsLikeType = {
     status: LikeStatus,
     userId: string,
+    createdAt: string
     // commentId: string
 }
