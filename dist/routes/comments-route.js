@@ -15,6 +15,7 @@ const query_commentsRepository_1 = require("../repositories/query/query-comments
 const auth_middleware_1 = require("../middlewares/auth-middleware");
 const comment_service_1 = require("../domain/comment-service");
 const comment_validator_1 = require("../middlewares/comment-validator");
+const commentLike_validator_1 = require("../middlewares/commentLike-validator");
 exports.commentRouter = (0, express_1.Router)({});
 exports.commentRouter.get("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const data = yield query_commentsRepository_1.QueryCommentsRepository.getCommentsById(req.params.id);
@@ -55,7 +56,7 @@ exports.commentRouter.put("/:commentId", auth_middleware_1.authMiddleware, comme
     }
     res.sendStatus(204);
 }));
-exports.commentRouter.put("/:commentId/like-status", auth_middleware_1.authMiddleware, comment_validator_1.commentValidator, comment_validator_1.commentValidate, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.commentRouter.put("/:commentId/like-status", auth_middleware_1.authMiddleware, commentLike_validator_1.commentLikeValidator, comment_validator_1.commentValidate, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const status = req.body.likeStatus;
     const data = yield query_commentsRepository_1.QueryCommentsRepository.getCommentsById(req.params.commentId);
     if (!data) {

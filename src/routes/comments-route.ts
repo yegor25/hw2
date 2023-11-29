@@ -6,6 +6,7 @@ import { authMiddleware } from "../middlewares/auth-middleware";
 import { commentService } from "../domain/comment-service";
 import { commentValidate, commentValidator } from "../middlewares/comment-validator";
 import { LikeStatus } from "../types/like-type";
+import { commentLikeValidator } from "../middlewares/commentLike-validator";
 
 
 export const commentRouter = Router({})
@@ -50,7 +51,7 @@ commentRouter.put("/:commentId", authMiddleware,commentValidator,commentValidate
     }
     res.sendStatus(204)
 })
-commentRouter.put("/:commentId/like-status", authMiddleware,commentValidator,commentValidate,async(req:requestWithParamsAndBody<{commentId: string},{likeStatus: LikeStatus}>, res:Response) => {
+commentRouter.put("/:commentId/like-status", authMiddleware,commentLikeValidator,commentValidate,async(req:requestWithParamsAndBody<{commentId: string},{likeStatus: LikeStatus}>, res:Response) => {
     const status = req.body.likeStatus
     const data = await QueryCommentsRepository.getCommentsById(req.params.commentId)
     if(!data) {
