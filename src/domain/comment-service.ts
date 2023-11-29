@@ -5,6 +5,7 @@ import { userDbType } from "../types/user-type"
 import { commentHelper } from "../repositories/helpers/comments-helper"
 import { comentsRepository } from "../repositories/mutation/comments-repository"
 import { LikeStatus } from "../types/like-type"
+import { QueryCommentsRepository } from "../repositories/query/query-commentsRepository"
 
 const convertId = (id: string) => new ObjectId(id)
 export const commentService = {
@@ -36,7 +37,9 @@ export const commentService = {
     async deleteAllComments():Promise<boolean>{
         return comentsRepository.deleteAll()
     },
-    async updateLikeStatus(likeStatus: LikeStatus, userId: string):Promise<boolean>{
+    async updateLikeStatus(likeStatus: LikeStatus, userId: string, commentId: string):Promise<boolean>{
+        const comment = await QueryCommentsRepository.getCommentModelById(commentId)
+        comment?.changeLikeStatus(userId, likeStatus,comment.likeComments)
         return true
     }
 }

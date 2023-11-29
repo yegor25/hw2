@@ -26,6 +26,11 @@ exports.QueryCommentsRepository = {
             return comments_helper_1.commentHelper.commentsMapper(res, likeInfo);
         });
     },
+    getCommentModelById(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return db_1.CommentsModel.findById(id);
+        });
+    },
     getComments(params, postId) {
         return __awaiter(this, void 0, void 0, function* () {
             const parametres = paginator_helper_1.paginatorHelper.commentsParamsMapper(params);

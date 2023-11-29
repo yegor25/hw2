@@ -13,6 +13,7 @@ exports.commentService = void 0;
 const mongodb_1 = require("mongodb");
 const query_PostRepository_1 = require("../repositories/query/query-PostRepository");
 const comments_repository_1 = require("../repositories/mutation/comments-repository");
+const query_commentsRepository_1 = require("../repositories/query/query-commentsRepository");
 const convertId = (id) => new mongodb_1.ObjectId(id);
 exports.commentService = {
     createComment(postId, content, user) {
@@ -50,8 +51,10 @@ exports.commentService = {
             return comments_repository_1.comentsRepository.deleteAll();
         });
     },
-    updateLikeStatus(likeStatus, userId) {
+    updateLikeStatus(likeStatus, userId, commentId) {
         return __awaiter(this, void 0, void 0, function* () {
+            const comment = yield query_commentsRepository_1.QueryCommentsRepository.getCommentModelById(commentId);
+            comment === null || comment === void 0 ? void 0 : comment.changeLikeStatus(userId, likeStatus, comment.likeComments);
             return true;
         });
     }

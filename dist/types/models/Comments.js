@@ -45,3 +45,13 @@ exports.commentsSchema.methods.getDefaultLikeInfo = function () {
         myStatus: like_type_1.LikeStatus.None
     };
 };
+exports.commentsSchema.methods.changeLikeStatus = function (userId, status, items) {
+    const userLike = items.find(el => el.userId === userId);
+    if (!userLike) {
+        items.push({ status: status, userId: userId, createdAt: new Date().toISOString() });
+        return items;
+    }
+    const idx = items.findIndex(el => el.userId === userLike.userId);
+    items[idx] = Object.assign(Object.assign({}, items[idx]), { status: status, createdAt: new Date().toISOString() });
+    return items;
+};

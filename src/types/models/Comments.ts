@@ -7,7 +7,8 @@ import { ObjectId } from "mongodb"
 
 export type commentMethodsType = {
     getLikesInfo:(userId: string) => likeInfoType,
-    getDefaultLikeInfo:()=> likeInfoType
+    getDefaultLikeInfo:()=> likeInfoType,
+    changeLikeStatus:(userId: string, status: LikeStatus, items: commentsLikeType[]) => commentsLikeType[]
 }
 type commentModel = mongoose.Model<commentsLikeType,{},commentMethodsType>
 const commentatorInfoSchema = new mongoose.Schema<commentatorInfoType>({
@@ -51,6 +52,16 @@ commentsSchema.methods.getDefaultLikeInfo = function():likeInfoType{
         dislikesCount: 0,
         myStatus: LikeStatus.None
     }
+}
+commentsSchema.methods.changeLikeStatus = function(userId: string, status: LikeStatus, items: commentsLikeType[]):commentsLikeType[]{
+    const userLike = items.find(el => el.userId === userId)
+    if(!userLike) {
+        items.push({status: status, userId: userId, createdAt: new Date().toISOString()})
+        return items
+    }
+    const idx = items.findIndex(el => el.userId === userLike.userId)
+    items[idx] = {...items[idx], status: status, createdAt: new Date().toISOString()}
+    return items
 }
 
 

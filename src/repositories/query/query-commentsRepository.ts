@@ -17,6 +17,9 @@ export const QueryCommentsRepository = {
         const likeInfo = res.getLikesInfo(res.commentatorInfo.userId)
         return commentHelper.commentsMapper(res, likeInfo)
     },
+    async getCommentModelById(id: string){
+        return CommentsModel.findById(id)
+    },
     
     async getComments(params: paramsCommentsPaginatorType,postId: string):Promise<viewAllCommentsType>{
         const parametres = paginatorHelper.commentsParamsMapper(params)

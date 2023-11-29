@@ -60,7 +60,7 @@ commentRouter.put("/:commentId/like-status", authMiddleware,async(req:requestWit
     }
     const commentId = req.params.commentId
     const user = req.user
-    const result = await commentService.updateLikeStatus(status,user?._id.toString() as string)
+    const result = await commentService.updateLikeStatus(status,user?._id.toString() as string,commentId)
     if(!result){
         res.sendStatus(403)
         return

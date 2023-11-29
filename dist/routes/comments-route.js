@@ -64,7 +64,7 @@ exports.commentRouter.put("/:commentId/like-status", auth_middleware_1.authMiddl
     }
     const commentId = req.params.commentId;
     const user = req.user;
-    const result = yield comment_service_1.commentService.updateLikeStatus(status, user === null || user === void 0 ? void 0 : user._id.toString());
+    const result = yield comment_service_1.commentService.updateLikeStatus(status, user === null || user === void 0 ? void 0 : user._id.toString(), commentId);
     if (!result) {
         res.sendStatus(403);
         return;
