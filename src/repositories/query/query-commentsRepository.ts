@@ -33,7 +33,7 @@ export const QueryCommentsRepository = {
             
             
             const totalCount = await CommentsModel.countDocuments(filter)
-        
+
             return {
                 pagesCount:Math.ceil(totalCount/+parametres.pageSize),
                 page: +parametres.pageNumber,

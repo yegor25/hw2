@@ -3,7 +3,7 @@ import { QueryCommentsRepository } from "../repositories/query/query-commentsRep
 import { LikeStatus } from "../types/like-type";
 
 export const commentLikeValidator = [
-    body("likeStatus").exists().withMessage("unknown value")
+    body("likeStatus").exists().notEmpty().withMessage("unknown value")
 
 ]
 
