@@ -3,9 +3,10 @@ import { QueryCommentsRepository } from "../repositories/query/query-commentsRep
 import { LikeStatus } from "../types/like-type";
 
 export const commentLikeValidator = [
-    body("likeStatus").custom((val: any) => {
-        const values = Object.values(LikeStatus)
-        if(!values.some(val)) throw new Error("exist")
+    body("likeStatus").custom((val:string) => {
+        if(val in LikeStatus) return 
+        throw new Error("inv")
+
     }).withMessage("unknown value")
 
 ]

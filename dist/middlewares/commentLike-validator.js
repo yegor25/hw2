@@ -5,8 +5,8 @@ const express_validator_1 = require("express-validator");
 const like_type_1 = require("../types/like-type");
 exports.commentLikeValidator = [
     (0, express_validator_1.body)("likeStatus").custom((val) => {
-        const values = Object.values(like_type_1.LikeStatus);
-        if (!values.some(val))
-            throw new Error("exist");
+        if (val in like_type_1.LikeStatus)
+            return;
+        throw new Error("inv");
     }).withMessage("unknown value")
 ];
