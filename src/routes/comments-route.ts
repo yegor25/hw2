@@ -51,7 +51,7 @@ commentRouter.put("/:commentId", authMiddleware,commentValidator,commentValidate
     }
     res.sendStatus(204)
 })
-commentRouter.put("/:commentId/like-status", authMiddleware,async(req:requestWithParamsAndBody<{commentId: string},{likeStatus: LikeStatus}>, res:Response) => {
+commentRouter.put("/:commentId/like-status", authMiddleware,commentLikeValidator,commentValidate,async(req:requestWithParamsAndBody<{commentId: string},{likeStatus: LikeStatus}>, res:Response) => {
     const status = req.body.likeStatus
     const data = await QueryCommentsRepository.getCommentsById(req.params.commentId)
     if(!data) {

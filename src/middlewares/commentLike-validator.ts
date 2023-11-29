@@ -1,11 +1,12 @@
 import { body, param } from "express-validator";
 import { QueryCommentsRepository } from "../repositories/query/query-commentsRepository";
+import { LikeStatus } from "../types/like-type";
 
 export const commentLikeValidator = [
-    param("commentId").custom(async(val: string) => {
-        const comment = await QueryCommentsRepository.getCommentsById(val)
-        if(!comment) throw new Error("invalid")
-    }).withMessage("invalid content")
+    body("likeStatus").custom((val: any) => {
+        const values = Object.keys(LikeStatus)
+        if(!values.includes(val)) throw new Error("exist")
+    }).withMessage("unknown value")
 
 ]
 
