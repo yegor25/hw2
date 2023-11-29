@@ -4,8 +4,7 @@ import { LikeStatus } from "../types/like-type";
 
 export const commentLikeValidator = [
     body("likeStatus").custom((val:string) => {
-        if(val in LikeStatus) return 
-        throw new Error("inv")
+        if( !(val in LikeStatus))  throw new Error("inv")
 
     }).withMessage("unknown value")
 
