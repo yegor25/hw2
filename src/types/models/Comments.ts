@@ -2,13 +2,14 @@
 
 import mongoose from "mongoose"
 import { LikeStatus, commentsLikeType } from "../like-type"
-import { CommentDbModelType, commentatorInfoType, likeInfoType } from "../comment-type"
+import { CommentDbModelType, CommentViewModelType, commentatorInfoType, likeInfoType } from "../comment-type"
 import { ObjectId } from "mongodb"
 
 export type commentMethodsType = {
     getLikesInfo:(userId: string) => likeInfoType,
     getDefaultLikeInfo:()=> likeInfoType,
-    changeLikeStatus:(userId: string, status: LikeStatus, items: commentsLikeType[]) => commentsLikeType[]
+    changeLikeStatus:(userId: string, status: LikeStatus, items: commentsLikeType[]) => commentsLikeType[],
+    getCommentsLikes:(userId: string, items: CommentDbModelType[])=>CommentViewModelType[]
 }
 type commentModel = mongoose.Model<commentsLikeType,{},commentMethodsType>
 const commentatorInfoSchema = new mongoose.Schema<commentatorInfoType>({
@@ -63,5 +64,9 @@ commentsSchema.methods.changeLikeStatus = function(userId: string, status: LikeS
     items[idx] = {...items[idx], status: status, createdAt: new Date().toISOString()}
     return items
 }
+
+
+
+
 
 

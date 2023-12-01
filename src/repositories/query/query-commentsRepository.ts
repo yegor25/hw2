@@ -1,10 +1,12 @@
 import { ObjectId } from "mongodb"
 import { CommentsModel } from "../../db"
-import { CommentViewModelType, viewAllCommentsType } from "../../types/comment-type"
+import { CommentDbModelType, CommentViewModelType, viewAllCommentsType } from "../../types/comment-type"
 import { commentHelper } from "../helpers/comments-helper"
 import { paginatorType, paramsCommentsPaginatorType } from "../../types/paginator-type"
 import { paginatorHelper } from "../helpers/paginator-helper"
 import { LikeStatus } from "../../types/like-type"
+import { HydratedDocument } from "mongoose"
+import { commentMethodsType } from "../../types/models/Comments"
 
 
 const convertId = (id: string) => new ObjectId(id)
@@ -12,7 +14,7 @@ const convertId = (id: string) => new ObjectId(id)
 
 export const QueryCommentsRepository = {
     async getCommentsById(id: string):Promise<CommentViewModelType | null>{
-        const res = await CommentsModel.findOne({_id: convertId(id)})
+        const res:HydratedDocument<CommentDbModelType,commentMethodsType> | null = await CommentsModel.findOne({_id: convertId(id)})
         if(!res) return null
         const likeInfo = res.getLikesInfo(res.commentatorInfo.userId)
         return commentHelper.commentsMapper(res, likeInfo)
@@ -25,7 +27,7 @@ export const QueryCommentsRepository = {
         const parametres = paginatorHelper.commentsParamsMapper(params)
         const filter  = {postId}
         const skipCount = (parametres.pageNumber - 1) * parametres.pageSize
-        const data = await CommentsModel.find(filter)
+        const data: HydratedDocument<CommentDbModelType, commentMethodsType>[] = await CommentsModel.find(filter)
             .sort({[parametres.sortBy]: parametres.sortDirection})
             .skip(skipCount)
             .limit(parametres.pageSize)
@@ -39,7 +41,7 @@ export const QueryCommentsRepository = {
                 page: +parametres.pageNumber,
                 pageSize: +parametres.pageSize,
                 totalCount,
-                items: data.map(el => commentHelper.commentsMapper(el, {likesCount: 0, dislikesCount: 0,myStatus: LikeStatus.None}))
+                items: data.map(el => commentHelper.commentsMapper(el, el.getLikesInfo("")))
             }
     }
 }
