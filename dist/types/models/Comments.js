@@ -55,3 +55,13 @@ exports.commentsSchema.methods.changeLikeStatus = function (userId, status, item
     items[idx] = Object.assign(Object.assign({}, items[idx]), { status: status, createdAt: new Date().toISOString() });
     return items;
 };
+exports.commentsSchema.methods.getLikesInfoForUnauth = function () {
+    const likeCount = this.likeComments.filter((el) => el.status === like_type_1.LikeStatus.Like);
+    const disLikeCount = this.likeComments.filter((el) => el.status === like_type_1.LikeStatus.Dislike);
+    const result = {
+        likesCount: likeCount.length,
+        dislikesCount: disLikeCount.length,
+        myStatus: like_type_1.LikeStatus.None
+    };
+    return result;
+};

@@ -16,7 +16,7 @@ export const QueryCommentsRepository = {
     async getCommentsById(id: string):Promise<CommentViewModelType | null>{
         const res:HydratedDocument<CommentDbModelType,commentMethodsType> | null = await CommentsModel.findOne({_id: convertId(id)})
         if(!res) return null
-        const likeInfo = res.getLikesInfo(res.commentatorInfo.userId)
+        const likeInfo = res.getLikesInfoForUnauth()
         return commentHelper.commentsMapper(res, likeInfo)
     },
     async getCommentModelById(id: string){

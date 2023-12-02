@@ -9,7 +9,7 @@ export type commentMethodsType = {
     getLikesInfo:(userId: string) => likeInfoType,
     getDefaultLikeInfo:()=> likeInfoType,
     changeLikeStatus:(userId: string, status: LikeStatus, items: commentsLikeType[]) => commentsLikeType[],
-    getCommentsLikes:(userId: string, items: CommentDbModelType[])=>CommentViewModelType[]
+    getLikesInfoForUnauth:()=>likeInfoType
 }
 type commentModel = mongoose.Model<commentsLikeType,{},commentMethodsType>
 const commentatorInfoSchema = new mongoose.Schema<commentatorInfoType>({
@@ -63,6 +63,16 @@ commentsSchema.methods.changeLikeStatus = function(userId: string, status: LikeS
     const idx = items.findIndex(el => el.userId === userLike.userId)
     items[idx] = {...items[idx], status: status, createdAt: new Date().toISOString()}
     return items
+}
+commentsSchema.methods.getLikesInfoForUnauth = function():likeInfoType{
+    const likeCount: commentsLikeType[] = this.likeComments.filter((el: commentsLikeType) => el.status === LikeStatus.Like)
+    const disLikeCount: commentsLikeType[] = this.likeComments.filter((el: commentsLikeType) => el.status === LikeStatus.Dislike)
+    const result: likeInfoType = {
+        likesCount: likeCount.length,
+        dislikesCount: disLikeCount.length,
+        myStatus: LikeStatus.None
+    }
+    return result
 }
 
 
