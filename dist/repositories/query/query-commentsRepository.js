@@ -30,7 +30,7 @@ exports.QueryCommentsRepository = {
             return db_1.CommentsModel.findById(id);
         });
     },
-    getComments(params, postId) {
+    getComments(params, postId, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             const parametres = paginator_helper_1.paginatorHelper.commentsParamsMapper(params);
             const filter = { postId };
@@ -45,7 +45,7 @@ exports.QueryCommentsRepository = {
                 page: +parametres.pageNumber,
                 pageSize: +parametres.pageSize,
                 totalCount,
-                items: data.map(el => comments_helper_1.commentHelper.commentsMapper(el, el.getLikesInfoForUnauth()))
+                items: data.map(el => comments_helper_1.commentHelper.commentsMapper(el, userId ? el.getLikesInfo(userId) : el.getLikesInfoForUnauth()))
             };
         });
     }

@@ -1,5 +1,5 @@
 import { Router, Request, Response } from "express";
-import { authMiddleware, checkAuth } from "../middlewares/auth-middleware";
+import { authMiddleware, checkAuth, checkGuess } from "../middlewares/auth-middleware";
 import { requestWithBody, requestWithParams, requestWithParamsAndBody, requestWithQuery, requestWithQueryAndParams } from "../types/root-type";
 import { postBodyType, postType } from "../types/post-type";
 import { postValidate, postValidator } from "../middlewares/post-validation";
@@ -9,6 +9,7 @@ import { paramsCommentsPaginatorType, paramsPostPaginatorType } from "../types/p
 import { commentService } from "../domain/comment-service";
 import { commentValidate, commentValidator } from "../middlewares/comment-validator";
 import { QueryCommentsRepository } from "../repositories/query/query-commentsRepository";
+import { jwtService } from "../application/jwt-service";
 
 
 export const postRouter = Router({})
@@ -49,14 +50,14 @@ postRouter.post("/:postId/comments", authMiddleware,commentValidator,commentVali
     }
     res.status(201).send(comment)
 })
-postRouter.get("/:postId/comments",async(req:requestWithQueryAndParams<{postId:string}, paramsCommentsPaginatorType>,res:Response) => {
+postRouter.get("/:postId/comments" ,async(req:requestWithQueryAndParams<{postId:string}, paramsCommentsPaginatorType>,res:Response) => {
     const postId = req.params.postId
     const post = await QueryPostRepository.findPostById(postId)
     if(!post){
         res.sendStatus(404)
         return
     }
-    const comments = await QueryCommentsRepository.getComments(req.query, postId)
+    const comments = await QueryCommentsRepository.getComments(req.query, postId, req.user?._id.toString())
     res.status(200).send(comments)
 })
 postRouter.put("/:id",checkAuth, postValidator, postValidate ,async (req: requestWithParamsAndBody<{ id: string }, postBodyType>, res: Response) => {

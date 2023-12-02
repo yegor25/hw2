@@ -55,13 +55,14 @@ exports.postRouter.post("/:postId/comments", auth_middleware_1.authMiddleware, c
     res.status(201).send(comment);
 }));
 exports.postRouter.get("/:postId/comments", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     const postId = req.params.postId;
     const post = yield query_PostRepository_1.QueryPostRepository.findPostById(postId);
     if (!post) {
         res.sendStatus(404);
         return;
     }
-    const comments = yield query_commentsRepository_1.QueryCommentsRepository.getComments(req.query, postId);
+    const comments = yield query_commentsRepository_1.QueryCommentsRepository.getComments(req.query, postId, (_a = req.user) === null || _a === void 0 ? void 0 : _a._id.toString());
     res.status(200).send(comments);
 }));
 exports.postRouter.put("/:id", auth_middleware_1.checkAuth, post_validation_1.postValidator, post_validation_1.postValidate, (req, res) => __awaiter(void 0, void 0, void 0, function* () {

@@ -23,7 +23,7 @@ export const QueryCommentsRepository = {
         return CommentsModel.findById(id)
     },
     
-    async getComments(params: paramsCommentsPaginatorType,postId: string):Promise<viewAllCommentsType>{
+    async getComments(params: paramsCommentsPaginatorType,postId: string, userId: string | undefined):Promise<viewAllCommentsType>{
         const parametres = paginatorHelper.commentsParamsMapper(params)
         const filter  = {postId}
         const skipCount = (parametres.pageNumber - 1) * parametres.pageSize
@@ -41,7 +41,7 @@ export const QueryCommentsRepository = {
                 page: +parametres.pageNumber,
                 pageSize: +parametres.pageSize,
                 totalCount,
-                items: data.map(el => commentHelper.commentsMapper(el, el.getLikesInfoForUnauth()))
+                items: data.map(el => commentHelper.commentsMapper(el, userId ? el.getLikesInfo(userId) : el.getLikesInfoForUnauth()))
             }
     }
 }
