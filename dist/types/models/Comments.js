@@ -51,13 +51,7 @@ exports.commentsSchema.methods.changeLikeStatus = function (userId, status) {
         this.likeComments.push({ status: status, userId: userId });
         return this.likeComments;
     }
-    console.log(userLike);
-    // console.log("items", items)
-    // console.log("new", items.map(el => el.userId === userId ? {...el, status: status} : el))
-    // const idx = items.findIndex(el => el.userId === userLike.userId)
-    // items[idx] = {...items[idx], status: status}
     this.likeComments = this.likeComments.map(el => el.userId === userId ? Object.assign(Object.assign({}, el), { status: status }) : el);
-    console.log("new", this.likeComments);
     return this.likeComments;
 };
 exports.commentsSchema.methods.getLikesInfoForUnauth = function () {
