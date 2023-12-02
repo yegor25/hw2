@@ -36,6 +36,7 @@ exports.commentsSchema.methods.getLikesInfo = function (userId) {
         dislikesCount: disLikeCount.length,
         myStatus: myReaction ? myReaction.status : like_type_1.LikeStatus.None
     };
+    console.log("result", result);
     return result;
 };
 exports.commentsSchema.methods.getDefaultLikeInfo = function () {

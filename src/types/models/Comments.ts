@@ -45,6 +45,7 @@ commentsSchema.methods.getLikesInfo = function (userId: string): likeInfoType {
         dislikesCount: disLikeCount.length,
         myStatus: myReaction ? myReaction.status : LikeStatus.None
     }
+    console.log("result", result)
     return result
 }
 commentsSchema.methods.getDefaultLikeInfo = function():likeInfoType{

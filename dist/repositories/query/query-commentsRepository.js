@@ -14,7 +14,6 @@ const mongodb_1 = require("mongodb");
 const db_1 = require("../../db");
 const comments_helper_1 = require("../helpers/comments-helper");
 const paginator_helper_1 = require("../helpers/paginator-helper");
-const like_type_1 = require("../../types/like-type");
 const convertId = (id) => new mongodb_1.ObjectId(id);
 exports.QueryCommentsRepository = {
     getCommentsById(id) {
@@ -47,7 +46,7 @@ exports.QueryCommentsRepository = {
                 page: +parametres.pageNumber,
                 pageSize: +parametres.pageSize,
                 totalCount,
-                items: data.map(el => comments_helper_1.commentHelper.commentsMapper(el, { likesCount: 0, dislikesCount: 0, myStatus: like_type_1.LikeStatus.None }))
+                items: data.map(el => comments_helper_1.commentHelper.commentsMapper(el, el.getLikesInfo("")))
             };
         });
     }
