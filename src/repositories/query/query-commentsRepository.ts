@@ -36,13 +36,12 @@ export const QueryCommentsRepository = {
             
             const totalCount = await CommentsModel.countDocuments(filter)
            
-            data.map((el:HydratedDocument<CommentDbModelType, commentMethodsType>) => el.getLikesInfo("123"))
             return {
                 pagesCount:Math.ceil(totalCount/+parametres.pageSize),
                 page: +parametres.pageNumber,
                 pageSize: +parametres.pageSize,
                 totalCount,
-                items: data.map(el => commentHelper.commentsMapper(el, el.getLikesInfo("")))
+                items: data.map(el => commentHelper.commentsMapper(el, el.getLikesInfoForUnauth()))
             }
     }
 }

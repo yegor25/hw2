@@ -40,13 +40,12 @@ exports.QueryCommentsRepository = {
                 .skip(skipCount)
                 .limit(parametres.pageSize);
             const totalCount = yield db_1.CommentsModel.countDocuments(filter);
-            data.map((el) => el.getLikesInfo("123"));
             return {
                 pagesCount: Math.ceil(totalCount / +parametres.pageSize),
                 page: +parametres.pageNumber,
                 pageSize: +parametres.pageSize,
                 totalCount,
-                items: data.map(el => comments_helper_1.commentHelper.commentsMapper(el, el.getLikesInfo("")))
+                items: data.map(el => comments_helper_1.commentHelper.commentsMapper(el, el.getLikesInfoForUnauth()))
             };
         });
     }
