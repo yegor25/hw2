@@ -61,7 +61,7 @@ commentsSchema.methods.changeLikeStatus = function(userId: string, status: LikeS
         return items
     }
     const idx = items.findIndex(el => el.userId === userLike.userId)
-    items[idx] = {...items[idx], status: status, createdAt: new Date().toISOString()}
+    items[idx] = {...items[idx], status: status}
     return items
 }
 commentsSchema.methods.getLikesInfoForUnauth = function():likeInfoType{

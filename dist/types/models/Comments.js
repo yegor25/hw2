@@ -52,7 +52,7 @@ exports.commentsSchema.methods.changeLikeStatus = function (userId, status, item
         return items;
     }
     const idx = items.findIndex(el => el.userId === userLike.userId);
-    items[idx] = Object.assign(Object.assign({}, items[idx]), { status: status, createdAt: new Date().toISOString() });
+    items[idx] = Object.assign(Object.assign({}, items[idx]), { status: status });
     return items;
 };
 exports.commentsSchema.methods.getLikesInfoForUnauth = function () {

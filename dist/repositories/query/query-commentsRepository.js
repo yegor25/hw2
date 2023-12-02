@@ -21,7 +21,7 @@ exports.QueryCommentsRepository = {
             const res = yield db_1.CommentsModel.findOne({ _id: convertId(id) });
             if (!res)
                 return null;
-            const likeInfo = res.getLikesInfoForUnauth();
+            const likeInfo = userId ? res.getLikesInfo(userId) : res.getLikesInfoForUnauth();
             return comments_helper_1.commentHelper.commentsMapper(res, likeInfo);
         });
     },
