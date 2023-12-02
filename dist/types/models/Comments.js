@@ -48,7 +48,7 @@ exports.commentsSchema.methods.getDefaultLikeInfo = function () {
 exports.commentsSchema.methods.changeLikeStatus = function (userId, status) {
     const userLike = this.likeComments.find(el => el.userId === userId);
     if (!userLike) {
-        this.likeComments.push({ status: status, userId: userId });
+        this.likeComments = [...this.likeComments, { status: status, userId: userId }];
         return this.likeComments;
     }
     this.likeComments = this.likeComments.map(el => el.userId === userId ? Object.assign(Object.assign({}, el), { status: status }) : el);
