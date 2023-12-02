@@ -38,9 +38,9 @@ exports.QueryCommentsRepository = {
             const data = yield db_1.CommentsModel.find(filter)
                 .sort({ [parametres.sortBy]: parametres.sortDirection })
                 .skip(skipCount)
-                .limit(parametres.pageSize)
-                .lean();
+                .limit(parametres.pageSize);
             const totalCount = yield db_1.CommentsModel.countDocuments(filter);
+            data.map((el) => el.getLikesInfo("123"));
             return {
                 pagesCount: Math.ceil(totalCount / +parametres.pageSize),
                 page: +parametres.pageNumber,

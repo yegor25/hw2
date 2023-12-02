@@ -27,15 +27,16 @@ export const QueryCommentsRepository = {
         const parametres = paginatorHelper.commentsParamsMapper(params)
         const filter  = {postId}
         const skipCount = (parametres.pageNumber - 1) * parametres.pageSize
-        const data: HydratedDocument<CommentDbModelType, commentMethodsType>[] = await CommentsModel.find(filter)
+        const data:HydratedDocument<CommentDbModelType, commentMethodsType>[] = await CommentsModel.find(filter)
             .sort({[parametres.sortBy]: parametres.sortDirection})
             .skip(skipCount)
             .limit(parametres.pageSize)
-            .lean()
+            
             
             
             const totalCount = await CommentsModel.countDocuments(filter)
-
+           
+            data.map((el:HydratedDocument<CommentDbModelType, commentMethodsType>) => el.getLikesInfo("123"))
             return {
                 pagesCount:Math.ceil(totalCount/+parametres.pageSize),
                 page: +parametres.pageNumber,
