@@ -53,7 +53,7 @@ export const authMiddleware = async(req:Request,res:Response, next: NextFunction
     }
 }
 
-export const checkGuess = async(req:Request | requestWithQueryAndParams<{postId:string}, paramsCommentsPaginatorType>,res:Response, next:NextFunction) => {
+export const checkGuess = async(req:Request | requestWithQueryAndParams<{postId:string}, paramsCommentsPaginatorType | requestWithQueryAndParams<{postId:string}, paramsCommentsPaginatorType>>,res:Response, next:NextFunction) => {
     const tokenData = req.headers.authorization
     if(!tokenData){
         req.user = null

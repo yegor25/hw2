@@ -28,8 +28,8 @@ exports.commentsSchema = new mongoose_1.default.Schema({
     likeComments: [exports.commentsLikesInfoSchema]
 });
 exports.commentsSchema.methods.getLikesInfo = function (userId) {
-    const myReaction = this.likeComments.find((el) => el.userId === userId);
-    const likeCount = this.likeComments.filter((el) => el.status === like_type_1.LikeStatus.Like);
+    const myReaction = this.likeComments.find(el => el.userId === userId);
+    const likeCount = this.likeComments.filter(el => el.status === like_type_1.LikeStatus.Like);
     const disLikeCount = this.likeComments.filter((el) => el.status === like_type_1.LikeStatus.Dislike);
     const result = {
         likesCount: likeCount.length,

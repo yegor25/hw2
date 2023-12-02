@@ -54,7 +54,7 @@ exports.postRouter.post("/:postId/comments", auth_middleware_1.authMiddleware, c
     }
     res.status(201).send(comment);
 }));
-exports.postRouter.get("/:postId/comments", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.postRouter.get("/:postId/comments", auth_middleware_1.checkGuess, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const postId = req.params.postId;
     const post = yield query_PostRepository_1.QueryPostRepository.findPostById(postId);

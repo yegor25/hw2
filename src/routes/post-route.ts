@@ -50,7 +50,7 @@ postRouter.post("/:postId/comments", authMiddleware,commentValidator,commentVali
     }
     res.status(201).send(comment)
 })
-postRouter.get("/:postId/comments" ,async(req:requestWithQueryAndParams<{postId:string}, paramsCommentsPaginatorType>,res:Response) => {
+postRouter.get("/:postId/comments" ,checkGuess,async(req:requestWithQueryAndParams<{postId:string}, paramsCommentsPaginatorType>,res:Response) => {
     const postId = req.params.postId
     const post = await QueryPostRepository.findPostById(postId)
     if(!post){
