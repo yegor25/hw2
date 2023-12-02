@@ -45,15 +45,20 @@ exports.commentsSchema.methods.getDefaultLikeInfo = function () {
         myStatus: like_type_1.LikeStatus.None
     };
 };
-exports.commentsSchema.methods.changeLikeStatus = function (userId, status, items) {
-    const userLike = items.find(el => el.userId === userId);
+exports.commentsSchema.methods.changeLikeStatus = function (userId, status) {
+    const userLike = this.likeComments.find(el => el.userId === userId);
     if (!userLike) {
-        items.push({ status: status, userId: userId, createdAt: new Date().toISOString() });
-        return items;
+        this.likeComments.push({ status: status, userId: userId });
+        return this.likeComments;
     }
-    const idx = items.findIndex(el => el.userId === userLike.userId);
-    items[idx] = Object.assign(Object.assign({}, items[idx]), { status: status });
-    return items;
+    console.log(userLike);
+    // console.log("items", items)
+    // console.log("new", items.map(el => el.userId === userId ? {...el, status: status} : el))
+    // const idx = items.findIndex(el => el.userId === userLike.userId)
+    // items[idx] = {...items[idx], status: status}
+    this.likeComments = this.likeComments.map(el => el.userId === userId ? Object.assign(Object.assign({}, el), { status: status }) : el);
+    console.log("new", this.likeComments);
+    return this.likeComments;
 };
 exports.commentsSchema.methods.getLikesInfoForUnauth = function () {
     const likeCount = this.likeComments.filter((el) => el.status === like_type_1.LikeStatus.Like);

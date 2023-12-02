@@ -8,8 +8,9 @@ import { ObjectId } from "mongodb"
 export type commentMethodsType = {
     getLikesInfo:(userId: string) => likeInfoType,
     getDefaultLikeInfo:()=> likeInfoType,
-    changeLikeStatus:(userId: string, status: LikeStatus, items: commentsLikeType[]) => commentsLikeType[],
-    getLikesInfoForUnauth:()=>likeInfoType
+    changeLikeStatus:(userId: string, status: LikeStatus) => commentsLikeType[],
+    getLikesInfoForUnauth:()=>likeInfoType,
+    likeComments: commentsLikeType[]
 }
 type commentModel = mongoose.Model<commentsLikeType,{},commentMethodsType>
 const commentatorInfoSchema = new mongoose.Schema<commentatorInfoType>({
@@ -54,15 +55,20 @@ commentsSchema.methods.getDefaultLikeInfo = function():likeInfoType{
         myStatus: LikeStatus.None
     }
 }
-commentsSchema.methods.changeLikeStatus = function(userId: string, status: LikeStatus, items: commentsLikeType[]):commentsLikeType[]{
-    const userLike = items.find(el => el.userId === userId)
+commentsSchema.methods.changeLikeStatus = function(userId: string, status: LikeStatus):commentsLikeType[]{
+    const userLike = this.likeComments.find(el => el.userId === userId)
     if(!userLike) {
-        items.push({status: status, userId: userId, createdAt: new Date().toISOString()})
-        return items
+        this.likeComments.push({status: status, userId: userId})
+        return this.likeComments
     }
-    const idx = items.findIndex(el => el.userId === userLike.userId)
-    items[idx] = {...items[idx], status: status}
-    return items
+    console.log(userLike)
+    // console.log("items", items)
+    // console.log("new", items.map(el => el.userId === userId ? {...el, status: status} : el))
+    // const idx = items.findIndex(el => el.userId === userLike.userId)
+    // items[idx] = {...items[idx], status: status}
+    this.likeComments = this.likeComments.map(el => el.userId === userId ? {...el, status: status} : el)
+    console.log("new", this.likeComments)
+    return this.likeComments
 }
 commentsSchema.methods.getLikesInfoForUnauth = function():likeInfoType{
     const likeCount: commentsLikeType[] = this.likeComments.filter((el: commentsLikeType) => el.status === LikeStatus.Like)
@@ -74,6 +80,7 @@ commentsSchema.methods.getLikesInfoForUnauth = function():likeInfoType{
     }
     return result
 }
+
 
 
 

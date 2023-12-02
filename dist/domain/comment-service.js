@@ -54,7 +54,7 @@ exports.commentService = {
     updateLikeStatus(likeStatus, userId, commentId) {
         return __awaiter(this, void 0, void 0, function* () {
             const comment = yield query_commentsRepository_1.QueryCommentsRepository.getCommentModelById(commentId);
-            comment === null || comment === void 0 ? void 0 : comment.changeLikeStatus(userId, likeStatus, comment.likeComments);
+            comment === null || comment === void 0 ? void 0 : comment.changeLikeStatus(userId, likeStatus);
             yield (comment === null || comment === void 0 ? void 0 : comment.save());
             return true;
         });

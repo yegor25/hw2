@@ -39,7 +39,7 @@ export const commentService = {
     },
     async updateLikeStatus(likeStatus: LikeStatus, userId: string, commentId: string):Promise<boolean>{
         const comment = await QueryCommentsRepository.getCommentModelById(commentId)
-        comment?.changeLikeStatus(userId, likeStatus,comment.likeComments)
+        comment?.changeLikeStatus(userId, likeStatus)
         await comment?.save()
         return true
     }
