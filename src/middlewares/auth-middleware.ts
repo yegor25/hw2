@@ -50,6 +50,23 @@ export const authMiddleware = async(req:Request,res:Response, next: NextFunction
         return
     }
 }
+
+export const checkGuess = async(req:Request,res:Response, next:NextFunction) => {
+    const tokenData = req.headers.authorization
+    if(!tokenData){
+        req.user = null
+        return next()
+    }
+    const token = tokenData.split(" ")[1]
+    const userId = await jwtService.getUserIdByToken(token)
+    if(!userId){
+        req.user = null
+        return next()
+    }
+    req.user = await QueryUserRepository.findUserById(userId)
+    next()
+
+}
 /*
 
 import { NextFunction, Request, Response } from "express"

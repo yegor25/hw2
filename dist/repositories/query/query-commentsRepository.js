@@ -16,7 +16,7 @@ const comments_helper_1 = require("../helpers/comments-helper");
 const paginator_helper_1 = require("../helpers/paginator-helper");
 const convertId = (id) => new mongodb_1.ObjectId(id);
 exports.QueryCommentsRepository = {
-    getCommentsById(id) {
+    getCommentsById(id, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             const res = yield db_1.CommentsModel.findOne({ _id: convertId(id) });
             if (!res)

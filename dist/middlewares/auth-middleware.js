@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.authMiddleware = exports.checkAuth = void 0;
+exports.checkGuess = exports.authMiddleware = exports.checkAuth = void 0;
 const jwt_service_1 = require("../application/jwt-service");
 const query_UserRepository_1 = require("../repositories/query/query-UserRepository");
 const checkAuth = (req, res, next) => {
@@ -62,6 +62,22 @@ const authMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
     }
 });
 exports.authMiddleware = authMiddleware;
+const checkGuess = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const tokenData = req.headers.authorization;
+    if (!tokenData) {
+        req.user = null;
+        return next();
+    }
+    const token = tokenData.split(" ")[1];
+    const userId = yield jwt_service_1.jwtService.getUserIdByToken(token);
+    if (!userId) {
+        req.user = null;
+        return next();
+    }
+    req.user = yield query_UserRepository_1.QueryUserRepository.findUserById(userId);
+    next();
+});
+exports.checkGuess = checkGuess;
 /*
 
 import { NextFunction, Request, Response } from "express"

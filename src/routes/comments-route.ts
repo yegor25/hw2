@@ -2,7 +2,7 @@ import { Response, Router } from "express";
 import { requestWithParams, requestWithParamsAndBody } from "../types/root-type";
 import { QueryCommentsRepository } from "../repositories/query/query-commentsRepository";
 import { CommentViewModelType } from "../types/comment-type";
-import { authMiddleware } from "../middlewares/auth-middleware";
+import { authMiddleware, checkGuess } from "../middlewares/auth-middleware";
 import { commentService } from "../domain/comment-service";
 import { commentValidate, commentValidator } from "../middlewares/comment-validator";
 import { LikeStatus } from "../types/like-type";
@@ -12,16 +12,17 @@ import { commentLikeValidator } from "../middlewares/commentLike-validator";
 export const commentRouter = Router({})
 
 
-commentRouter.get("/:id", async(req:requestWithParams<{id: string}>, res:Response) => {
-    const data = await QueryCommentsRepository.getCommentsById(req.params.id)
+commentRouter.get("/:id",checkGuess ,async(req:requestWithParams<{id: string}>, res:Response) => {
+    const user = req.user
+    const data = await QueryCommentsRepository.getCommentsById(req.params.id, user?._id.toString())
     if(!data) {
         res.sendStatus(404)
         return
     }
     res.status(200).send(data)
 })
-commentRouter.delete("/:commentId", authMiddleware,async(req:requestWithParams<{commentId: string}>, res:Response) => {
-    const data = await QueryCommentsRepository.getCommentsById(req.params.commentId)
+commentRouter.delete("/:commentId", checkGuess,authMiddleware,async(req:requestWithParams<{commentId: string}>, res:Response) => {
+    const data = await QueryCommentsRepository.getCommentsById(req.params.commentId, req.user?._id.toString())
     if(!data) {
         res.sendStatus(404)
         return
@@ -37,7 +38,7 @@ commentRouter.delete("/:commentId", authMiddleware,async(req:requestWithParams<{
 })
 commentRouter.put("/:commentId", authMiddleware,commentValidator,commentValidate,async(req:requestWithParamsAndBody<{commentId: string},{content: string}>, res:Response) => {
     const content = req.body.content
-    const data = await QueryCommentsRepository.getCommentsById(req.params.commentId)
+    const data = await QueryCommentsRepository.getCommentsById(req.params.commentId, req.user?._id.toString())
     if(!data) {
         res.sendStatus(404)
         return
@@ -53,7 +54,7 @@ commentRouter.put("/:commentId", authMiddleware,commentValidator,commentValidate
 })
 commentRouter.put("/:commentId/like-status", authMiddleware,commentLikeValidator,commentValidate,async(req:requestWithParamsAndBody<{commentId: string},{likeStatus: LikeStatus}>, res:Response) => {
     const status = req.body.likeStatus
-    const data = await QueryCommentsRepository.getCommentsById(req.params.commentId)
+    const data = await QueryCommentsRepository.getCommentsById(req.params.commentId, req.user?._id.toString())
     if(!data) {
         res.sendStatus(404)
         return
