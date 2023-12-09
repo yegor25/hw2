@@ -11,12 +11,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.QueryRequestUser = void 0;
 const db_1 = require("../../db");
-exports.QueryRequestUser = {
+// export const QueryRequestUser = {
+//     async countLastRequet(url: string, ip: string):Promise<number>{
+//         const filterDate = new Date(Date.now() - 10000)
+//         const count = await ReqUserModel.countDocuments({URL: url, IP: ip, date: {$gte: new Date(filterDate)}})
+//         return count
+//     }
+// }
+class queryRequestUser {
     countLastRequet(url, ip) {
         return __awaiter(this, void 0, void 0, function* () {
             const filterDate = new Date(Date.now() - 10000);
-            const count = yield db_1.requestUserCollections.countDocuments({ URL: url, IP: ip, date: { $gte: new Date(filterDate) } });
+            const count = yield db_1.ReqUserModel.countDocuments({ URL: url, IP: ip, date: { $gte: new Date(filterDate) } });
             return count;
         });
     }
-};
+}
+exports.QueryRequestUser = new queryRequestUser();

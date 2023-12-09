@@ -11,11 +11,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.requestUserRepository = void 0;
 const db_1 = require("../../db");
-exports.requestUserRepository = {
+// export const requestUserRepository = {
+//     async saveRequest(data: requestUserDbType):Promise<requestUserDbType>{
+//         const res = await ReqUserModel.create(data)
+//         return data
+//     }
+// }
+class RequestUserRepository {
     saveRequest(data) {
         return __awaiter(this, void 0, void 0, function* () {
-            const res = yield db_1.requestUserCollections.insertOne(data);
+            const res = yield db_1.ReqUserModel.create(data);
             return data;
         });
     }
-};
+}
+exports.requestUserRepository = new RequestUserRepository();

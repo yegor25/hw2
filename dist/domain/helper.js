@@ -14,7 +14,39 @@ const mongodb_1 = require("mongodb");
 const crypto_service_1 = require("../application/crypto-service");
 const uuid_1 = require("uuid");
 const date_fns_1 = require("date-fns");
-exports.helper = {
+// export const helper = {
+//     async userDbViewMapper(user: userInputType):Promise<userDbType> {
+//         const passwordData = await cryptoService.genHash(user.password)
+//         const res:userDbType = {
+//             _id: new ObjectId(),
+//             email: user.email,
+//             login: user.login,
+//             createdAt: new Date().toISOString(),
+//             emailConfirmation: this.confiramtionDataMapper(),
+//             hashPassword: passwordData.hash,
+//             passwordSalt: passwordData.salt
+//         }
+//         return res
+//     },
+//     confiramtionDataMapper(): userConfirmationType{
+//         const data:userConfirmationType = {
+//             code: v4(),
+//             expirationDate: addDays(new Date(),3),
+//             isConfirmed: false
+//         } 
+//         return data
+//     },
+//     recoverPassDataMapper(userId: string):passRecoveryDbType {
+//         const res: passRecoveryDbType = {
+//             _id: new ObjectId(),
+//             userId,
+//             expirationDate: addDays(new Date(),1),
+//             recoveryCode: v4()
+//         }
+//         return res
+//     }
+// }
+class Helper {
     userDbViewMapper(user) {
         return __awaiter(this, void 0, void 0, function* () {
             const passwordData = yield crypto_service_1.cryptoService.genHash(user.password);
@@ -29,7 +61,7 @@ exports.helper = {
             };
             return res;
         });
-    },
+    }
     confiramtionDataMapper() {
         const data = {
             code: (0, uuid_1.v4)(),
@@ -37,7 +69,7 @@ exports.helper = {
             isConfirmed: false
         };
         return data;
-    },
+    }
     recoverPassDataMapper(userId) {
         const res = {
             _id: new mongodb_1.ObjectId(),
@@ -47,4 +79,5 @@ exports.helper = {
         };
         return res;
     }
-};
+}
+exports.helper = new Helper();

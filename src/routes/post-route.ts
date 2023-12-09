@@ -9,7 +9,6 @@ import { paramsCommentsPaginatorType, paramsPostPaginatorType } from "../types/p
 import { commentService } from "../domain/comment-service";
 import { commentValidate, commentValidator } from "../middlewares/comment-validator";
 import { QueryCommentsRepository } from "../repositories/query/query-commentsRepository";
-import { jwtService } from "../application/jwt-service";
 
 
 export const postRouter = Router({})

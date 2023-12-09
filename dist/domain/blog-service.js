@@ -12,7 +12,31 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.blogService = void 0;
 const mongodb_1 = require("mongodb");
 const blog_repository_1 = require("../repositories/mutation/blog-repository");
-exports.blogService = {
+// export const blogService = {
+//     async createBlog(blog:bodyBlogType):Promise<blogType>{
+//         const newBlog: blogDbType = {
+//             name: blog.name,
+//             description: blog.description,
+//             websiteUrl: blog.description,
+//             _id: new ObjectId(),
+//             isMembership: false,
+//             createdAt: new Date().toISOString()
+//         }
+//         return await blogsRepository.createBlog(newBlog)
+//     },
+//     async changeBlog(id:string, payload: bodyBlogType){
+//         const dbId = new ObjectId(id)
+//         return blogsRepository.changeBlog(dbId, payload)
+//     },
+//     async deleteBlog(id: string){
+//         const dbId = new ObjectId(id)
+//         return await blogsRepository.deleteBlog(dbId)
+//     },
+//     async deleteAllBlogs(){
+//         return await blogsRepository.deleteAll()
+//     }
+// }
+class BlogsService {
     createBlog(blog) {
         return __awaiter(this, void 0, void 0, function* () {
             const newBlog = {
@@ -25,22 +49,23 @@ exports.blogService = {
             };
             return yield blog_repository_1.blogsRepository.createBlog(newBlog);
         });
-    },
+    }
     changeBlog(id, payload) {
         return __awaiter(this, void 0, void 0, function* () {
             const dbId = new mongodb_1.ObjectId(id);
             return blog_repository_1.blogsRepository.changeBlog(dbId, payload);
         });
-    },
+    }
     deleteBlog(id) {
         return __awaiter(this, void 0, void 0, function* () {
             const dbId = new mongodb_1.ObjectId(id);
             return yield blog_repository_1.blogsRepository.deleteBlog(dbId);
         });
-    },
+    }
     deleteAllBlogs() {
         return __awaiter(this, void 0, void 0, function* () {
             return yield blog_repository_1.blogsRepository.deleteAll();
         });
     }
-};
+}
+exports.blogService = new BlogsService();

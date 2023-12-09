@@ -14,37 +14,37 @@ const db_1 = require("../../db");
 exports.securityDevicesRepository = {
     saveSessions(data) {
         return __awaiter(this, void 0, void 0, function* () {
-            const res = yield db_1.securityDevicesCollection.insertOne(data);
+            yield db_1.SecurityDevicesModel.create(data);
             return data;
         });
     },
     deleteDeviceSession(deviceId) {
         return __awaiter(this, void 0, void 0, function* () {
-            const res = yield db_1.securityDevicesCollection.deleteOne({ deviceId: deviceId });
+            const res = yield db_1.SecurityDevicesModel.deleteOne({ deviceId: deviceId });
             return res.deletedCount === 1;
         });
     },
     deactivateSession(deviceId) {
         return __awaiter(this, void 0, void 0, function* () {
-            const res = yield db_1.securityDevicesCollection.updateOne({ deviceId: deviceId }, { $set: { isActive: false } });
+            const res = yield db_1.SecurityDevicesModel.updateOne({ deviceId: deviceId }, { $set: { isActive: false } });
             return res.modifiedCount === 1;
         });
     },
     changeActiveDate(deviceId) {
         return __awaiter(this, void 0, void 0, function* () {
-            const res = yield db_1.securityDevicesCollection.updateOne({ deviceId: deviceId }, { $set: { lastActiveDate: new Date().toISOString() } });
+            const res = yield db_1.SecurityDevicesModel.updateOne({ deviceId: deviceId }, { $set: { lastActiveDate: new Date().toISOString() } });
             return res.modifiedCount === 1;
         });
     },
     deleteAllsessionBesideCurrent(deviceId, userId) {
         return __awaiter(this, void 0, void 0, function* () {
-            const res = yield db_1.securityDevicesCollection.deleteMany({ userId: userId, deviceId: { $ne: deviceId } });
+            const res = yield db_1.SecurityDevicesModel.deleteMany({ userId: userId, deviceId: { $ne: deviceId } });
             return res.deletedCount > 0;
         });
     },
     deletAllData() {
         return __awaiter(this, void 0, void 0, function* () {
-            const res = yield db_1.securityDevicesCollection.deleteMany({});
+            const res = yield db_1.SecurityDevicesModel.deleteMany({});
             return res.deletedCount > 0;
         });
     }

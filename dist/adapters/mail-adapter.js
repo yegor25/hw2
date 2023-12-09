@@ -15,14 +15,34 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.mailAdapter = void 0;
 //jckm kpux qswi tltc
 const nodemailer_1 = __importDefault(require("nodemailer"));
-exports.mailAdapter = {
-    transporter: nodemailer_1.default.createTransport({
-        service: "gmail",
-        auth: {
-            user: "itvolear@gmail.com",
-            pass: "jckm kpux qswi tltc"
-        }
-    }),
+// export const mailAdapter = {
+//     transporter: nodemailer.createTransport({
+//         service: "gmail",
+//         auth: {
+//             user: "itvolear@gmail.com",
+//             pass: "jckm kpux qswi tltc"
+//         }
+//     }),
+//    async  send(email: string,subject: string,message: string) {
+//         let info = this.transporter.sendMail({
+//             from: "itvolear@gmail.com",
+//             to: email,
+//             subject: subject,
+//             html: message
+//         })
+//         return info
+//     }
+// }
+class MailAdapter {
+    constructor() {
+        this.transporter = nodemailer_1.default.createTransport({
+            service: "gmail",
+            auth: {
+                user: "itvolear@gmail.com",
+                pass: "jckm kpux qswi tltc"
+            }
+        });
+    }
     send(email, subject, message) {
         return __awaiter(this, void 0, void 0, function* () {
             let info = this.transporter.sendMail({
@@ -34,4 +54,5 @@ exports.mailAdapter = {
             return info;
         });
     }
-};
+}
+exports.mailAdapter = new MailAdapter();

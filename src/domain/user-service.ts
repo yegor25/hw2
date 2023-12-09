@@ -1,5 +1,4 @@
 import { ObjectId } from "mongodb";
-import { userCollection } from "../db";
 import { userRepository } from "../repositories/mutation/user-repository";
 import { userDbType, userInputType, userViewType } from "../types/user-type";
 import bcrypt from "bcrypt"
@@ -8,13 +7,14 @@ import { cryptoService } from "../application/crypto-service";
 import { queryRecoverPass } from "../repositories/query/query-recoveryPass";
 import { QueryUserRepository } from "../repositories/query/query-UserRepository";
 import { oldPasswordRepo } from "../repositories/mutation/oldPassword-repository";
+import { UserModel } from "../db";
 
 
 const convertId = (id: string) => new ObjectId(id)
  class UserService {
     async createUser(user: userInputType):Promise<userViewType | null>{
         const {password, login, email} = user
-        const existUser = await userCollection.findOne({$or: [{email: email}, {login: login} ]})
+        const existUser = await UserModel.findOne({$or: [{email: email}, {login: login} ]})
         if(existUser) {
             return null
         }

@@ -4,7 +4,6 @@ import { sessionsQuery } from "../repositories/query/query-Sessions";
 import { userDbType } from "../types/user-type";
 import { requestWithParams } from "../types/root-type";
 import { sessionService } from "../domain/session-service";
-import { securityDevicesCollection } from "../db";
 
 
 
@@ -40,12 +39,10 @@ devicesRouter.delete("/devices/:deviceId", checkRefreshToken, async (req: reques
         return
     }
     const result = await sessionService.deleteSession(req.params.deviceId)
-    console.log("devixe", result, req.params.deviceId)
     if (!result) {
         res.sendStatus(404)
         return
     }
-    console.log("ses", session, req.user?._id)
    
     res.sendStatus(204)
 })

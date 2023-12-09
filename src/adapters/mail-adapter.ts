@@ -2,14 +2,34 @@
 import nodemailer from "nodemailer"
 
 
-export const mailAdapter = {
-    transporter: nodemailer.createTransport({
-        service: "gmail",
-        auth: {
-            user: "itvolear@gmail.com",
-            pass: "jckm kpux qswi tltc"
-        }
-    }),
+// export const mailAdapter = {
+//     transporter: nodemailer.createTransport({
+//         service: "gmail",
+//         auth: {
+//             user: "itvolear@gmail.com",
+//             pass: "jckm kpux qswi tltc"
+//         }
+//     }),
+//    async  send(email: string,subject: string,message: string) {
+//         let info = this.transporter.sendMail({
+//             from: "itvolear@gmail.com",
+//             to: email,
+//             subject: subject,
+//             html: message
+//         })
+//         return info
+//     }
+// }
+
+class MailAdapter {
+    public transporter = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+                user: "itvolear@gmail.com",
+                pass: "jckm kpux qswi tltc"
+            }
+        })
+    
    async  send(email: string,subject: string,message: string) {
         let info = this.transporter.sendMail({
             from: "itvolear@gmail.com",
@@ -20,3 +40,4 @@ export const mailAdapter = {
         return info
     }
 }
+export const mailAdapter = new MailAdapter()

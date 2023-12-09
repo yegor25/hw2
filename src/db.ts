@@ -1,34 +1,33 @@
-import { MongoClient } from "mongodb"
-import { PostDbType } from "./types/post-type"
 import dotenv from "dotenv"
 import { blogDbType } from "./types/blog-type"
 import { userDbType } from "./types/user-type"
-import { CommentDbModelType } from "./types/comment-type"
 import { TokenDbType } from "./types/tokens-type"
 import { securityDevicesDbType } from "./types/securityDevices-type"
 import { requestUserDbType, requestUserType } from "./types/requestUserType"
 import mongoose from "mongoose"
-import { postSchema } from "./types/models/Post"
-import { oldPasswordSchema } from "./types/models/OldPasswors"
-import { commentsLikesInfoSchema, commentsSchema } from "./types/models/Comments"
+import { postSchema } from "./types/db-schemas/Post"
+import { oldPasswordSchema } from "./types/db-schemas/OldPasswors"
+import { commentsLikesInfoSchema, commentsSchema } from "./types/db-schemas/Comments"
+import { userSchema } from "./types/db-schemas/user-schema"
+import { blogSchema } from "./types/db-schemas/blog-schema"
+import { tokenSchema } from "./types/db-schemas/tokens-schema"
+import { securityDeviceSchema } from "./types/db-schemas/securityDevice-schema"
+import { reqUserSchema } from "./types/db-schemas/reqUser-schema"
 dotenv.config()
 
 const url = process.env.MONGO_URL || "mongodb://0.0.0.0:27017"
 
-const dbName = "my-db"
-const client = new MongoClient(url)
 
-export const db = client.db(dbName)
 
 
 export const PostModel =  mongoose.model("posts", postSchema)
 export const OldPassword = mongoose.model("oldPasswords", oldPasswordSchema)
-export const blogCollection = db.collection<blogDbType>('blogs')
-export const userCollection = db.collection<userDbType>('users')
+export const BlogModel = mongoose.model<blogDbType>('blogs', blogSchema)
+export const UserModel = mongoose.model<userDbType>('users',userSchema)
 export const CommentsModel = mongoose.model('comments', commentsSchema)
-export const tokensCollection = db.collection<TokenDbType>('tokens')
-export const securityDevicesCollection = db.collection<securityDevicesDbType>("securityDevices")
-export const requestUserCollections = db.collection<requestUserDbType>("requestUsers")
+export const TokenModel = mongoose.model<TokenDbType>('tokens',tokenSchema)
+export const SecurityDevicesModel = mongoose.model<securityDevicesDbType>("securityDevices", securityDeviceSchema)
+export const ReqUserModel = mongoose.model<requestUserDbType>("requestUsers",reqUserSchema)
 export const LikeCommentsModel = mongoose.model("likeComments", commentsLikesInfoSchema)
 
 export const runDb = async () => {

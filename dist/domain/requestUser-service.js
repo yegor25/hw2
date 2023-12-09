@@ -12,11 +12,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.requestUserService = void 0;
 const mongodb_1 = require("mongodb");
 const requestUser_repository_1 = require("../repositories/mutation/requestUser-repository");
-exports.requestUserService = {
+// export const requestUserService = {
+//     async saveRequestData(data: requestUserType):Promise<requestUserType>{
+//         const res = await requestUserRepository.saveRequest({_id: new ObjectId(),...data})
+//         return data
+//     }
+// }
+class RequestUserService {
     saveRequestData(data) {
         return __awaiter(this, void 0, void 0, function* () {
             const res = yield requestUser_repository_1.requestUserRepository.saveRequest(Object.assign({ _id: new mongodb_1.ObjectId() }, data));
             return data;
         });
     }
-};
+}
+exports.requestUserService = new RequestUserService();

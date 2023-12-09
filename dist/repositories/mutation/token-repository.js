@@ -11,11 +11,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.tokenRepository = void 0;
 const db_1 = require("../../db");
-exports.tokenRepository = {
+// export const tokenRepository = {
+//     async saveToken(data: TokenDbType):Promise<TokenDbType>{
+//         const newToken = await TokenModel.create(data)
+//         return data
+//     }
+// }
+class TokenRepository {
     saveToken(data) {
         return __awaiter(this, void 0, void 0, function* () {
-            const newToken = yield db_1.tokensCollection.insertOne(data);
+            const newToken = yield db_1.TokenModel.create(data);
             return data;
         });
     }
-};
+}
+exports.tokenRepository = new TokenRepository();

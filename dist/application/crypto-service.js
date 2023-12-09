@@ -14,13 +14,27 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.cryptoService = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
-exports.cryptoService = {
+// export const cryptoService = {
+//     async genSalt(){
+//         const salt = await bcrypt.genSalt(10)
+//         return salt
+//     },
+//     async genHash(password: string){
+//         const salt = await this.genSalt()
+//         const hash = await bcrypt.hash(password, salt)
+//         return {
+//             salt,
+//             hash
+//         }
+//     }
+// }
+class CryptoService {
     genSalt() {
         return __awaiter(this, void 0, void 0, function* () {
             const salt = yield bcrypt_1.default.genSalt(10);
             return salt;
         });
-    },
+    }
     genHash(password) {
         return __awaiter(this, void 0, void 0, function* () {
             const salt = yield this.genSalt();
@@ -31,4 +45,5 @@ exports.cryptoService = {
             };
         });
     }
-};
+}
+exports.cryptoService = new CryptoService();

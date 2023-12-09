@@ -11,7 +11,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.oldPasswordRepo = void 0;
 const db_1 = require("../../db");
-exports.oldPasswordRepo = {
+// export const oldPasswordRepo = {
+//     async savePassword(userId: string, hash: string){
+//         const pass = await OldPassword.create({
+//             hashPassword: hash,
+//             userId
+//         })
+//         return pass
+//     }
+// } 
+class OldPasswordRepo {
     savePassword(userId, hash) {
         return __awaiter(this, void 0, void 0, function* () {
             const pass = yield db_1.OldPassword.create({
@@ -21,4 +30,5 @@ exports.oldPasswordRepo = {
             return pass;
         });
     }
-};
+}
+exports.oldPasswordRepo = new OldPasswordRepo();

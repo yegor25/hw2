@@ -1,7 +1,5 @@
-import { log } from "console"
 import { runDb } from "./db"
 import { app } from "./settings"
-import { LikeStatus } from "./types/like-type"
 
 const port = 3000
 

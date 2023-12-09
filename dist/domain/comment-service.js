@@ -15,7 +15,42 @@ const query_PostRepository_1 = require("../repositories/query/query-PostReposito
 const comments_repository_1 = require("../repositories/mutation/comments-repository");
 const query_commentsRepository_1 = require("../repositories/query/query-commentsRepository");
 const convertId = (id) => new mongodb_1.ObjectId(id);
-exports.commentService = {
+// export const commentService = {
+//     async createComment(postId: string, content: string, user: userDbType): Promise<CommentViewModelType | null> {
+//         const post = await QueryPostRepository.findPostById(postId)
+//         if (!post) {
+//             return null
+//         }
+//         const newComment: CommentDbModelType = {
+//             _id: new ObjectId(),
+//             content,
+//             postId,
+//             commentatorInfo: {
+//                 userId: user._id.toString(),
+//                 userLogin: user.login
+//             },
+//             likeComments: [],
+//             createdAt: new Date().toISOString()
+//         }
+//         return  commentsRepository.createComment(newComment)
+//     },
+//     async deleteComment(id: string, userId: string): Promise<boolean> {
+//         return commentsRepository.deleteComments(convertId(id), userId)
+//     },
+//     async updateComment(id: string, userId: string, content: string): Promise<boolean> {
+//         return commentsRepository.updateComment(convertId(id), userId, content)
+//     },
+//     async deleteAllComments():Promise<boolean>{
+//         return commentsRepository.deleteAll()
+//     },
+//     async updateLikeStatus(likeStatus: LikeStatus, userId: string, commentId: string):Promise<boolean>{
+//         const comment = await QueryCommentsRepository.getCommentModelById(commentId)
+//         comment?.changeLikeStatus(userId, likeStatus)
+//         await comment?.save()
+//         return true
+//     }
+// }
+class CommentService {
     createComment(postId, content, user) {
         return __awaiter(this, void 0, void 0, function* () {
             const post = yield query_PostRepository_1.QueryPostRepository.findPostById(postId);
@@ -33,24 +68,24 @@ exports.commentService = {
                 likeComments: [],
                 createdAt: new Date().toISOString()
             };
-            return comments_repository_1.comentsRepository.createComment(newComment);
+            return comments_repository_1.commentsRepository.createComment(newComment);
         });
-    },
+    }
     deleteComment(id, userId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return comments_repository_1.comentsRepository.deleteComments(convertId(id), userId);
+            return comments_repository_1.commentsRepository.deleteComments(convertId(id), userId);
         });
-    },
+    }
     updateComment(id, userId, content) {
         return __awaiter(this, void 0, void 0, function* () {
-            return comments_repository_1.comentsRepository.updateComment(convertId(id), userId, content);
+            return comments_repository_1.commentsRepository.updateComment(convertId(id), userId, content);
         });
-    },
+    }
     deleteAllComments() {
         return __awaiter(this, void 0, void 0, function* () {
-            return comments_repository_1.comentsRepository.deleteAll();
+            return comments_repository_1.commentsRepository.deleteAll();
         });
-    },
+    }
     updateLikeStatus(likeStatus, userId, commentId) {
         return __awaiter(this, void 0, void 0, function* () {
             const comment = yield query_commentsRepository_1.QueryCommentsRepository.getCommentModelById(commentId);
@@ -59,4 +94,5 @@ exports.commentService = {
             return true;
         });
     }
-};
+}
+exports.commentService = new CommentService();

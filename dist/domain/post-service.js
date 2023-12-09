@@ -14,7 +14,41 @@ const mongodb_1 = require("mongodb");
 const post_repository_1 = require("../repositories/mutation/post-repository");
 const query_BlogsRepository_1 = require("../repositories/query/query-BlogsRepository");
 const convertID = (id) => new mongodb_1.ObjectId(id);
-exports.postService = {
+// export const postService = {
+//     async createPost(post:postBodyType){
+//         const blog = await QueryBlogRepositiry.findBlogById(post.blogId)
+//         if(!blog) return null
+//         const newPost:PostDbType = {
+//             _id: new ObjectId(),
+//             blogName: blog.name ,
+//             createdAt: new Date().toISOString(),
+//             ...post
+//         }
+//         return await postRepository.createPost(newPost)
+//     },
+//     async createPostForBlog(post:postBodyTypeForBlog,id: string){
+//         const blog = await QueryBlogRepositiry.findBlogById(id)
+//         if(!blog) return null
+//         const newPost:PostDbType = {
+//             _id: new ObjectId(),
+//             blogName: blog.name ,
+//             blogId: id,
+//             createdAt: new Date().toISOString(),
+//             ...post
+//         }
+//         return await postRepository.createPost(newPost)
+//     },
+//     async changePost(id: string, payload:postBodyType){
+//         return postRepository.changePost(convertID(id), payload)
+//     },
+//     async deletePost(id: string){
+//         return await postRepository.deletePost(convertID(id))
+//     },
+//     async deleteAllPosts(){
+//         return await postRepository.deleteAll()
+//     }
+// }
+class PostService {
     createPost(post) {
         return __awaiter(this, void 0, void 0, function* () {
             const blog = yield query_BlogsRepository_1.QueryBlogRepositiry.findBlogById(post.blogId);
@@ -23,7 +57,7 @@ exports.postService = {
             const newPost = Object.assign({ _id: new mongodb_1.ObjectId(), blogName: blog.name, createdAt: new Date().toISOString() }, post);
             return yield post_repository_1.postRepository.createPost(newPost);
         });
-    },
+    }
     createPostForBlog(post, id) {
         return __awaiter(this, void 0, void 0, function* () {
             const blog = yield query_BlogsRepository_1.QueryBlogRepositiry.findBlogById(id);
@@ -32,20 +66,21 @@ exports.postService = {
             const newPost = Object.assign({ _id: new mongodb_1.ObjectId(), blogName: blog.name, blogId: id, createdAt: new Date().toISOString() }, post);
             return yield post_repository_1.postRepository.createPost(newPost);
         });
-    },
+    }
     changePost(id, payload) {
         return __awaiter(this, void 0, void 0, function* () {
             return post_repository_1.postRepository.changePost(convertID(id), payload);
         });
-    },
+    }
     deletePost(id) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield post_repository_1.postRepository.deletePost(convertID(id));
         });
-    },
+    }
     deleteAllPosts() {
         return __awaiter(this, void 0, void 0, function* () {
             return yield post_repository_1.postRepository.deleteAll();
         });
     }
-};
+}
+exports.postService = new PostService();

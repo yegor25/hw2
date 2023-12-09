@@ -14,7 +14,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.userService = void 0;
 const mongodb_1 = require("mongodb");
-const db_1 = require("../db");
 const user_repository_1 = require("../repositories/mutation/user-repository");
 const user_type_1 = require("../types/user-type");
 const bcrypt_1 = __importDefault(require("bcrypt"));
@@ -22,12 +21,13 @@ const crypto_service_1 = require("../application/crypto-service");
 const query_recoveryPass_1 = require("../repositories/query/query-recoveryPass");
 const query_UserRepository_1 = require("../repositories/query/query-UserRepository");
 const oldPassword_repository_1 = require("../repositories/mutation/oldPassword-repository");
+const db_1 = require("../db");
 const convertId = (id) => new mongodb_1.ObjectId(id);
 class UserService {
     createUser(user) {
         return __awaiter(this, void 0, void 0, function* () {
             const { password, login, email } = user;
-            const existUser = yield db_1.userCollection.findOne({ $or: [{ email: email }, { login: login }] });
+            const existUser = yield db_1.UserModel.findOne({ $or: [{ email: email }, { login: login }] });
             if (existUser) {
                 return null;
             }

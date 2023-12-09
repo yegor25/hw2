@@ -11,11 +11,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.queryOldPasswordRepo = void 0;
 const db_1 = require("../../db");
-exports.queryOldPasswordRepo = {
+// export const queryOldPasswordRepo = {
+//     async getOldPassword(userId: string):Promise<oldPasswordType | null> {
+//         const pass = await OldPassword.findOne({userId: userId})
+//         return pass
+//     }
+// }
+class QueryOldPasswordRepo {
     getOldPassword(userId) {
         return __awaiter(this, void 0, void 0, function* () {
             const pass = yield db_1.OldPassword.findOne({ userId: userId });
             return pass;
         });
     }
-};
+}
+exports.queryOldPasswordRepo = new QueryOldPasswordRepo();

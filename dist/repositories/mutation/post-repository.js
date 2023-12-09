@@ -23,13 +23,51 @@ const db_1 = require("../../db");
 //         blogName: "string"
 //     }
 // ]
-exports.postRepository = {
+// export const postRepository = {
+//     async createPost(post: PostDbType): Promise<postType> {
+//         await PostModel.create(post)
+//         return postHelper.mapPostToView(post)
+//     },
+//     async createPostForBlog(post: PostDbType): Promise<postType | null> {
+//         try {
+//             await PostModel.create(post)
+//         return postHelper.mapPostToView(post)
+//         } catch (error) {
+//             console.log("post error", error)
+//             return null
+//         }
+//     },
+//     async changePost(id: ObjectId, payload: postBodyType):Promise<boolean> {
+//         const post = await PostModel.updateOne(
+//             {_id: id},
+//             {$set: {
+//                 title: payload.title,
+//                 shortDescription: payload.shortDescription,
+//                 blogId: payload.blogId,
+//                 content: payload.content
+//             }}
+//             )
+//             return post.matchedCount === 1
+//     },
+//     async deletePost(id: ObjectId):Promise<boolean> {
+//        const res = await PostModel.deleteOne({_id: new ObjectId(id)})
+//        return res.deletedCount === 1
+//     },
+//     async deleteAll():Promise<void> {
+//         try {
+//             const res = await PostModel.deleteMany({})
+//         return
+//         } catch (error) {
+//         }
+//     }
+// }
+class PostRepository {
     createPost(post) {
         return __awaiter(this, void 0, void 0, function* () {
             yield db_1.PostModel.create(post);
             return post_helper_1.postHelper.mapPostToView(post);
         });
-    },
+    }
     createPostForBlog(post) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -41,8 +79,7 @@ exports.postRepository = {
                 return null;
             }
         });
-    },
-    //
+    }
     changePost(id, payload) {
         return __awaiter(this, void 0, void 0, function* () {
             const post = yield db_1.PostModel.updateOne({ _id: id }, { $set: {
@@ -53,23 +90,22 @@ exports.postRepository = {
                 } });
             return post.matchedCount === 1;
         });
-    },
+    }
     deletePost(id) {
         return __awaiter(this, void 0, void 0, function* () {
             const res = yield db_1.PostModel.deleteOne({ _id: new mongodb_1.ObjectId(id) });
             return res.deletedCount === 1;
         });
-    },
+    }
     deleteAll() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                console.log("model", db_1.PostModel);
                 const res = yield db_1.PostModel.deleteMany({});
                 return;
             }
             catch (error) {
-                console.log("mongio", error);
             }
         });
     }
-};
+}
+exports.postRepository = new PostRepository();

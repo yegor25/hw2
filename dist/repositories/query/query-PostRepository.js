@@ -16,8 +16,50 @@ const paginator_helper_1 = require("../helpers/paginator-helper");
 const query_BlogsRepository_1 = require("./query-BlogsRepository");
 const db_1 = require("../../db");
 const convertId = (id) => new mongodb_1.ObjectId(id);
-// const fun = <T>(params:T): T[] => {}
-exports.QueryPostRepository = {
+// export const QueryPostRepository = {
+//     async findPosts(params: paramsPostPaginatorType):Promise<viewAllPostsType> {
+//         const parametres = paginatorHelper.postParamsMapper(params)
+//         const skipcount = (parametres.pageNumber - 1) * parametres.pageSize
+//         const res = await PostModel.find({}).lean()
+//         .sort({[parametres.sortBy] : parametres.sortDirection})
+//         .skip(skipcount)
+//         .limit(parametres.pageSize)
+//         const totalCount = await PostModel.countDocuments({})
+//         return {
+//             pagesCount: Math.ceil(totalCount/+parametres.pageSize),
+//             page: +parametres.pageNumber,
+//             pageSize: +parametres.pageSize,
+//             totalCount,
+//             items: postHelper.convertArrayDTO(res)
+//         } 
+//      },
+//     async findPostsByBlogId(id: string, params: paramsPostPaginatorType):Promise<viewAllPostsType | null> {
+//         const blog = await QueryBlogRepositiry.findBlogById(id)
+//         if(!blog){
+//             return null
+//         }
+//         const parametres = paginatorHelper.postParamsMapper(params)
+//         const skipcount = (parametres.pageNumber - 1) * parametres.pageSize
+//         const res = await PostModel.find({blogId: id}).lean()
+//         .sort({[parametres.sortBy] : parametres.sortDirection})
+//         .skip(skipcount)
+//         .limit(parametres.pageSize)
+//         const totalCount = await PostModel.countDocuments({blogId: id})
+//         return {
+//             pagesCount: Math.ceil(totalCount/+parametres.pageSize),
+//             page: +parametres.pageNumber,
+//             pageSize: +parametres.pageSize,
+//             totalCount,
+//             items: postHelper.convertArrayDTO(res)
+//         } 
+//      },
+//      async findPostById(id: string): Promise<postType | null>  {
+//         const post = await PostModel.findOne({_id: convertId(id)})
+//         if(!post) return null
+//         return postHelper.mapPostToView(post)
+//     },
+// }
+class queryPostRepository {
     findPosts(params) {
         return __awaiter(this, void 0, void 0, function* () {
             const parametres = paginator_helper_1.paginatorHelper.postParamsMapper(params);
@@ -35,7 +77,7 @@ exports.QueryPostRepository = {
                 items: post_helper_1.postHelper.convertArrayDTO(res)
             };
         });
-    },
+    }
     findPostsByBlogId(id, params) {
         return __awaiter(this, void 0, void 0, function* () {
             const blog = yield query_BlogsRepository_1.QueryBlogRepositiry.findBlogById(id);
@@ -57,7 +99,7 @@ exports.QueryPostRepository = {
                 items: post_helper_1.postHelper.convertArrayDTO(res)
             };
         });
-    },
+    }
     findPostById(id) {
         return __awaiter(this, void 0, void 0, function* () {
             const post = yield db_1.PostModel.findOne({ _id: convertId(id) });
@@ -65,5 +107,6 @@ exports.QueryPostRepository = {
                 return null;
             return post_helper_1.postHelper.mapPostToView(post);
         });
-    },
-};
+    }
+}
+exports.QueryPostRepository = new queryPostRepository();

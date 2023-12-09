@@ -10,12 +10,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.passRecoveryRepository = void 0;
-const PassRecovery_1 = require("../../types/models/PassRecovery");
-exports.passRecoveryRepository = {
+const PassRecovery_1 = require("../../types/db-schemas/PassRecovery");
+// export const passRecoveryRepository = {
+//     async createPassRecoveryCode(data: passRecoveryDbType):Promise<string>{
+//         const res = await PassRecoveryModel.create(data)
+//         return res.recoveryCode
+//     }
+// }
+class PassRecoveryRepository {
     createPassRecoveryCode(data) {
         return __awaiter(this, void 0, void 0, function* () {
             const res = yield PassRecovery_1.PassRecoveryModel.create(data);
             return res.recoveryCode;
         });
     }
-};
+}
+exports.passRecoveryRepository = new PassRecoveryRepository();
