@@ -11,6 +11,8 @@ import { commentValidate, commentValidator } from "../middlewares/comment-valida
 import { QueryCommentsRepository } from "../repositories/query/query-commentsRepository";
 import { LikeStatus } from "../types/like-type";
 import { commentLikeValidator } from "../middlewares/commentLike-validator";
+import { userDbType } from "../types/user-type";
+import { postLikeService } from "../domain/postLikeService";
 
 
 export const postRouter = Router({})
@@ -78,11 +80,14 @@ postRouter.delete("/:id",checkAuth, async (req: requestWithParams<{ id: string }
     res.sendStatus(204)
 })
 postRouter.put("/:postId/like-status",authMiddleware ,commentLikeValidator,commentValidate,async (req:requestWithParamsAndBody<{postId: string},{likeStatus: LikeStatus}>, res:Response) => {
+    const user = req.user as userDbType
     const status = req.body.likeStatus
     const post = await QueryPostRepository.findPostById(req.params.postId)
     if(!post){
         res.sendStatus(404)
         return
     }
+    await postService.updateLikeStatus(status,user._id.toString(),req.params.postId)
+    await postLikeService.addLikeToArray(user._id.toString(),req.params.postId,status,user.login)
     res.sendStatus(204)
 })

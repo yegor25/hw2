@@ -69,7 +69,6 @@ class queryCommentsRepository {
                 .skip(skipCount)
                 .limit(parametres.pageSize);
             const totalCount = yield db_1.CommentsModel.countDocuments(filter);
-            console.log("user", userId);
             return {
                 pagesCount: Math.ceil(totalCount / +parametres.pageSize),
                 page: +parametres.pageNumber,

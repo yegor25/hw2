@@ -31,4 +31,13 @@ exports.postSchema.methods.getDefaultLikes = function () {
         newestLikes: []
     };
 };
+exports.postSchema.methods.changeLikeStatus = function (userId, status) {
+    const userLike = this.likes.find(el => el.userId === userId);
+    if (!userLike) {
+        this.likeComments = [...this.likeComments, { status: status, userId: userId }];
+        return this.likeComments;
+    }
+    this.likeComments = this.likes.map(el => el.userId === userId ? Object.assign(Object.assign({}, el), { status: status }) : el);
+    return this.likeComments;
+};
 // 

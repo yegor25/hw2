@@ -13,6 +13,7 @@ exports.postService = void 0;
 const mongodb_1 = require("mongodb");
 const post_repository_1 = require("../repositories/mutation/post-repository");
 const query_BlogsRepository_1 = require("../repositories/query/query-BlogsRepository");
+const query_PostRepository_1 = require("../repositories/query/query-PostRepository");
 const convertID = (id) => new mongodb_1.ObjectId(id);
 // export const postService = {
 //     async createPost(post:postBodyType){
@@ -80,6 +81,14 @@ class PostService {
     deleteAllPosts() {
         return __awaiter(this, void 0, void 0, function* () {
             return yield post_repository_1.postRepository.deleteAll();
+        });
+    }
+    updateLikeStatus(likeStatus, userId, postIdId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const post = yield query_PostRepository_1.QueryPostRepository.findModelPostById(postIdId);
+            post === null || post === void 0 ? void 0 : post.changeLikeStatus(userId, likeStatus);
+            yield (post === null || post === void 0 ? void 0 : post.save());
+            return true;
         });
     }
 }

@@ -13,6 +13,7 @@ import { blogSchema } from "./types/db-schemas/blog-schema"
 import { tokenSchema } from "./types/db-schemas/tokens-schema"
 import { securityDeviceSchema } from "./types/db-schemas/securityDevice-schema"
 import { reqUserSchema } from "./types/db-schemas/reqUser-schema"
+import { likePostSchema } from "./types/db-schemas/likePost-schema"
 dotenv.config()
 
 const url = process.env.MONGO_URL || "mongodb://0.0.0.0:27017"
@@ -29,6 +30,7 @@ export const TokenModel = mongoose.model<TokenDbType>('tokens',tokenSchema)
 export const SecurityDevicesModel = mongoose.model<securityDevicesDbType>("securityDevices", securityDeviceSchema)
 export const ReqUserModel = mongoose.model<requestUserDbType>("requestUsers",reqUserSchema)
 export const LikeCommentsModel = mongoose.model("likeComments", commentsLikesInfoSchema)
+export const LikePostsNewest = mongoose.model("newestLikes",likePostSchema)
 
 export const runDb = async () => {
     try {

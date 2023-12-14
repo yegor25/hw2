@@ -2,6 +2,9 @@ import { ObjectId } from "mongodb"
 import { postRepository } from "../repositories/mutation/post-repository"
 import { PostDbType, postBodyType, postBodyTypeForBlog, postType } from "../types/post-type"
 import { QueryBlogRepositiry } from "../repositories/query/query-BlogsRepository"
+import { LikeStatus } from "../types/like-type"
+import { QueryPostRepository } from "../repositories/query/query-PostRepository"
+import { HydratedDocument } from "mongoose"
 
 
 const convertID = (id: string) => new ObjectId(id)
@@ -79,6 +82,12 @@ class PostService {
     }
     async deleteAllPosts(){
         return await postRepository.deleteAll()
+    }
+    async updateLikeStatus(likeStatus: LikeStatus, userId: string, postIdId: string):Promise<boolean>{
+        const post = await QueryPostRepository.findModelPostById(postIdId)
+        post?.changeLikeStatus(userId,likeStatus)
+        await post?.save()
+        return true
     }
 }
 

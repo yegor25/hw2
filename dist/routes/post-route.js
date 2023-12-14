@@ -19,6 +19,7 @@ const comment_service_1 = require("../domain/comment-service");
 const comment_validator_1 = require("../middlewares/comment-validator");
 const query_commentsRepository_1 = require("../repositories/query/query-commentsRepository");
 const commentLike_validator_1 = require("../middlewares/commentLike-validator");
+const postLikeService_1 = require("../domain/postLikeService");
 exports.postRouter = (0, express_1.Router)({});
 exports.postRouter.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const blogs = yield query_PostRepository_1.QueryPostRepository.findPosts(req.query);
@@ -83,11 +84,14 @@ exports.postRouter.delete("/:id", auth_middleware_1.checkAuth, (req, res) => __a
     res.sendStatus(204);
 }));
 exports.postRouter.put("/:postId/like-status", auth_middleware_1.authMiddleware, commentLike_validator_1.commentLikeValidator, comment_validator_1.commentValidate, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = req.user;
     const status = req.body.likeStatus;
     const post = yield query_PostRepository_1.QueryPostRepository.findPostById(req.params.postId);
     if (!post) {
         res.sendStatus(404);
         return;
     }
+    yield post_service_1.postService.updateLikeStatus(status, user._id.toString(), req.params.postId);
+    yield postLikeService_1.postLikeService.addLikeToArray(user._id.toString(), req.params.postId, status, user.login);
     res.sendStatus(204);
 }));

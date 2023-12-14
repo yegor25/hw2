@@ -1,17 +1,21 @@
+import { ObjectId } from "mongodb"
 import { LikeStatus } from "./like-type"
 
 
 
 export type postLikeDbType = {
-        addedAt: Date,
-        userId: string,
-        login: string,
-        status: LikeStatus  
+    _id: ObjectId,
+    addedAt: Date,
+    userId: string,
+    login: string,
+    status: LikeStatus,
+    postId: string,
+    isFirst: boolean
 }
 export type postLikeType = {
-        addedAt: string,
-        userId: string,
-        login: string  
+    addedAt: string,
+    userId: string,
+    login: string
 }
 
 export type extendedLikesInfo = {
@@ -19,4 +23,4 @@ export type extendedLikesInfo = {
     dislikesCount: number,
     myStatus: LikeStatus,
     newestLikes: postLikeType[]
-  }
+}

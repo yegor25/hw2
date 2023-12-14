@@ -108,5 +108,13 @@ class queryPostRepository {
             return post_helper_1.postHelper.mapPostToView(post, post.getDefaultLikes());
         });
     }
+    findModelPostById(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const post = yield db_1.PostModel.findOne({ _id: convertId(id) });
+            if (!post)
+                return null;
+            return post;
+        });
+    }
 }
 exports.QueryPostRepository = new queryPostRepository();

@@ -101,6 +101,12 @@ class queryPostRepository {
         if(!post) return null
         return postHelper.mapPostToView(post,post.getDefaultLikes())
     }
+     async findModelPostById(id: string)  {
+        const post = await PostModel.findOne({_id: convertId(id)})
+        if(!post) return null
+        return post
+    }
+
 }
 
 

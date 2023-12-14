@@ -12,7 +12,10 @@ const postLikeSchema = new mongoose.Schema<postLikeDbType>({
     status: {type: String, enum: LikeStatus}
 })
 type postMethodsType = {
-    getDefaultLikes:() => extendedLikesInfo
+    getDefaultLikes:() => extendedLikesInfo,
+    likes: postLikeDbType[],
+    changeLikeStatus:(userId: string, status: LikeStatus) => postLikeDbType[]
+
 }
 
 type postModelType = mongoose.Model<postLikeDbType,{},postMethodsType>
@@ -35,6 +38,15 @@ postSchema.methods.getDefaultLikes = function():extendedLikesInfo{
         myStatus: LikeStatus.None,
         newestLikes: []
     }
+}
+postSchema.methods.changeLikeStatus = function(userId: string, status: LikeStatus):postLikeDbType[]{
+    const userLike = this.likes.find(el => el.userId === userId)
+    if(!userLike) {
+       this.likeComments =  [...this.likeComments, {status: status, userId: userId}] 
+        return this.likeComments
+    }
+    this.likeComments = this.likes.map(el => el.userId === userId ? {...el, status: status} : el)
+    return this.likeComments
 }
 
 // 
