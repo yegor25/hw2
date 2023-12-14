@@ -47,7 +47,7 @@ import { UserModel } from "../../db";
 // }
 
 
-class UserRepository {
+export class UserRepository {
   async createUser(payload: userDbType): Promise<userViewType | null>{ 
     const newUser = await UserModel.create(payload)
         return userHelper.convertUserDTO(payload)
@@ -87,4 +87,3 @@ class UserRepository {
   }
 }
 
-export const userRepository = new UserRepository()

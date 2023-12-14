@@ -1,6 +1,5 @@
 import { ObjectId } from "mongodb"
 import { mailManager } from "../managers/mail-manager"
-import { userRepository } from "../repositories/mutation/user-repository"
 import { TokenDbType } from "../types/tokens-type"
 import { userInputType } from "../types/user-type"
 import { helper } from "./helper"
@@ -10,21 +9,23 @@ import { securityDevicesRepository } from "../repositories/mutation/secirityDevi
 import { sessionsHelper } from "../repositories/helpers/sessions-helper"
 import { QueryUserRepository } from "../repositories/query/query-UserRepository"
 import { passRecoveryRepository } from "../repositories/mutation/passRecovery-repository"
+import { UserRepository } from "../repositories/mutation/user-repository"
 
- class AuthService {
+ export class AuthService {
+    constructor(protected userRepository: UserRepository){}
     async registerUser(data: userInputType):Promise<boolean>{
         const {email, login} = data
         const newUser = await helper.userDbViewMapper(data)
-        const res = await userRepository.createUser(newUser)
+        const res = await this.userRepository.createUser(newUser)
         const message = await mailManager.registerConfirmation(email, newUser.emailConfirmation.code)
         return true
     }
     async confirmUser(code: string):Promise<boolean>{
-        const res = await userRepository.checkCodeConfirmation(code)
+        const res = await this.userRepository.checkCodeConfirmation(code)
         return res
     }
     async resendingEmail(email: string): Promise<string>{
-        const code = await userRepository.changeConfirmationData(email, helper.confiramtionDataMapper())
+        const code = await this.userRepository.changeConfirmationData(email, helper.confiramtionDataMapper())
         const message = await mailManager.registerConfirmation(email,code)
         return code
     }
@@ -49,7 +50,6 @@ import { passRecoveryRepository } from "../repositories/mutation/passRecovery-re
         return true
     }
 }
-export const authService = new AuthService()
 
 // export const authService = {
 //     async registerUser(data: userInputType):Promise<boolean>{

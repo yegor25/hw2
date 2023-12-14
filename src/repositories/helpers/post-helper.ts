@@ -1,3 +1,5 @@
+import { LikeStatus } from "../../types/like-type"
+import { extendedLikesInfo } from "../../types/post-likeType"
 import { PostDbType, postType } from "../../types/post-type"
 
 
@@ -12,12 +14,18 @@ export const postHelper = {
                 content: el.content,
                 blogId: el.blogId,
                 blogName: el.blogName,
-                 createdAt: el.createdAt
+                 createdAt: el.createdAt,
+                 extendedLikesInfo: {
+                    likesCount: 0,
+                    dislikesCount: 0,
+                    myStatus: LikeStatus.None,
+                    newestLikes: []
+                 }
             }
         ))
         return data
     },
-     mapPostToView(post: PostDbType): postType {
+     mapPostToView(post: PostDbType, likes: extendedLikesInfo): postType {
         return {
             id: post._id.toString(),
             title: post.title,
@@ -25,7 +33,8 @@ export const postHelper = {
             content: post.content,
             blogId: post.blogId,
             blogName: post.blogName,
-            createdAt: post.createdAt
+            createdAt: post.createdAt,
+            extendedLikesInfo: likes
         }
     }
 }

@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.authControllerInstance = exports.userController = void 0;
+const auth_service_1 = require("./domain/auth-service");
+const user_service_1 = require("./domain/user-service");
+const user_repository_1 = require("./repositories/mutation/user-repository");
+const auth_controller_1 = require("./routes/controllers/auth-controller");
+const user_controller_1 = require("./routes/controllers/user-controller");
+const userRepository = new user_repository_1.UserRepository();
+const userService = new user_service_1.UserService(userRepository);
+exports.userController = new user_controller_1.UserController(userService);
+const authService = new auth_service_1.AuthService(userRepository);
+exports.authControllerInstance = new auth_controller_1.AuthController(authService, userService);

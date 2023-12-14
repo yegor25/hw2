@@ -9,10 +9,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.authService = void 0;
+exports.AuthService = void 0;
 const mongodb_1 = require("mongodb");
 const mail_manager_1 = require("../managers/mail-manager");
-const user_repository_1 = require("../repositories/mutation/user-repository");
 const helper_1 = require("./helper");
 const token_repository_1 = require("../repositories/mutation/token-repository");
 const secirityDevices_repository_1 = require("../repositories/mutation/secirityDevices-repository");
@@ -20,24 +19,27 @@ const sessions_helper_1 = require("../repositories/helpers/sessions-helper");
 const query_UserRepository_1 = require("../repositories/query/query-UserRepository");
 const passRecovery_repository_1 = require("../repositories/mutation/passRecovery-repository");
 class AuthService {
+    constructor(userRepository) {
+        this.userRepository = userRepository;
+    }
     registerUser(data) {
         return __awaiter(this, void 0, void 0, function* () {
             const { email, login } = data;
             const newUser = yield helper_1.helper.userDbViewMapper(data);
-            const res = yield user_repository_1.userRepository.createUser(newUser);
+            const res = yield this.userRepository.createUser(newUser);
             const message = yield mail_manager_1.mailManager.registerConfirmation(email, newUser.emailConfirmation.code);
             return true;
         });
     }
     confirmUser(code) {
         return __awaiter(this, void 0, void 0, function* () {
-            const res = yield user_repository_1.userRepository.checkCodeConfirmation(code);
+            const res = yield this.userRepository.checkCodeConfirmation(code);
             return res;
         });
     }
     resendingEmail(email) {
         return __awaiter(this, void 0, void 0, function* () {
-            const code = yield user_repository_1.userRepository.changeConfirmationData(email, helper_1.helper.confiramtionDataMapper());
+            const code = yield this.userRepository.changeConfirmationData(email, helper_1.helper.confiramtionDataMapper());
             const message = yield mail_manager_1.mailManager.registerConfirmation(email, code);
             return code;
         });
@@ -70,7 +72,7 @@ class AuthService {
         });
     }
 }
-exports.authService = new AuthService();
+exports.AuthService = AuthService;
 // export const authService = {
 //     async registerUser(data: userInputType):Promise<boolean>{
 //         const {email, login} = data

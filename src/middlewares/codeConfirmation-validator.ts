@@ -1,8 +1,11 @@
 import { body, query, validationResult } from "express-validator";
-import { authService } from "../domain/auth-service";
 import { NextFunction, Request, Response } from "express";
 import { helperValidator } from "./helper/helper-validator";
+import { AuthService } from "../domain/auth-service";
+import { UserRepository } from "../repositories/mutation/user-repository";
 
+const userRepository = new UserRepository()
+const authService = new AuthService(userRepository)
 
 export const codeConfiramtionValidator = [
     body("code").exists().isString().custom(async(val: string) => {

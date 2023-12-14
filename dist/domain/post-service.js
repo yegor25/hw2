@@ -54,7 +54,7 @@ class PostService {
             const blog = yield query_BlogsRepository_1.QueryBlogRepositiry.findBlogById(post.blogId);
             if (!blog)
                 return null;
-            const newPost = Object.assign({ _id: new mongodb_1.ObjectId(), blogName: blog.name, createdAt: new Date().toISOString() }, post);
+            const newPost = Object.assign({ _id: new mongodb_1.ObjectId(), blogName: blog.name, createdAt: new Date().toISOString(), likesPost: [] }, post);
             return yield post_repository_1.postRepository.createPost(newPost);
         });
     }
@@ -63,7 +63,7 @@ class PostService {
             const blog = yield query_BlogsRepository_1.QueryBlogRepositiry.findBlogById(id);
             if (!blog)
                 return null;
-            const newPost = Object.assign({ _id: new mongodb_1.ObjectId(), blogName: blog.name, blogId: id, createdAt: new Date().toISOString() }, post);
+            const newPost = Object.assign({ _id: new mongodb_1.ObjectId(), blogName: blog.name, blogId: id, createdAt: new Date().toISOString(), likesPost: [] }, post);
             return yield post_repository_1.postRepository.createPost(newPost);
         });
     }

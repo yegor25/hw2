@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userRepository = void 0;
+exports.UserRepository = void 0;
 const user_helper_1 = require("../helpers/user-helper");
 const db_1 = require("../../db");
 // export const userRepository = {
@@ -96,4 +96,4 @@ class UserRepository {
         });
     }
 }
-exports.userRepository = new UserRepository();
+exports.UserRepository = UserRepository;

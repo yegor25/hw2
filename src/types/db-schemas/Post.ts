@@ -1,17 +1,42 @@
 import mongoose  from "mongoose";
 import { PostDbType } from "../post-type";
 import { ObjectId } from "mongodb";
+import { extendedLikesInfo, postLikeDbType } from "../post-likeType";
+import { LikeStatus } from "../like-type";
 
 
- export const postSchema = new mongoose.Schema<PostDbType>({
+const postLikeSchema = new mongoose.Schema<postLikeDbType>({
+    addedAt: {type: Date},
+    userId: {type: String},
+    login: {type: String},
+    status: {type: String, enum: LikeStatus}
+})
+type postMethodsType = {
+    getDefaultLikes:() => extendedLikesInfo
+}
+
+type postModelType = mongoose.Model<postLikeDbType,{},postMethodsType>
+
+ export const postSchema = new mongoose.Schema<PostDbType,postModelType,postMethodsType>({
     _id: {type: ObjectId, default: new ObjectId()},
     title: {type: String, required: true},
     shortDescription: {type: String, required: true},
     content: {type: String, required: true},
     blogId: {type: String, required: true},
     blogName: {type: String, required: true},
-    createdAt: {type: String, required: true}
+    createdAt: {type: String, required: true},
+    likesPost: {type: [postLikeSchema]}
 })
+
+postSchema.methods.getDefaultLikes = function():extendedLikesInfo{
+    return {
+        likesCount: 0,
+        dislikesCount: 0,
+        myStatus: LikeStatus.None,
+        newestLikes: []
+    }
+}
+
 // 
 
 

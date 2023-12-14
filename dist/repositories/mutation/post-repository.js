@@ -64,18 +64,18 @@ const db_1 = require("../../db");
 class PostRepository {
     createPost(post) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield db_1.PostModel.create(post);
-            return post_helper_1.postHelper.mapPostToView(post);
+            const newPost = yield db_1.PostModel.create(post);
+            const defaultLike = newPost.getDefaultLikes();
+            return post_helper_1.postHelper.mapPostToView(post, defaultLike);
         });
     }
     createPostForBlog(post) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield db_1.PostModel.create(post);
-                return post_helper_1.postHelper.mapPostToView(post);
+                const newPost = yield db_1.PostModel.create(post);
+                return post_helper_1.postHelper.mapPostToView(post, newPost.getDefaultLikes());
             }
             catch (error) {
-                console.log("post error", error);
                 return null;
             }
         });

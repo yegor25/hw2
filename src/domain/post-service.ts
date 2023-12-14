@@ -1,6 +1,6 @@
 import { ObjectId } from "mongodb"
 import { postRepository } from "../repositories/mutation/post-repository"
-import { PostDbType, postBodyType, postBodyTypeForBlog } from "../types/post-type"
+import { PostDbType, postBodyType, postBodyTypeForBlog, postType } from "../types/post-type"
 import { QueryBlogRepositiry } from "../repositories/query/query-BlogsRepository"
 
 
@@ -45,13 +45,14 @@ const convertID = (id: string) => new ObjectId(id)
 
 
 class PostService {
-    async createPost(post:postBodyType){
+    async createPost(post:postBodyType):Promise<postType | null>{
         const blog = await QueryBlogRepositiry.findBlogById(post.blogId)
         if(!blog) return null
         const newPost:PostDbType = {
             _id: new ObjectId(),
             blogName: blog.name ,
             createdAt: new Date().toISOString(),
+            likesPost: [],
             ...post
         }
         return await postRepository.createPost(newPost)
@@ -64,6 +65,7 @@ class PostService {
             blogName: blog.name ,
             blogId: id,
             createdAt: new Date().toISOString(),
+            likesPost: [],
             ...post
         }
         return await postRepository.createPost(newPost)

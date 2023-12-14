@@ -33,6 +33,17 @@ const nodemailer_1 = __importDefault(require("nodemailer"));
 //         return info
 //     }
 // }
+class transporterClass {
+    createTransport() {
+        return nodemailer_1.default.createTransport({
+            service: "gmail",
+            auth: {
+                user: "itvolear@gmail.com",
+                pass: "jckm kpux qswi tltc"
+            }
+        });
+    }
+}
 class MailAdapter {
     constructor() {
         this.transporter = nodemailer_1.default.createTransport({

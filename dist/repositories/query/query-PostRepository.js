@@ -68,7 +68,7 @@ class queryPostRepository {
                 .sort({ [parametres.sortBy]: parametres.sortDirection })
                 .skip(skipcount)
                 .limit(parametres.pageSize);
-            const totalCount = yield db_1.PostModel.countDocuments({});
+            const totalCount = yield db_1.PostModel.countDocuments();
             return {
                 pagesCount: Math.ceil(totalCount / +parametres.pageSize),
                 page: +parametres.pageNumber,

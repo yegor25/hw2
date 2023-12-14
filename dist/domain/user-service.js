@@ -12,9 +12,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userService = void 0;
+exports.UserService = void 0;
 const mongodb_1 = require("mongodb");
-const user_repository_1 = require("../repositories/mutation/user-repository");
 const user_type_1 = require("../types/user-type");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const crypto_service_1 = require("../application/crypto-service");
@@ -24,6 +23,9 @@ const oldPassword_repository_1 = require("../repositories/mutation/oldPassword-r
 const db_1 = require("../db");
 const convertId = (id) => new mongodb_1.ObjectId(id);
 class UserService {
+    constructor(userRepository) {
+        this.userRepository = userRepository;
+    }
     createUser(user) {
         return __awaiter(this, void 0, void 0, function* () {
             const { password, login, email } = user;
@@ -34,17 +36,17 @@ class UserService {
             const salt = yield bcrypt_1.default.genSalt(10);
             const hashPassword = yield bcrypt_1.default.hash(password, salt);
             const newUser = new user_type_1.userDbType(new mongodb_1.ObjectId, login, email, new Date().toISOString(), hashPassword, salt, { code: "none", isConfirmed: true, expirationDate: new Date() });
-            return user_repository_1.userRepository.createUser(newUser);
+            return this.userRepository.createUser(newUser);
         });
     }
     deleteUser(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield user_repository_1.userRepository.deleteUser(convertId(id));
+            return yield this.userRepository.deleteUser(convertId(id));
         });
     }
     deleteAllUsers() {
         return __awaiter(this, void 0, void 0, function* () {
-            return user_repository_1.userRepository.deleteAllUsers();
+            return this.userRepository.deleteAllUsers();
         });
     }
     recoverPassword(newPassword, code) {
@@ -57,11 +59,11 @@ class UserService {
             if (!user)
                 return false;
             yield oldPassword_repository_1.oldPasswordRepo.savePassword(userCode.userId, user.hashPassword);
-            const res = yield user_repository_1.userRepository.changePassword(hash.hash, convertId(userCode.userId), hash.salt);
+            const res = yield this.userRepository.changePassword(hash.hash, convertId(userCode.userId), hash.salt);
             if (!res)
                 return false;
             return true;
         });
     }
 }
-exports.userService = new UserService();
+exports.UserService = UserService;

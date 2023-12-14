@@ -66,7 +66,7 @@ class queryPostRepository {
         .skip(skipcount)
         .limit(parametres.pageSize)
         
-        const totalCount = await PostModel.countDocuments({})
+        const totalCount = await PostModel.countDocuments()
 
         return {
             pagesCount: Math.ceil(totalCount/+parametres.pageSize),

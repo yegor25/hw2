@@ -65,15 +65,15 @@ import { PostModel } from "../../db";
 
 class PostRepository {
     async createPost(post: PostDbType): Promise<postType> {
-        await PostModel.create(post)
-        return postHelper.mapPostToView(post)
+       const newPost =  await PostModel.create(post)
+       const defaultLike = newPost.getDefaultLikes()
+        return postHelper.mapPostToView(post,defaultLike)
     }
     async createPostForBlog(post: PostDbType): Promise<postType | null> {
         try {
-            await PostModel.create(post)
-        return postHelper.mapPostToView(post)
+           const newPost = await PostModel.create(post)
+        return postHelper.mapPostToView(post, newPost.getDefaultLikes())
         } catch (error) {
-            console.log("post error", error)
             return null
         }
       

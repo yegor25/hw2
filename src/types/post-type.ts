@@ -1,5 +1,6 @@
 import { ObjectId } from "mongodb"
 import { paginatorType } from "./paginator-type"
+import { extendedLikesInfo, postLikeDbType } from "./post-likeType"
 
 
 export type postType = {
@@ -9,7 +10,8 @@ export type postType = {
     content: string,
     blogId: string,
     blogName: string,
-    createdAt: string
+    createdAt: string,
+    extendedLikesInfo: extendedLikesInfo,
 }
 
 
@@ -33,7 +35,8 @@ export type PostDbType = {
     content: string,
     blogId: string,
     blogName: string,
-    createdAt: string
+    createdAt: string,
+    likesPost: postLikeDbType[]
 }
 export type viewAllPostsType = paginatorType & {
     items: postType[]

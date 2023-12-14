@@ -11,11 +11,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.validateCodeConfirmation = exports.codeConfiramtionValidator = void 0;
 const express_validator_1 = require("express-validator");
-const auth_service_1 = require("../domain/auth-service");
 const helper_validator_1 = require("./helper/helper-validator");
+const auth_service_1 = require("../domain/auth-service");
+const user_repository_1 = require("../repositories/mutation/user-repository");
+const userRepository = new user_repository_1.UserRepository();
+const authService = new auth_service_1.AuthService(userRepository);
 exports.codeConfiramtionValidator = [
     (0, express_validator_1.body)("code").exists().isString().custom((val) => __awaiter(void 0, void 0, void 0, function* () {
-        const validCode = yield auth_service_1.authService.confirmUser(val);
+        const validCode = yield authService.confirmUser(val);
         if (!validCode)
             throw new Error();
     }))
