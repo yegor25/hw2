@@ -9,6 +9,8 @@ import { paramsCommentsPaginatorType, paramsPostPaginatorType } from "../types/p
 import { commentService } from "../domain/comment-service";
 import { commentValidate, commentValidator } from "../middlewares/comment-validator";
 import { QueryCommentsRepository } from "../repositories/query/query-commentsRepository";
+import { LikeStatus } from "../types/like-type";
+import { commentLikeValidator } from "../middlewares/commentLike-validator";
 
 
 export const postRouter = Router({})
@@ -73,5 +75,8 @@ postRouter.delete("/:id",checkAuth, async (req: requestWithParams<{ id: string }
         res.sendStatus(404)
         return
     }
+    res.sendStatus(204)
+})
+postRouter.put("/:postId/like-status",authMiddleware ,commentLikeValidator,commentValidate,async (req:requestWithParamsAndBody<{postId: string},{likeStatus: LikeStatus}>, res:Response) => {
     res.sendStatus(204)
 })
