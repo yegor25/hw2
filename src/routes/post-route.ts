@@ -78,5 +78,11 @@ postRouter.delete("/:id",checkAuth, async (req: requestWithParams<{ id: string }
     res.sendStatus(204)
 })
 postRouter.put("/:postId/like-status",authMiddleware ,commentLikeValidator,commentValidate,async (req:requestWithParamsAndBody<{postId: string},{likeStatus: LikeStatus}>, res:Response) => {
+    const status = req.body.likeStatus
+    const post = await QueryPostRepository.findPostById(req.params.postId)
+    if(!post){
+        res.sendStatus(404)
+        return
+    }
     res.sendStatus(204)
 })

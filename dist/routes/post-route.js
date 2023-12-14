@@ -83,5 +83,11 @@ exports.postRouter.delete("/:id", auth_middleware_1.checkAuth, (req, res) => __a
     res.sendStatus(204);
 }));
 exports.postRouter.put("/:postId/like-status", auth_middleware_1.authMiddleware, commentLike_validator_1.commentLikeValidator, comment_validator_1.commentValidate, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const status = req.body.likeStatus;
+    const post = yield query_PostRepository_1.QueryPostRepository.findPostById(req.params.postId);
+    if (!post) {
+        res.sendStatus(404);
+        return;
+    }
     res.sendStatus(204);
 }));
