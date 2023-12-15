@@ -39,7 +39,7 @@ export const likePostSchema = new mongoose.Schema<postLikeDbType, newLikeModelTy
                     if (userId && el.userId === userId) userStatus = el.status
                 })
                 const likes = reactions.filter(el => el.status === LikeStatus.Like  && el.isFirst).sort((a, b) => a.addedAt < b.addedAt ? 1 : -1)
-                const newest: postLikeType[] = likes.slice(0, 4).map(el => ({ addedAt: el.addedAt.toISOString(), userId: el.userId, login: el.login }))
+                const newest: postLikeType[] = likes.map(el => ({ addedAt: el.addedAt.toISOString(), userId: el.userId, login: el.login }))
                 const result: extendedLikesInfo = {
                     likesCount: likeCount,
                     dislikesCount: disLikeCount,
