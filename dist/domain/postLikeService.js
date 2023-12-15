@@ -27,9 +27,11 @@ exports.postLikeService = {
         return __awaiter(this, void 0, void 0, function* () {
             const exist = yield query_postLikeNewest_1.queryLikePostNewestRepo.getExistLike(userId, postId);
             if (!exist) {
+                console.log("no");
                 return this.addLikeToArray(userId, postId, status, login);
             }
             else {
+                console.log("yes");
                 return this.updateLikeStatus(status, userId, postId);
             }
         });

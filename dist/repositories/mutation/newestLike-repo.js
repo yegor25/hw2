@@ -16,6 +16,7 @@ exports.newestLikeRepo = {
     addLikeToArray(userId, postId, status, login) {
         return __awaiter(this, void 0, void 0, function* () {
             const newPost = new db_1.LikePostsNewest({ userId: userId, postId: postId, addedAt: new Date(), status: status, _id: new mongodb_1.ObjectId(), login: login, isFirst: true });
+            yield newPost.save();
             return newPost;
         });
     },
