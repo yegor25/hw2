@@ -40,7 +40,8 @@ blogRouter.post("/:blogId/posts",checkAuth,postValidatorForBlog,postValidate,asy
     res.status(201).send(blog)
 })
 blogRouter.get("/:blogId/posts",checkGuess,async (req: requestWithQueryAndParams<{blogId: string},paramsPostPaginatorType>, res: Response) => {
-    const blogs = await  QueryPostRepository.findPostsByBlogId(req.params.blogId, req.query)
+    const user = req.user
+    const blogs = await  QueryPostRepository.findPostsByBlogId(req.params.blogId, req.query, user?._id.toString())
     if (!blogs) {
         res.sendStatus(404)
         return
