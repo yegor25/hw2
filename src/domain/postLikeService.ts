@@ -16,10 +16,8 @@ export const postLikeService = {
    async changeLikeStatus (userId: string, postId: string,status:LikeStatus, login: string){
         const exist = await queryLikePostNewestRepo.getExistLike(userId,postId)
         if(!exist){
-            console.log("no")
             return this.addLikeToArray(userId, postId,status,login)
         } else {
-            console.log("yes")
             return this.updateLikeStatus(status,userId,postId)
         }
    }
