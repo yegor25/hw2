@@ -1,7 +1,7 @@
 import { Router, Request, Response } from "express";
 import { requestWithBody, requestWithParams, requestWithParamsAndBody, requestWithQuery, requestWithQueryAndParams } from "../types/root-type";
 import { blogType, bodyBlogType } from "../types/blog-type";
-import { checkAuth } from "../middlewares/auth-middleware";
+import { checkAuth, checkGuess } from "../middlewares/auth-middleware";
 import { blogValidate, validateBlogShema} from "../middlewares/blog-validation";
 import { blogService } from "../domain/blog-service";
 import { QueryBlogRepositiry } from "../repositories/query/query-BlogsRepository";
@@ -31,7 +31,7 @@ blogRouter.get("/:id", async (req: requestWithParams<{ id: string }>, res: Respo
     }
     res.status(200).send(blog)
 })
-blogRouter.post("/:blogId/posts", checkAuth,postValidatorForBlog,postValidate,async (req: requestWithParamsAndBody<{ blogId: string}, postBodyTypeForBlog >, res: Response) => {
+blogRouter.post("/:blogId/posts",checkAuth,postValidatorForBlog,postValidate,async (req: requestWithParamsAndBody<{ blogId: string}, postBodyTypeForBlog >, res: Response) => {
     const blog = await postService.createPostForBlog(req.body,req.params.blogId)
     if (!blog) {
         res.sendStatus(404)
@@ -39,7 +39,7 @@ blogRouter.post("/:blogId/posts", checkAuth,postValidatorForBlog,postValidate,as
     }
     res.status(201).send(blog)
 })
-blogRouter.get("/:blogId/posts",async (req: requestWithQueryAndParams<{blogId: string},paramsPostPaginatorType>, res: Response) => {
+blogRouter.get("/:blogId/posts",checkGuess,async (req: requestWithQueryAndParams<{blogId: string},paramsPostPaginatorType>, res: Response) => {
     const blogs = await  QueryPostRepository.findPostsByBlogId(req.params.blogId, req.query)
     if (!blogs) {
         res.sendStatus(404)

@@ -91,12 +91,13 @@ class queryPostRepository {
             // }
         });
     }
-    findPostsByBlogId(id, params) {
+    findPostsByBlogId(id, params, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             const blog = yield query_BlogsRepository_1.QueryBlogRepositiry.findBlogById(id);
             if (!blog) {
                 return null;
             }
+            const user = userId ? userId : null;
             const parametres = paginator_helper_1.paginatorHelper.postParamsMapper(params);
             const skipcount = (parametres.pageNumber - 1) * parametres.pageSize;
             const res = yield db_1.PostModel.find({ blogId: id })
@@ -105,14 +106,24 @@ class queryPostRepository {
                 .skip(skipcount)
                 .limit(parametres.pageSize);
             const totalCount = yield db_1.PostModel.countDocuments({ blogId: id });
-            // const likes = await LikePostsNewest.getNewstLikes(id, user)
-            return {
-                pagesCount: Math.ceil(totalCount / +parametres.pageSize),
-                page: +parametres.pageNumber,
-                pageSize: +parametres.pageSize,
-                totalCount,
-                items: post_helper_1.postHelper.convertArrayDTO(res)
-            };
+            const totalResult = res.map((el) => __awaiter(this, void 0, void 0, function* () { return post_helper_1.postHelper.mapPostToView(el, yield db_1.LikePostsNewest.getNewstLikes(el._id.toString(), user)); }));
+            const response = yield Promise.all(totalResult).then(res => {
+                return {
+                    pagesCount: Math.ceil(totalCount / +parametres.pageSize),
+                    page: +parametres.pageNumber,
+                    pageSize: +parametres.pageSize,
+                    totalCount,
+                    items: res
+                };
+            });
+            return response;
+            // return {
+            //     pagesCount: Math.ceil(totalCount / +parametres.pageSize),
+            //     page: +parametres.pageNumber,
+            //     pageSize: +parametres.pageSize,
+            //     totalCount,
+            //     items: postHelper.convertArrayDTO(res)
+            // }
         });
     }
     findPostById(id, userId) {

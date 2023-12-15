@@ -91,11 +91,12 @@ class queryPostRepository {
 
         // }
     }
-    async findPostsByBlogId(id: string, params: paramsPostPaginatorType): Promise<viewAllPostsType | null> {
+    async findPostsByBlogId(id: string, params: paramsPostPaginatorType, userId?: string | null): Promise<viewAllPostsType | null> {
         const blog = await QueryBlogRepositiry.findBlogById(id)
         if (!blog) {
             return null
         }
+        const user = userId ? userId : null
         const parametres = paginatorHelper.postParamsMapper(params)
         const skipcount = (parametres.pageNumber - 1) * parametres.pageSize
         const res = await PostModel.find({ blogId: id })
@@ -104,15 +105,24 @@ class queryPostRepository {
             .skip(skipcount)
             .limit(parametres.pageSize)
         const totalCount = await PostModel.countDocuments({ blogId: id })
-        // const likes = await LikePostsNewest.getNewstLikes(id, user)
-
-        return {
-            pagesCount: Math.ceil(totalCount / +parametres.pageSize),
-            page: +parametres.pageNumber,
-            pageSize: +parametres.pageSize,
-            totalCount,
-            items: postHelper.convertArrayDTO(res)
-        }
+        const totalResult = res.map(async (el) => postHelper.mapPostToView(el, await LikePostsNewest.getNewstLikes(el._id.toString(), user)))
+        const response: viewAllPostsType = await Promise.all(totalResult).then(res => {
+            return {
+                pagesCount: Math.ceil(totalCount / +parametres.pageSize),
+                page: +parametres.pageNumber,
+                pageSize: +parametres.pageSize,
+                totalCount,
+                items: res
+            }
+        })
+        return response
+        // return {
+        //     pagesCount: Math.ceil(totalCount / +parametres.pageSize),
+        //     page: +parametres.pageNumber,
+        //     pageSize: +parametres.pageSize,
+        //     totalCount,
+        //     items: postHelper.convertArrayDTO(res)
+        // }
     }
     async findPostById(id: string, userId?: string | null): Promise<postType | null> {
         const post = await PostModel.findOne({ _id: convertId(id) })

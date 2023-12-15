@@ -44,7 +44,7 @@ exports.blogRouter.post("/:blogId/posts", auth_middleware_1.checkAuth, post_vali
     }
     res.status(201).send(blog);
 }));
-exports.blogRouter.get("/:blogId/posts", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.blogRouter.get("/:blogId/posts", auth_middleware_1.checkGuess, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const blogs = yield query_PostRepository_1.QueryPostRepository.findPostsByBlogId(req.params.blogId, req.query);
     if (!blogs) {
         res.sendStatus(404);
