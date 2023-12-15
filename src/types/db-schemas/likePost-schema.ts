@@ -13,7 +13,7 @@ type methodsType = {
 }
 
 export interface newLikeModelType extends mongoose.Model<postLikeDbType, {}, methodsType> {
-    getNewstLikes: (postId: string) => Promise<extendedLikesInfo>,
+    getNewstLikes: (postId: string, userId: string | null) => Promise<extendedLikesInfo>,
     getDefaultLikes: () => extendedLikesInfo
 
 }

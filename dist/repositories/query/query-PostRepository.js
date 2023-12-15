@@ -101,12 +101,13 @@ class queryPostRepository {
             };
         });
     }
-    findPostById(id) {
+    findPostById(id, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             const post = yield db_1.PostModel.findOne({ _id: convertId(id) });
             if (!post)
                 return null;
-            const likes = yield db_1.LikePostsNewest.getNewstLikes(id);
+            const user = userId ? userId : null;
+            const likes = yield db_1.LikePostsNewest.getNewstLikes(id, user);
             // const l =  LikePostsNewest.getDefaultLikes()
             return post_helper_1.postHelper.mapPostToView(post, likes);
         });

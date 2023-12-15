@@ -7,7 +7,9 @@ import { postLikeDbType } from "../../types/post-likeType";
 
 export const newestLikeRepo = {
     async addLikeToArray(userId: string,postId: string, status: LikeStatus, login: string){
-        const newPost = await LikePostsNewest.create({userId:userId, postId: postId, addedAt: new Date(),status: status, _id: new ObjectId(),login: login, isFirst: true})
+        const newPost = new LikePostsNewest({userId:userId, postId: postId, addedAt: new Date(),status: status, _id: new ObjectId(),login: login, isFirst: true})
+        await newPost.save()
+        return newPost
      },
      async changeExist(userId: string,postId: string, status: LikeStatus) {
          const postLike = await LikePostsNewest.findOneAndUpdate(

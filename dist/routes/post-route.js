@@ -33,8 +33,9 @@ exports.postRouter.post("/", auth_middleware_1.checkAuth, post_validation_1.post
     }
     res.status(201).send(posts);
 }));
-exports.postRouter.get("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const post = yield query_PostRepository_1.QueryPostRepository.findPostById(req.params.id);
+exports.postRouter.get("/:id", auth_middleware_1.checkGuess, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = req.user;
+    const post = yield query_PostRepository_1.QueryPostRepository.findPostById(req.params.id, user === null || user === void 0 ? void 0 : user._id.toString());
     if (!post) {
         res.sendStatus(404);
         return;

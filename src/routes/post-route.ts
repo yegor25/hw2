@@ -30,8 +30,9 @@ postRouter.post("/",checkAuth,postValidator, postValidate, async(req: requestWit
     }
     res.status(201).send(posts)
 })
-postRouter.get("/:id", async (req: requestWithParams<{ id: string }>, res: Response) => {
-    const post = await QueryPostRepository.findPostById(req.params.id)
+postRouter.get("/:id", checkGuess ,async (req: requestWithParams<{ id: string }>, res: Response) => {
+    const user = req.user
+    const post = await QueryPostRepository.findPostById(req.params.id, user?._id.toString())
     if (!post) {
         res.sendStatus(404)
         return
