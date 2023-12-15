@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express"
 import { jwtService } from "../application/jwt-service"
 import { QueryUserRepository } from "../repositories/query/query-UserRepository"
-import { paramsCommentsPaginatorType } from "../types/paginator-type"
-import { requestWithParams, requestWithQueryAndParams } from "../types/root-type"
+import { paramsCommentsPaginatorType, paramsPostPaginatorType } from "../types/paginator-type"
+import { requestWithParams, requestWithQuery, requestWithQueryAndParams } from "../types/root-type"
 
 export const checkAuth = (req: Request, res: Response, next: NextFunction) => {
     const user = req.headers["authorization"]
@@ -53,7 +53,7 @@ export const authMiddleware = async(req:Request,res:Response, next: NextFunction
     }
 }
 
-export const checkGuess = async(req:Request | requestWithQueryAndParams<{postId:string}, paramsCommentsPaginatorType | requestWithParams<{ id: string }> | requestWithQueryAndParams<{postId:string}, paramsCommentsPaginatorType>>,res:Response, next:NextFunction) => {
+export const checkGuess = async(req:Request | requestWithQuery<paramsPostPaginatorType> | requestWithQueryAndParams<{postId:string}, paramsCommentsPaginatorType | requestWithParams<{ id: string }> | requestWithQueryAndParams<{postId:string}, paramsCommentsPaginatorType>>,res:Response, next:NextFunction) => {
     const tokenData = req.headers.authorization
     if(!tokenData){
         req.user = null

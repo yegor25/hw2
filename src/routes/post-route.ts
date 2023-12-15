@@ -18,8 +18,9 @@ import { postLikeService } from "../domain/postLikeService";
 export const postRouter = Router({})
 
 
-postRouter.get("/", async (req: requestWithQuery<paramsPostPaginatorType>, res: Response) => {
-    const blogs =  await QueryPostRepository.findPosts(req.query)
+postRouter.get("/",checkGuess, async (req: requestWithQuery<paramsPostPaginatorType>, res: Response) => {
+    const user = req.user
+    const blogs =  await QueryPostRepository.findPosts(req.query, user?._id.toString())
     res.status(200).send(blogs)
 })
 postRouter.post("/",checkAuth,postValidator, postValidate, async(req: requestWithBody<postBodyType>, res: Response<postType>) => {

@@ -21,8 +21,9 @@ const query_commentsRepository_1 = require("../repositories/query/query-comments
 const commentLike_validator_1 = require("../middlewares/commentLike-validator");
 const postLikeService_1 = require("../domain/postLikeService");
 exports.postRouter = (0, express_1.Router)({});
-exports.postRouter.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const blogs = yield query_PostRepository_1.QueryPostRepository.findPosts(req.query);
+exports.postRouter.get("/", auth_middleware_1.checkGuess, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = req.user;
+    const blogs = yield query_PostRepository_1.QueryPostRepository.findPosts(req.query, user === null || user === void 0 ? void 0 : user._id.toString());
     res.status(200).send(blogs);
 }));
 exports.postRouter.post("/", auth_middleware_1.checkAuth, post_validation_1.postValidator, post_validation_1.postValidate, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
