@@ -13,7 +13,7 @@ type methodsType = {
 }
 
 export interface newLikeModelType extends mongoose.Model<postLikeDbType, {}, methodsType> {
-    // getNewstLikes: (postId: string) => Promise<extendedLikesInfo>,
+    getNewstLikes: (postId: string) => Promise<extendedLikesInfo>,
     getDefaultLikes: () => extendedLikesInfo
 
 }
@@ -28,7 +28,7 @@ export const likePostSchema = new mongoose.Schema<postLikeDbType, newLikeModelTy
 },
     {
         statics: {
-            async getNewestLikes(postId: string, userId: string | null): Promise<extendedLikesInfo> {
+            async getNewstLikes(postId: string, userId: string | null): Promise<extendedLikesInfo> {
                 let likeCount = 0
                 let disLikeCount = 0
                 let userStatus: LikeStatus = LikeStatus.None
