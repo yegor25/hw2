@@ -13,21 +13,25 @@ exports.postLikeService = void 0;
 const newestLike_repo_1 = require("../repositories/mutation/newestLike-repo");
 const query_postLikeNewest_1 = require("../repositories/query/query-postLikeNewest");
 exports.postLikeService = {
-    addLikeToArray(userId, postId, status, login) {
+    addLikeToArray(userId, postId, status) {
         return __awaiter(this, void 0, void 0, function* () {
-            const exist = yield query_postLikeNewest_1.queryLikePostNewestRepo.getExistLike(userId, postId);
-            if (!exist) {
-                yield newestLike_repo_1.newestLikeRepo.addLikeToArray(userId, postId, status, login);
-                return;
-            }
-            yield newestLike_repo_1.newestLikeRepo.changeExist(userId, postId, status);
-            return;
+            return newestLike_repo_1.newestLikeRepo.changeExist(userId, postId, status);
         });
     },
     updateLikeStatus(likeStatus, userId, postId) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield newestLike_repo_1.newestLikeRepo.changeExist(userId, postId, likeStatus);
-            return true;
+            return newestLike_repo_1.newestLikeRepo.changeExist(userId, postId, likeStatus);
+        });
+    },
+    changeLikeStatus(userId, postId, status, login) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const exist = yield query_postLikeNewest_1.queryLikePostNewestRepo.getExistLike(userId, postId);
+            if (!exist) {
+                return this.addLikeToArray(userId, postId, status);
+            }
+            else {
+                return this.updateLikeStatus(status, userId, postId);
+            }
         });
     }
 };

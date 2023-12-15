@@ -6,22 +6,18 @@ import { LikeStatus } from "../like-type";
 
 
 type methodsType = {
-    getDefaultLikes:() => extendedLikesInfo,
+    getDefaultLikes: () => extendedLikesInfo,
     likes: postLikeDbType[],
-    changeLikeStatus:(userId: string, status: LikeStatus) => postLikeDbType[]
+    changeLikeStatus: (userId: string, status: LikeStatus) => postLikeDbType[]
 
 }
-// type staticMethodsType = {
-//     getNewstLikes:(postId: string) => postLikeType[],
-//     addLike:(userId: string, postId: string, status: LikeStatus, login: string) => postLikeDbType[],
-//     likes:postLikeDbType[],
-// }
+
 export interface newLikeModelType extends mongoose.Model<postLikeDbType, {}, methodsType> {
-    getNewstLikes: (postId: string) => Promise<extendedLikesInfo>,
+    // getNewstLikes: (postId: string) => Promise<extendedLikesInfo>,
     getDefaultLikes: () => extendedLikesInfo
 
 }
-export const likePostSchema = new mongoose.Schema<postLikeDbType,newLikeModelType,methodsType>({
+export const likePostSchema = new mongoose.Schema<postLikeDbType, newLikeModelType, methodsType>({
     _id: { type: ObjectId },
     addedAt: { type: Date },
     userId: { type: String },
@@ -32,19 +28,19 @@ export const likePostSchema = new mongoose.Schema<postLikeDbType,newLikeModelTyp
 },
     {
         statics: {
-            getNewestLikes: async function (postId: string, userId: string | null): Promise<extendedLikesInfo> {
+            async getNewestLikes(postId: string, userId: string | null): Promise<extendedLikesInfo> {
                 let likeCount = 0
                 let disLikeCount = 0
-                let userStatus:LikeStatus = LikeStatus.None
+                let userStatus: LikeStatus = LikeStatus.None
                 const reactions = await this.find({ postId: postId }).lean()
                 reactions.forEach(el => {
-                    if(el.status === LikeStatus.Like) likeCount+=1
-                    if(el.status === LikeStatus.Dislike) likeCount-=1
-                    if(userId && el.userId === userId) userStatus = el.status 
+                    if (el.status === LikeStatus.Like) likeCount += 1
+                    if (el.status === LikeStatus.Dislike) likeCount -= 1
+                    if (userId && el.userId === userId) userStatus = el.status
                 })
                 const likes = reactions.filter(el => el.status === LikeStatus.Like && el.postId === postId && el.isFirst).sort((a, b) => a.addedAt > b.addedAt ? 1 : -1)
-                const newest:postLikeType[] =  likes.slice(0, 4).map(el => ({ addedAt: el.addedAt.toISOString(), userId: el.userId, login: el.login }))
-                const result:extendedLikesInfo = {
+                const newest: postLikeType[] = likes.slice(0, 4).map(el => ({ addedAt: el.addedAt.toISOString(), userId: el.userId, login: el.login }))
+                const result: extendedLikesInfo = {
                     likesCount: likeCount,
                     dislikesCount: disLikeCount,
                     myStatus: userStatus,
@@ -52,7 +48,7 @@ export const likePostSchema = new mongoose.Schema<postLikeDbType,newLikeModelTyp
                 }
                 return result
             },
-            getDefaultLikes: function():extendedLikesInfo{
+            getDefaultLikes (): extendedLikesInfo {
                 return {
                     likesCount: 0,
                     dislikesCount: 0,
@@ -63,10 +59,10 @@ export const likePostSchema = new mongoose.Schema<postLikeDbType,newLikeModelTyp
 
 
         },
-        
+
     },
-    
-    
+
+
 
 )
 

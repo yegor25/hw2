@@ -102,9 +102,9 @@ class queryPostRepository {
      async findPostById(id: string): Promise<postType | null>  {
         const post = await PostModel.findOne({_id: convertId(id)})
         if(!post) return null
-        // const likes = await queryLikePostNewestRepo.getLikes()
-        const likes = await LikePostsNewest.getNewstLikes(id)
-        return postHelper.mapPostToView(post,likes)
+        // const likes = await LikePostsNewest.getNewstLikes(id)
+        const l =  LikePostsNewest.getDefaultLikes()
+        return postHelper.mapPostToView(post,l)
     }
      async findModelPostById(id: string)  {
         const post = await PostModel.findOne({_id: convertId(id)})

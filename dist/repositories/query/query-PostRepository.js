@@ -106,9 +106,9 @@ class queryPostRepository {
             const post = yield db_1.PostModel.findOne({ _id: convertId(id) });
             if (!post)
                 return null;
-            // const likes = await queryLikePostNewestRepo.getLikes()
-            const likes = yield db_1.LikePostsNewest.getNewstLikes(id);
-            return post_helper_1.postHelper.mapPostToView(post, likes);
+            // const likes = await LikePostsNewest.getNewstLikes(id)
+            const l = db_1.LikePostsNewest.getDefaultLikes();
+            return post_helper_1.postHelper.mapPostToView(post, l);
         });
     }
     findModelPostById(id) {

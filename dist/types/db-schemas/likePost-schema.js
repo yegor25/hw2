@@ -26,7 +26,7 @@ exports.likePostSchema = new mongoose_1.default.Schema({
     isFirst: { type: Boolean },
 }, {
     statics: {
-        getNewestLikes: function (postId, userId) {
+        getNewestLikes(postId, userId) {
             return __awaiter(this, void 0, void 0, function* () {
                 let likeCount = 0;
                 let disLikeCount = 0;
@@ -51,7 +51,7 @@ exports.likePostSchema = new mongoose_1.default.Schema({
                 return result;
             });
         },
-        getDefaultLikes: function () {
+        getDefaultLikes() {
             return {
                 likesCount: 0,
                 dislikesCount: 0,
