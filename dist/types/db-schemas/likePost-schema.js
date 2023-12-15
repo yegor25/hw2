@@ -41,7 +41,7 @@ exports.likePostSchema = new mongoose_1.default.Schema({
                         userStatus = el.status;
                 });
                 const likes = reactions.filter(el => el.status === like_type_1.LikeStatus.Like && el.isFirst).sort((a, b) => new Date(a.addedAt) < new Date(b.addedAt) ? 1 : -1);
-                const newest = likes.map(el => ({ addedAt: el.addedAt.toISOString(), userId: el.userId, login: el.login }));
+                const newest = likes.splice(0, 3).map(el => ({ addedAt: el.addedAt.toISOString(), userId: el.userId, login: el.login }));
                 const result = {
                     likesCount: likeCount,
                     dislikesCount: disLikeCount,
