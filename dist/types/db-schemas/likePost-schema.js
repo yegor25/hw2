@@ -61,3 +61,4 @@ exports.likePostSchema = new mongoose_1.default.Schema({
         }
     },
 });
+//  likePostSchema.methods.mapLikeForView = function(userId: string | null,likePost: postLikeDbType):extendedLikesInfo {}

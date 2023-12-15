@@ -6,10 +6,7 @@ import { LikeStatus } from "../like-type";
 
 
 type methodsType = {
-    getDefaultLikes: () => extendedLikesInfo,
-    likes: postLikeDbType[],
-    changeLikeStatus: (userId: string, status: LikeStatus) => postLikeDbType[]
-
+    mapLikeForView:(userId: string | null, likePost:postLikeDbType) => extendedLikesInfo
 }
 
 export interface newLikeModelType extends mongoose.Model<postLikeDbType, {}, methodsType> {
@@ -62,9 +59,9 @@ export const likePostSchema = new mongoose.Schema<postLikeDbType, newLikeModelTy
 
     },
 
-
-
 )
 
+//  likePostSchema.methods.mapLikeForView = function(userId: string | null,likePost: postLikeDbType):extendedLikesInfo {}
+ 
 
 
