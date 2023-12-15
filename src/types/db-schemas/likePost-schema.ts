@@ -35,7 +35,7 @@ export const likePostSchema = new mongoose.Schema<postLikeDbType, newLikeModelTy
                 const reactions = await this.find({ postId: postId }).lean()
                 reactions.forEach(el => {
                     if (el.status === LikeStatus.Like) likeCount += 1
-                    if (el.status === LikeStatus.Dislike) likeCount -= 1
+                    if (el.status === LikeStatus.Dislike) disLikeCount += 1
                     if (userId && el.userId === userId) userStatus = el.status
                 })
                 const likes = reactions.filter(el => el.status === LikeStatus.Like && el.postId === postId && el.isFirst).sort((a, b) => a.addedAt > b.addedAt ? 1 : -1)

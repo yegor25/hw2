@@ -15,13 +15,11 @@ const query_postLikeNewest_1 = require("../repositories/query/query-postLikeNewe
 exports.postLikeService = {
     addLikeToArray(userId, postId, status, login) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log("add new");
             return newestLike_repo_1.newestLikeRepo.addLikeToArray(userId, postId, status, login);
         });
     },
     updateLikeStatus(likeStatus, userId, postId) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log("update");
             return newestLike_repo_1.newestLikeRepo.changeExist(userId, postId, likeStatus);
         });
     },
@@ -29,11 +27,9 @@ exports.postLikeService = {
         return __awaiter(this, void 0, void 0, function* () {
             const exist = yield query_postLikeNewest_1.queryLikePostNewestRepo.getExistLike(userId, postId);
             if (!exist) {
-                console.log("no");
                 return this.addLikeToArray(userId, postId, status, login);
             }
             else {
-                console.log("yes");
                 return this.updateLikeStatus(status, userId, postId);
             }
         });

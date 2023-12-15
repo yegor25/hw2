@@ -36,7 +36,7 @@ exports.likePostSchema = new mongoose_1.default.Schema({
                     if (el.status === like_type_1.LikeStatus.Like)
                         likeCount += 1;
                     if (el.status === like_type_1.LikeStatus.Dislike)
-                        likeCount -= 1;
+                        disLikeCount += 1;
                     if (userId && el.userId === userId)
                         userStatus = el.status;
                 });
