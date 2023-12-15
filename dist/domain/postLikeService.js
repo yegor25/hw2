@@ -24,4 +24,10 @@ exports.postLikeService = {
             return;
         });
     },
+    updateLikeStatus(likeStatus, userId, postId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield newestLike_repo_1.newestLikeRepo.changeExist(userId, postId, likeStatus);
+            return true;
+        });
+    }
 };

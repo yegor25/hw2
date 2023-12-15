@@ -91,7 +91,6 @@ exports.postRouter.put("/:postId/like-status", auth_middleware_1.authMiddleware,
         res.sendStatus(404);
         return;
     }
-    yield post_service_1.postService.updateLikeStatus(status, user._id.toString(), req.params.postId);
     yield postLikeService_1.postLikeService.addLikeToArray(user._id.toString(), req.params.postId, status, user.login);
     res.sendStatus(204);
 }));

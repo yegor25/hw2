@@ -83,12 +83,7 @@ class PostService {
     async deleteAllPosts(){
         return await postRepository.deleteAll()
     }
-    async updateLikeStatus(likeStatus: LikeStatus, userId: string, postIdId: string):Promise<boolean>{
-        const post = await QueryPostRepository.findModelPostById(postIdId)
-        post?.changeLikeStatus(userId,likeStatus)
-        await post?.save()
-        return true
-    }
+    
 }
 
 export const postService = new PostService()

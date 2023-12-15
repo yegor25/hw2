@@ -87,7 +87,6 @@ postRouter.put("/:postId/like-status",authMiddleware ,commentLikeValidator,comme
         res.sendStatus(404)
         return
     }
-    await postService.updateLikeStatus(status,user._id.toString(),req.params.postId)
     await postLikeService.addLikeToArray(user._id.toString(),req.params.postId,status,user.login)
     res.sendStatus(204)
 })

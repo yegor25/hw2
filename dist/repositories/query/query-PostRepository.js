@@ -86,7 +86,8 @@ class queryPostRepository {
             }
             const parametres = paginator_helper_1.paginatorHelper.postParamsMapper(params);
             const skipcount = (parametres.pageNumber - 1) * parametres.pageSize;
-            const res = yield db_1.PostModel.find({ blogId: id }).lean()
+            const res = yield db_1.PostModel.find({ blogId: id })
+                .lean()
                 .sort({ [parametres.sortBy]: parametres.sortDirection })
                 .skip(skipcount)
                 .limit(parametres.pageSize);
@@ -105,7 +106,9 @@ class queryPostRepository {
             const post = yield db_1.PostModel.findOne({ _id: convertId(id) });
             if (!post)
                 return null;
-            return post_helper_1.postHelper.mapPostToView(post, post.getDefaultLikes());
+            // const likes = await queryLikePostNewestRepo.getLikes()
+            const likes = yield db_1.LikePostsNewest.getNewstLikes(id);
+            return post_helper_1.postHelper.mapPostToView(post, likes);
         });
     }
     findModelPostById(id) {

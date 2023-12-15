@@ -59,7 +59,7 @@ commentsSchema.methods.changeLikeStatus = function(userId: string, status: LikeS
     const userLike = this.likeComments.find(el => el.userId === userId)
     if(!userLike) {
        this.likeComments =  [...this.likeComments, {status: status, userId: userId}] 
-        return this.likeComments
+        return this.likeeComments
     }
     this.likeComments = this.likeComments.map(el => el.userId === userId ? {...el, status: status} : el)
     return this.likeComments
@@ -74,6 +74,7 @@ commentsSchema.methods.getLikesInfoForUnauth = function():likeInfoType{
     }
     return result
 }
+
 
 
 

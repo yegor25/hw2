@@ -1,37 +1,74 @@
 import mongoose from "mongoose";
-import { postLikeDbType, postLikeType } from "../post-likeType";
+import { extendedLikesInfo, postLikeDbType, postLikeType } from "../post-likeType";
 import { ObjectId } from "mongodb";
 import { LikeStatus } from "../like-type";
 
 
 
 type methodsType = {
-    getNewstLikes:() => postLikeType[],
-    addLike:(userId: string, postId: string, status: LikeStatus, login: string) => postLikeDbType[],
-    likes:postLikeDbType[],
-}
-type newLikeModelType = mongoose.Model<postLikeDbType,{},methodsType>
-export const likePostSchema = new mongoose.Schema<postLikeDbType,newLikeModelType, methodsType>({
-    _id: {type: ObjectId},
-    addedAt: {type: Date},
-    userId: {type: String},
-    login: {type: String},
-    status: {type: String, enum: LikeStatus},
-    postId: {type: String},
-    isFirst: {type: Boolean}
-})
+    getDefaultLikes:() => extendedLikesInfo,
+    likes: postLikeDbType[],
+    changeLikeStatus:(userId: string, status: LikeStatus) => postLikeDbType[]
 
-likePostSchema.methods.getNewstLikes = function():postLikeType[]{
-     const likes:postLikeDbType[] = this.likes.filter(el => el.status === LikeStatus.Like).sort((a,b) => a.addedAt > b.addedAt ? 1 : -1)
-     return likes.splice(0,3).map(el => ({addedAt: el.addedAt.toISOString(), userId: el.userId, login: el.login}))
 }
-
-// likePostSchema.methods.addLike = function(userId: string,postId: string, status: LikeStatus, login: string):postLikeDbType[]{
-//     const exists = this.likes.find(el => el.userId === userId && el.postId === postId)
-//     if(exists){
-//         const modifyLikes:postLikeDbType[] = this.likes.map(el => ({...el,addedAt: new Date(),isFirst: false, status: status}))
-//         return modifyLikes
-//     }
-//      this.likes.push({userId:userId, postId: postId, addedAt: new Date(),status: status, _id: new ObjectId(),login: login, isFirst: true})
-//     return this.likes
+// type staticMethodsType = {
+//     getNewstLikes:(postId: string) => postLikeType[],
+//     addLike:(userId: string, postId: string, status: LikeStatus, login: string) => postLikeDbType[],
+//     likes:postLikeDbType[],
 // }
+export interface newLikeModelType extends mongoose.Model<postLikeDbType, {}, methodsType> {
+    getNewstLikes: (postId: string) => Promise<extendedLikesInfo>,
+    getDefaultLikes: () => extendedLikesInfo
+
+}
+export const likePostSchema = new mongoose.Schema<postLikeDbType,newLikeModelType,methodsType>({
+    _id: { type: ObjectId },
+    addedAt: { type: Date },
+    userId: { type: String },
+    login: { type: String },
+    status: { type: String, enum: LikeStatus },
+    postId: { type: String },
+    isFirst: { type: Boolean },
+},
+    {
+        statics: {
+            getNewestLikes: async function (postId: string, userId: string | null): Promise<extendedLikesInfo> {
+                let likeCount = 0
+                let disLikeCount = 0
+                let userStatus:LikeStatus = LikeStatus.None
+                const reactions = await this.find({ postId: postId }).lean()
+                reactions.forEach(el => {
+                    if(el.status === LikeStatus.Like) likeCount+=1
+                    if(el.status === LikeStatus.Dislike) likeCount-=1
+                    if(userId && el.userId === userId) userStatus = el.status 
+                })
+                const likes = reactions.filter(el => el.status === LikeStatus.Like && el.postId === postId && el.isFirst).sort((a, b) => a.addedAt > b.addedAt ? 1 : -1)
+                const newest:postLikeType[] =  likes.slice(0, 4).map(el => ({ addedAt: el.addedAt.toISOString(), userId: el.userId, login: el.login }))
+                const result:extendedLikesInfo = {
+                    likesCount: likeCount,
+                    dislikesCount: disLikeCount,
+                    myStatus: userStatus,
+                    newestLikes: newest
+                }
+                return result
+            },
+            getDefaultLikes: function():extendedLikesInfo{
+                return {
+                    likesCount: 0,
+                    dislikesCount: 0,
+                    myStatus: LikeStatus.None,
+                    newestLikes: []
+                }
+            }
+
+
+        },
+        
+    },
+    
+    
+
+)
+
+
+

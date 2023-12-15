@@ -65,15 +65,16 @@ class PostRepository {
     createPost(post) {
         return __awaiter(this, void 0, void 0, function* () {
             const newPost = yield db_1.PostModel.create(post);
-            const defaultLike = newPost.getDefaultLikes();
-            return post_helper_1.postHelper.mapPostToView(post, defaultLike);
+            const likeInfo = db_1.LikePostsNewest.getDefaultLikes();
+            return post_helper_1.postHelper.mapPostToView(post, likeInfo);
         });
     }
     createPostForBlog(post) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const newPost = yield db_1.PostModel.create(post);
-                return post_helper_1.postHelper.mapPostToView(post, newPost.getDefaultLikes());
+                const likeInfo = db_1.LikePostsNewest.getDefaultLikes();
+                return post_helper_1.postHelper.mapPostToView(post, likeInfo);
             }
             catch (error) {
                 return null;
@@ -82,12 +83,14 @@ class PostRepository {
     }
     changePost(id, payload) {
         return __awaiter(this, void 0, void 0, function* () {
-            const post = yield db_1.PostModel.updateOne({ _id: id }, { $set: {
+            const post = yield db_1.PostModel.updateOne({ _id: id }, {
+                $set: {
                     title: payload.title,
                     shortDescription: payload.shortDescription,
                     blogId: payload.blogId,
                     content: payload.content
-                } });
+                }
+            });
             return post.matchedCount === 1;
         });
     }

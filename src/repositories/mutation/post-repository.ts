@@ -1,8 +1,8 @@
-import { PostDbType,  postBodyType, postType } from "../../types/post-type";
+import { PostDbType, postBodyType, postType } from "../../types/post-type";
 import { ObjectId } from "mongodb";
 import { blogService } from "../../domain/blog-service";
 import { postHelper } from "../helpers/post-helper";
-import { PostModel } from "../../db";
+import { LikePostsNewest, PostModel } from "../../db";
 
 // let posts: postType[] = [
 //     {
@@ -19,7 +19,7 @@ import { PostModel } from "../../db";
 
 
 // export const postRepository = {
-    
+
 //     async createPost(post: PostDbType): Promise<postType> {
 //         await PostModel.create(post)
 //         return postHelper.mapPostToView(post)
@@ -32,7 +32,7 @@ import { PostModel } from "../../db";
 //             console.log("post error", error)
 //             return null
 //         }
-      
+
 //     },
 //     async changePost(id: ObjectId, payload: postBodyType):Promise<boolean> {
 //         const post = await PostModel.updateOne(
@@ -45,7 +45,7 @@ import { PostModel } from "../../db";
 //             }}
 //             )
 //             return post.matchedCount === 1
-        
+
 //     },
 //     async deletePost(id: ObjectId):Promise<boolean> {
 //        const res = await PostModel.deleteOne({_id: new ObjectId(id)})
@@ -56,53 +56,56 @@ import { PostModel } from "../../db";
 //             const res = await PostModel.deleteMany({})
 //         return
 //         } catch (error) {
-            
+
 //         }
-        
+
 //     }
 // }
 
 
 class PostRepository {
     async createPost(post: PostDbType): Promise<postType> {
-       const newPost =  await PostModel.create(post)
-       const defaultLike = newPost.getDefaultLikes()
-        return postHelper.mapPostToView(post,defaultLike)
+        const newPost = await PostModel.create(post)
+        const likeInfo = LikePostsNewest.getDefaultLikes()
+        return postHelper.mapPostToView(post, likeInfo)
     }
     async createPostForBlog(post: PostDbType): Promise<postType | null> {
         try {
-           const newPost = await PostModel.create(post)
-        return postHelper.mapPostToView(post, newPost.getDefaultLikes())
+            const newPost = await PostModel.create(post)
+            const likeInfo = LikePostsNewest.getDefaultLikes()
+            return postHelper.mapPostToView(post, likeInfo)
         } catch (error) {
             return null
         }
-      
+
     }
-    async changePost(id: ObjectId, payload: postBodyType):Promise<boolean> {
+    async changePost(id: ObjectId, payload: postBodyType): Promise<boolean> {
         const post = await PostModel.updateOne(
-            {_id: id},
-            {$set: {
-                title: payload.title,
-                shortDescription: payload.shortDescription,
-                blogId: payload.blogId,
-                content: payload.content
-            }}
-            )
-            return post.matchedCount === 1
-        
+            { _id: id },
+            {
+                $set: {
+                    title: payload.title,
+                    shortDescription: payload.shortDescription,
+                    blogId: payload.blogId,
+                    content: payload.content
+                }
+            }
+        )
+        return post.matchedCount === 1
+
     }
-    async deletePost(id: ObjectId):Promise<boolean> {
-       const res = await PostModel.deleteOne({_id: new ObjectId(id)})
-       return res.deletedCount === 1
+    async deletePost(id: ObjectId): Promise<boolean> {
+        const res = await PostModel.deleteOne({ _id: new ObjectId(id) })
+        return res.deletedCount === 1
     }
-    async deleteAll():Promise<void> {
+    async deleteAll(): Promise<void> {
         try {
             const res = await PostModel.deleteMany({})
-        return
+            return
         } catch (error) {
-            
+
         }
-        
+
     }
 }
 

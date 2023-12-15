@@ -4,7 +4,9 @@ import { postHelper } from "../helpers/post-helper"
 import { paramsPostPaginatorType } from "../../types/paginator-type"
 import { paginatorHelper } from "../helpers/paginator-helper"
 import { QueryBlogRepositiry } from "./query-BlogsRepository"
-import { PostModel } from "../../db"
+import { LikePostsNewest, PostModel } from "../../db"
+import { queryLikePostNewestRepo } from "./query-postLikeNewest"
+import { HydratedDocument } from "mongoose"
 
 
 const convertId = (id: string) => new ObjectId(id)
@@ -83,7 +85,8 @@ class queryPostRepository {
         }
         const parametres = paginatorHelper.postParamsMapper(params)
         const skipcount = (parametres.pageNumber - 1) * parametres.pageSize
-        const res = await PostModel.find({blogId: id}).lean()
+        const res = await PostModel.find({blogId: id})
+        .lean()
         .sort({[parametres.sortBy] : parametres.sortDirection})
         .skip(skipcount)
         .limit(parametres.pageSize)
@@ -99,7 +102,9 @@ class queryPostRepository {
      async findPostById(id: string): Promise<postType | null>  {
         const post = await PostModel.findOne({_id: convertId(id)})
         if(!post) return null
-        return postHelper.mapPostToView(post,post.getDefaultLikes())
+        // const likes = await queryLikePostNewestRepo.getLikes()
+        const likes = await LikePostsNewest.getNewstLikes(id)
+        return postHelper.mapPostToView(post,likes)
     }
      async findModelPostById(id: string)  {
         const post = await PostModel.findOne({_id: convertId(id)})

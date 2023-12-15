@@ -14,6 +14,10 @@ export const postLikeService = {
         } 
         await newestLikeRepo.changeExist(userId,postId,status)
         return
+    },
+    async updateLikeStatus(likeStatus: LikeStatus, userId: string, postId: string):Promise<boolean>{
+       await newestLikeRepo.changeExist(userId,postId,likeStatus)
+        return true
     }
-    ,
+    
 }
